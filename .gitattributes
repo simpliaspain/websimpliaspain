@@ -1,0 +1,4 @@
+* text=auto
+CNAME text eol=lf
+public/CNAME text eol=lf
+.nojekyll text eol=lf

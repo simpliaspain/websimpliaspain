@@ -1,0 +1,63 @@
+name: Deploy to staging (simpliaspain.github.io)
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: true
+
+# The staging deploy targets an external repository and authenticates with
+# STAGING_DEPLOY_TOKEN, so GITHUB_TOKEN needs no write access here.
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build and publish to simpliaspain.github.io
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Hard Rule 4: staging must never claim the custom domain, and must not
+      # be indexed. Two repos serving www.simpliaspain.com would detach the
+      # domain from the live production site.
+      - name: Strip custom domain and block indexing
+        run: |
+          rm -f dist/CNAME
+          printf 'User-agent: *\nDisallow: /\n' > dist/robots.txt
+
+      - name: Guard - staging must not claim the custom domain
+        run: |
+          if [ -f dist/CNAME ]; then
+            echo "::error::dist/CNAME still present on staging - this would detach www.simpliaspain.com from production"
+            exit 1
+          fi
+          if ! grep -qx 'Disallow: /' dist/robots.txt; then
+            echo "::error::dist/robots.txt is not blocking indexing"
+            cat -A dist/robots.txt
+            exit 1
+          fi
+          echo "Staging guards passed."
+
+      - name: Publish to simpliaspain.github.io
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.STAGING_DEPLOY_TOKEN }}
+          external_repository: simpliaspain/simpliaspain.github.io
+          publish_dir: ./dist
+          publish_branch: main

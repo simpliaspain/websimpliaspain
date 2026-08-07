@@ -1,0 +1,67 @@
+name: Deploy to production (gh-pages)
+
+on:
+  push:
+    branches: [production]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Build and publish to gh-pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # Hard Rule 3: the production deploy must FAIL rather than publish a
+      # bundle without the custom domain. Publishing dist/ without CNAME
+      # detaches www.simpliaspain.com from the live site.
+      - name: Guard - dist/CNAME must be exactly www.simpliaspain.com
+        run: |
+          if [ ! -f dist/CNAME ]; then
+            echo "::error::dist/CNAME is missing - refusing to deploy (this would detach www.simpliaspain.com)"
+            exit 1
+          fi
+          if ! grep -qx 'www.simpliaspain.com' dist/CNAME; then
+            echo "::error::dist/CNAME does not contain exactly 'www.simpliaspain.com'. Actual bytes:"
+            cat -A dist/CNAME
+            exit 1
+          fi
+          echo "CNAME guard passed."
+
+      - name: Guard - SPA fallback must exist
+        run: |
+          if [ ! -f dist/404.html ]; then
+            echo "::error::dist/404.html is missing - client-side routes would 404 on direct hits"
+            exit 1
+          fi
+          if grep -q '/src/main.tsx' dist/404.html; then
+            echo "::error::dist/404.html is the unbuilt entry, not build output"
+            exit 1
+          fi
+          echo "SPA fallback guard passed."
+
+      - name: Publish to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
