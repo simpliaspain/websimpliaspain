@@ -107,11 +107,12 @@ export function Navbar() {
                   </Link>
                 );
               })}
-            <ClientAccessButton />
             </div>
 
-            {/* Language Toggle + Menu Button */}
+            {/* Actions cluster: client access + language + menu */}
             <div className="hidden md:flex items-center gap-3">
+              <span aria-hidden="true" className="h-6 w-px bg-border" />
+              <ClientAccessButton className="hidden md:inline-flex" />
               <LanguageToggle />
               <Button 
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -211,7 +212,7 @@ export function Navbar() {
                     {t('cta.contact')}
                   </Button>
                 </Link>
-                <ClientAccessButton variant="mobile" onNavigate={() => setIsOpen(false)} />
+                <ClientAccessButton variant="primary" source="menu" onNavigate={() => setIsOpen(false)} />
               </div>
             </motion.div>
           )}

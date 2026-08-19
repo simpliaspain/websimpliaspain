@@ -1,20 +1,35 @@
 // src/components/ClientAccessButton.tsx
+import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-type Props = { variant?: "desktop" | "mobile"; onNavigate?: () => void };
+type Props = {
+  /** Visual emphasis, not breakpoint: outline in the header, filled inside the menu. */
+  variant?: "secondary" | "primary";
+  /** Distinguishes the two entry points server-side (no analytics library in this project). */
+  source?: "header" | "menu";
+  onNavigate?: () => void;
+  className?: string;
+};
 
-export default function ClientAccessButton({ variant = "desktop", onNavigate }: Props) {
+export default function ClientAccessButton({
+  variant = "secondary",
+  source = "header",
+  onNavigate,
+  className,
+}: Props) {
   return (
     <Button
       asChild
-      className={
-        variant === "mobile"
-          ? "w-full h-12 rounded-full px-5 text-base font-semibold"
-          : "rounded-full px-5 font-semibold"
-      }
+      variant={variant === "secondary" ? "outline" : "default"}
+      className={cn(
+        "rounded-full px-4 font-semibold",
+        variant === "primary" && "h-12 w-full text-base",
+        className,
+      )}
     >
       <a
-        href="https://panel.simpliaspain.com"
+        href={`https://panel.simpliaspain.com/?ref=${source}`}
         target="_blank"
         rel="noopener"
         onClick={onNavigate}
@@ -27,6 +42,7 @@ export default function ClientAccessButton({ variant = "desktop", onNavigate }: 
           <line x1="15" y1="12" x2="3" y2="12" />
         </svg>
         Acceso clientes
+        <ArrowUpRight aria-hidden="true" />
       </a>
     </Button>
   );
