@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import ClientAccessButton from "@/components/ClientAccessButton";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,6 +107,7 @@ export function Navbar() {
                   </Link>
                 );
               })}
+            <ClientAccessButton />
             </div>
 
             {/* Language Toggle + Menu Button */}
@@ -209,6 +211,7 @@ export function Navbar() {
                     {t('cta.contact')}
                   </Button>
                 </Link>
+                <ClientAccessButton variant="mobile" onNavigate={() => setIsOpen(false)} />
               </div>
             </motion.div>
           )}
