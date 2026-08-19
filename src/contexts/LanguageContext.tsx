@@ -21,6 +21,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.navigation': 'Navegación',
     'nav.readyToStart': '¿Listo para empezar?',
     'nav.strategyCall': 'Agenda una llamada de estrategia gratuita de 15 minutos',
+    'nav.mainMenu': 'Menú principal',
+    'nav.closeMenu': 'Cerrar menú',
+    'nav.alreadyClient': '¿Ya eres cliente?',
     
     // Services
     'service.chatbots': 'Chatbots Multicanal',
@@ -272,6 +275,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.navigation': 'Navigation',
     'nav.readyToStart': 'Ready to start?',
     'nav.strategyCall': 'Schedule a free 15-minute strategy call',
+    'nav.mainMenu': 'Main menu',
+    'nav.closeMenu': 'Close menu',
+    'nav.alreadyClient': 'Already a client?',
     
     // Services
     'service.chatbots': 'Multichannel Chatbots',
