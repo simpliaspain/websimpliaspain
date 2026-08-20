@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 
 interface Message {
   role: "user" | "assistant";
@@ -19,7 +20,6 @@ export function ChatbotWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  const scrollYRef = useRef(0);
 
   const WEBHOOK_URL = "https://simpliaspain-n8n.nlhico.easypanel.host/webhook/e24ccda7-a864-44b8-ad5d-d182e1cd0af2/chat";
 
@@ -51,33 +51,12 @@ export function ChatbotWidget() {
     }
   }, [isOpen, isMobile]);
 
-  // Lock body scroll ONLY on mobile when chat is open
+  // Lock body scroll ONLY on mobile when chat is open. Reference-counted so
+  // it composes with the main menu's lock instead of fighting it.
   useEffect(() => {
     if (!isOpen || !isMobile) return;
-
-    scrollYRef.current = window.scrollY;
-    const originalStyles = {
-      overflow: document.body.style.overflow,
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-      height: document.body.style.height,
-    };
-    
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollYRef.current}px`;
-    document.body.style.width = '100%';
-    document.body.style.height = '100%';
-
-    return () => {
-      document.body.style.overflow = originalStyles.overflow;
-      document.body.style.position = originalStyles.position;
-      document.body.style.top = originalStyles.top;
-      document.body.style.width = originalStyles.width;
-      document.body.style.height = originalStyles.height;
-      window.scrollTo(0, scrollYRef.current);
-    };
+    lockBodyScroll();
+    return unlockBodyScroll;
   }, [isOpen, isMobile]);
 
   useEffect(() => {

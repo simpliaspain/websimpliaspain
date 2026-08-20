@@ -1,17 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, ChevronDown, MessageSquare, Phone } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
-import { MainMenu, type MainMenuService } from "./MainMenu";
+import { MainMenu, useMainMenuController, type MainMenuService } from "./MainMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import ClientAccessButton from "@/components/ClientAccessButton";
 
 export function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menu = useMainMenuController();
   const [isScrolled, setIsScrolled] = useState(false);
-  const triggerRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
   const { t } = useLanguage();
 
@@ -53,21 +52,16 @@ export function Navbar() {
 
   // Close menu when route changes
   useEffect(() => {
-    setIsMenuOpen(false);
+    menu.close();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
-
-  // Remember which trigger opened the menu so focus can return to it.
-  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    triggerRef.current = event.currentTarget;
-    setIsMenuOpen(true);
-  };
 
   return (
     <>
       <nav
         className={cn(
           "fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 motion-reduce:transition-none",
-          isScrolled
+          isScrolled || menu.isOpen
             ? "bg-background/80 backdrop-blur-md border-border/40"
             : "bg-transparent border-transparent",
         )}
@@ -132,13 +126,11 @@ export function Navbar() {
               <LanguageToggle />
               <ClientAccessButton className="hidden md:inline-flex" />
               <Button
-                onClick={openMenu}
-                aria-expanded={isMenuOpen}
-                aria-controls="main-menu"
+                {...menu.triggerProps}
                 className="bg-card hover:bg-secondary text-foreground font-medium px-4 h-10 rounded-full border border-border shadow-sm"
               >
                 {t('nav.menu')}
-                <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-300 motion-reduce:transition-none ${isMenuOpen ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-300 motion-reduce:transition-none ${menu.isOpen ? 'rotate-180' : ''}`} />
               </Button>
             </div>
 
@@ -146,10 +138,8 @@ export function Navbar() {
             <div className="flex md:hidden items-center gap-2">
               <LanguageToggle />
               <button
+                {...menu.mobileTriggerProps}
                 className="flex h-11 w-11 items-center justify-center rounded-full text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                onClick={openMenu}
-                aria-expanded={isMenuOpen}
-                aria-controls="main-menu"
                 aria-label={t('nav.menu')}
               >
                 <Menu size={24} />
@@ -159,13 +149,7 @@ export function Navbar() {
         </div>
       </nav>
 
-      <MainMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        navLinks={navLinks}
-        services={services}
-        triggerRef={triggerRef}
-      />
+      <MainMenu controller={menu} navLinks={navLinks} services={services} />
     </>
   );
 }
