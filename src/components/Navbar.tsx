@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Menu, ChevronDown, MessageSquare, Phone } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
-import { MainMenu, useMainMenuController, type MainMenuService } from "./MainMenu";
+import { MainMenu, type MainMenuService } from "./MainMenu";
+import { useMainMenuController } from "@/hooks/use-main-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import ClientAccessButton from "@/components/ClientAccessButton";
@@ -82,7 +83,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1 xl:justify-self-center">
+            <div className="hidden lg:flex items-center gap-1 xl:justify-self-center">
             {navLinks.map((link) => {
                 const isExternal = link.href.startsWith("/#");
                 const isHome = link.href === "/";
@@ -122,9 +123,9 @@ export function Navbar() {
             </div>
 
             {/* Actions cluster: language + client access + menu */}
-            <div className="hidden md:flex items-center gap-3 xl:justify-self-end">
+            <div className="hidden lg:flex items-center gap-3 xl:justify-self-end">
               <LanguageToggle />
-              <ClientAccessButton className="hidden md:inline-flex" />
+              <ClientAccessButton className="hidden lg:inline-flex" />
               <Button
                 {...menu.triggerProps}
                 className="bg-card hover:bg-secondary text-foreground font-medium px-4 h-10 rounded-full border border-border shadow-sm"
@@ -134,8 +135,8 @@ export function Navbar() {
               </Button>
             </div>
 
-            {/* Mobile: Language Toggle + Menu Button */}
-            <div className="flex md:hidden items-center gap-2">
+            {/* Below lg: language + menu button only, menu opens as a modal */}
+            <div className="flex lg:hidden items-center gap-2">
               <LanguageToggle />
               <button
                 {...menu.mobileTriggerProps}
