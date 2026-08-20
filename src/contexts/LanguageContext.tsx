@@ -24,6 +24,8 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.mainMenu': 'Menú principal',
     'nav.closeMenu': 'Cerrar menú',
     'nav.alreadyClient': '¿Ya eres cliente?',
+    'nav.clientAccess': 'Acceso clientes',
+    'nav.opensNewTab': '(abre en una nueva pestaña)',
     
     // Services
     'service.chatbots': 'Chatbots Multicanal',
@@ -278,6 +280,8 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.mainMenu': 'Main menu',
     'nav.closeMenu': 'Close menu',
     'nav.alreadyClient': 'Already a client?',
+    'nav.clientAccess': 'Client login',
+    'nav.opensNewTab': '(opens in a new tab)',
     
     // Services
     'service.chatbots': 'Multichannel Chatbots',

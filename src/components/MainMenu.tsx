@@ -278,7 +278,12 @@ export function MainMenu({ isOpen, onClose, navLinks, services, triggerRef }: Ma
                     <h3 className="mb-3 text-sm font-semibold text-foreground">
                       {t("nav.alreadyClient")}
                     </h3>
-                    <ClientAccessButton variant="primary" source="menu" onNavigate={onClose} />
+                    <ClientAccessButton
+                      variant="secondary"
+                      source="menu"
+                      className="h-12 w-full text-base"
+                      onNavigate={onClose}
+                    />
                   </div>
                 </section>
               </div>
