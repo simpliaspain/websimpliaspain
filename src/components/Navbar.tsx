@@ -27,16 +27,16 @@ export function Navbar() {
       title: t('service.chatbots'),
       description: t('service.chatbotsDesc'),
       href: "/chatbots-multicanal",
-      color: "text-green-500",
-      bgColor: "bg-green-500/10",
+      color: "text-service-chatbots",
+      bgColor: "bg-service-chatbots/10",
     },
     {
       icon: Phone,
       title: t('service.agents'),
       description: t('service.agentsDesc'),
       href: "/agentes-telefonicos",
-      color: "text-primary",
-      bgColor: "bg-primary/10",
+      color: "text-service-agents",
+      bgColor: "bg-service-agents/10",
     },
   ];
 
