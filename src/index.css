@@ -52,10 +52,16 @@
     --radius: 1rem;
 
     /* Service colour coding: green = chatbots, blue = phone agents.
-       Light values are darkened past raw green-500, which only reaches
-       2.28:1 on white and misses the 3:1 non-text minimum. */
-    --service-chatbots: 142 71% 38%;
+       The light chatbots value resolves to exactly rgb(34 197 94), the
+       tailwind green-500 still used by the unmigrated occurrences, so the
+       migrated chip shows zero visual delta against them. */
+    --service-chatbots: 142.09 70.56% 45.29%;
     --service-agents: 210 100% 50%;
+
+    /* Border for interactive surfaces that must clear 3:1. --input is far
+       below that but is shared by every input and outline button site-wide,
+       so it is left alone and this is used only where measured. */
+    --border-interactive: 214 20% 52%;
 
     /* Custom tokens */
     --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
@@ -109,6 +115,8 @@
 
     --service-chatbots: 142 65% 55%;
     --service-agents: 210 100% 55%;
+
+    --border-interactive: 214 18% 56%;
   }
 }
 

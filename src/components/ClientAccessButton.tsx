@@ -24,7 +24,13 @@ export default function ClientAccessButton({
     <Button
       asChild
       variant={variant === "secondary" ? "outline" : "default"}
-      className={cn("rounded-full px-4 font-semibold", className)}
+      className={cn(
+        "rounded-full px-4 font-semibold",
+        // --input sits at ~1.3:1 against every surface this button appears on;
+        // this token is measured to clear 3:1 on all of them.
+        variant === "secondary" && "border-interactive",
+        className,
+      )}
     >
       <a
         href={`https://panel.simpliaspain.com/?ref=${source}`}

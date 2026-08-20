@@ -65,6 +65,9 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
       },
+      borderColor: {
+        interactive: "hsl(var(--border-interactive))",
+      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
