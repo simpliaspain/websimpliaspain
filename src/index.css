@@ -117,6 +117,10 @@
     --service-agents: 210 100% 55%;
 
     --border-interactive: 214 18% 56%;
+
+    /* Dark counterpart of the hero wash: same direction and shape, a faint
+       primary-hue lift at the top settling into the page background. */
+    --gradient-hero: linear-gradient(180deg, hsl(210 40% 11%) 0%, hsl(210 15% 4%) 100%);
   }
 }
 
@@ -142,7 +146,7 @@
   }
 
   .bg-gradient-hero {
-    background: linear-gradient(180deg, hsl(210 100% 97%) 0%, hsl(0 0% 100%) 100%);
+    background: var(--gradient-hero);
   }
 
   .bg-gradient-card {
