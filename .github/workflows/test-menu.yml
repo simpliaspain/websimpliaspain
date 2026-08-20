@@ -1,0 +1,53 @@
+name: Menu regression suite
+
+# Reporting only. This workflow is deliberately independent of the deploy
+# workflows: it is not referenced by `needs:` anywhere, and neither
+# deploy-staging.yml nor deploy-prod.yml waits on it. A flaky browser test must
+# never be able to hold up a production promotion.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: test-menu-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  menu:
+    name: Menu modes, portal and scroll-lock guards
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+
+      # The Playwright config builds the app and serves it with `vite preview`,
+      # so the suite runs against the real production output.
+      - name: Run menu regression suite
+        run: npm run test:menu
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

@@ -62,5 +62,7 @@ export function unlockBodyScroll(): void {
 
   Object.assign(document.body.style, saved);
   saved = null;
-  window.scrollTo(0, savedScrollY);
+  // Instant, not smooth: the page sets scroll-behavior: smooth, which would
+  // otherwise animate the restore and make the page glide back on close.
+  window.scrollTo({ top: savedScrollY, behavior: "instant" });
 }
