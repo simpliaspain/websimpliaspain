@@ -5,10 +5,12 @@ import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
 import { MainMenu, type MainMenuService } from "./MainMenu";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 import ClientAccessButton from "@/components/ClientAccessButton";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const triggerRef = useRef<HTMLElement | null>(null);
   const location = useLocation();
   const { t } = useLanguage();
@@ -40,6 +42,15 @@ export function Navbar() {
     },
   ];
 
+  // The header floats over the page at the top of the document and only
+  // grows a surface once content scrolls under it.
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   // Close menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
@@ -53,13 +64,20 @@ export function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/50">
+      <nav
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 motion-reduce:transition-none",
+          isScrolled
+            ? "bg-background/80 backdrop-blur-md border-border/40"
+            : "bg-transparent border-transparent",
+        )}
+      >
         <div className="container mx-auto">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div className="flex items-center justify-between h-16 lg:h-20 xl:grid xl:grid-cols-[1fr_auto_1fr]">
             {/* Logo */}
             <Link
               to="/"
-              className="flex items-center gap-0.5 text-xl font-bold"
+              className="flex items-center gap-0.5 text-xl font-bold xl:justify-self-start"
               onClick={() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -70,7 +88,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1 xl:justify-self-center">
             {navLinks.map((link) => {
                 const isExternal = link.href.startsWith("/#");
                 const isHome = link.href === "/";
@@ -109,11 +127,10 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Actions cluster: client access + language + menu */}
-            <div className="hidden md:flex items-center gap-3">
-              <span aria-hidden="true" className="h-6 w-px bg-border" />
-              <ClientAccessButton className="hidden md:inline-flex" />
+            {/* Actions cluster: language + client access + menu */}
+            <div className="hidden md:flex items-center gap-3 xl:justify-self-end">
               <LanguageToggle />
+              <ClientAccessButton className="hidden md:inline-flex" />
               <Button
                 onClick={openMenu}
                 aria-expanded={isMenuOpen}
