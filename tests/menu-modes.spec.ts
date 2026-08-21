@@ -34,6 +34,9 @@
  */
 import { test, expect, type Page } from "@playwright/test";
 
+/** Mirrors HOVER_CLOSE_GRACE in src/hooks/use-main-menu.ts. */
+const HOVER_CLOSE_GRACE_MS = 250;
+
 /**
  * The page sets `scroll-behavior: smooth`, so scrollTo animates and any lock
  * taken mid-animation captures a position a few pixels short. Scroll
@@ -124,6 +127,58 @@ test.describe("dropdown mode", () => {
     await page.keyboard.press("Escape");
     await expect(page.locator("#main-menu")).toHaveCount(0);
     expect(await page.evaluate(() => document.activeElement?.id)).toBe("main-menu-trigger");
+  });
+
+  /**
+   * CLICK-ON-HOVER-OPEN
+   *   Approaching the trigger opens the panel on hover intent, so by the time
+   *   the user's click lands the menu is already open. Treating that click as
+   *   "close" - which `if (isOpen) close()` does - shuts the menu in the face of
+   *   someone who walked over specifically to click it. The click must instead
+   *   confirm the intent and anchor the panel, so it no longer closes when the
+   *   pointer leaves. Only a second, deliberate click closes it.
+   */
+  test("a click on a hover-opened menu confirms it instead of closing it", async ({ page }) => {
+    await isolate(page);
+    await page.goto("/");
+    const trigger = page.locator("#main-menu-trigger");
+    const panel = page.locator("#main-menu");
+
+    await trigger.hover();
+    await expect(panel, "hover intent opens the panel").toBeVisible();
+
+    await trigger.click();
+    await expect(panel, "the click must not close a hover-opened panel").toBeVisible();
+
+    // The click promoted it to click-opened, so pointerleave no longer applies.
+    await page.mouse.move(10, 700);
+    await page.waitForTimeout(HOVER_CLOSE_GRACE_MS + 300);
+    await expect(panel, "confirmed panel survives the pointerleave grace").toBeVisible();
+
+    await trigger.click();
+    await expect(panel, "a second deliberate click closes it").toHaveCount(0);
+  });
+
+  /**
+   * CLICK-TOGGLE
+   *   The fix above must not cost plain click-to-toggle for anyone who never
+   *   triggers hover intent - keyboard users, and pointers that arrive and
+   *   click inside the 120ms delay.
+   */
+  test("plain click-to-open still toggles closed on the next click", async ({ page }) => {
+    await isolate(page);
+    await page.goto("/");
+    const trigger = page.locator("#main-menu-trigger");
+    const panel = page.locator("#main-menu");
+
+    await trigger.click();
+    await expect(panel, "click opens from closed").toBeVisible();
+
+    // Past CLICK_TOGGLE_GUARD, so this counts as a fresh intent rather than
+    // part of the gesture that opened the panel.
+    await page.waitForTimeout(300);
+    await trigger.click();
+    await expect(panel, "click closes what a click opened").toHaveCount(0);
   });
 });
 

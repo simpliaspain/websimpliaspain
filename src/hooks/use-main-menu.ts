@@ -5,6 +5,13 @@ export const MENU_TRIGGER_ID = "main-menu-trigger";
 
 const HOVER_OPEN_DELAY = 120;
 const HOVER_CLOSE_GRACE = 250;
+/**
+ * A click landing within this long of the menu opening belongs to the gesture
+ * that opened it, not to a request to close it. Comfortably clears
+ * HOVER_OPEN_DELAY so an approach-and-click is always absorbed, while staying
+ * well under a deliberate second click.
+ */
+const CLICK_TOGGLE_GUARD = 150;
 
 /* ────────────────────────────── mode ────────────────────────────── */
 
@@ -47,6 +54,7 @@ export function useMainMenuController() {
   const [isOpen, setIsOpen] = useState(false);
   const [focusFirstItem, setFocusFirstItem] = useState(false);
   const openedBy = useRef<"hover" | "click" | null>(null);
+  const openedAt = useRef(0);
   const triggerRef = useRef<HTMLElement | null>(null);
   const openTimer = useRef<number | null>(null);
   const closeTimer = useRef<number | null>(null);
@@ -87,6 +95,7 @@ export function useMainMenuController() {
       clearCloseTimer();
       if (element) triggerRef.current = element;
       openedBy.current = how;
+      openedAt.current = Date.now();
       setIsOpen(true);
     },
     [clearOpenTimer, clearCloseTimer],
@@ -126,6 +135,21 @@ export function useMainMenuController() {
     "aria-controls": MENU_ID,
     onClick: (event: React.MouseEvent<HTMLElement>) => {
       if (isOpen) {
+        // Do NOT simplify this to `if (isOpen) close()`. That reads as obviously
+        // correct and is wrong in dropdown mode: the panel may have opened
+        // itself under the pointer via hover intent, so a user who walked over
+        // to click is confirming that intent, not undoing it, and closing here
+        // shuts the menu in their face. openedBy already records which happened.
+        if (openedBy.current === "hover") {
+          // Promote to a click-open: that anchors the panel so it survives
+          // pointerleave, and the next click closes it.
+          openedBy.current = "click";
+          clearCloseTimer();
+          return;
+        }
+        // Some browsers deliver pointerenter and click close enough together
+        // that the hover-open and this click land in the same tick.
+        if (Date.now() - openedAt.current < CLICK_TOGGLE_GUARD) return;
         close();
         return;
       }
