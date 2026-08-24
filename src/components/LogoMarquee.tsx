@@ -76,7 +76,11 @@ export function LogoMarquee() {
           {[...partners, ...partners].map((partner, index) => (
             <div
               key={index}
-              className="flex items-center justify-center flex-shrink-0 h-12 px-6 grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+              // brightness-0 flattens every logo to one silhouette before the
+              // opacity is applied, so a light brand colour (n8n pink, Make purple)
+              // no longer renders far weaker than a black one. dark:invert flips
+              // the silhouette white so it stays visible on the dark background.
+              className="flex items-center justify-center flex-shrink-0 h-12 px-6 grayscale brightness-0 opacity-60 transition-all duration-300 hover:grayscale-0 hover:brightness-100 hover:opacity-100 dark:invert dark:hover:invert-0"
             >
               {partner.logo ? (
                 <img 
