@@ -43,6 +43,10 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.collaborating': 'Con tecnología de las mejores empresas',
     'hero.available': 'DISPONIBLE',
     'hero.strategyCall': 'Llamada de Estrategia (15 mins)',
+
+    // Partners marquee. These are technology providers, not clients or
+    // partners, so the copy claims what we use rather than who we work with.
+    'partners.title': 'Con tecnología de las mejores empresas',
     
     // CTA Section
     'cta.startNow': 'Comienza ahora',
@@ -142,6 +146,13 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.rights': 'Todos los derechos reservados.',
     'footer.hereToHelp': 'Estamos aquí para ayudarte 24/7',
     'footer.chatWithBot': 'Chatear con Simplia Bot',
+    'footer.openChatbot': 'Abrir chatbot',
+    'footer.call': 'Llamar al',
+
+    // Chat widget chrome
+    'chat.open': 'Abrir chat',
+    'chat.close': 'Cerrar chat',
+    'chat.placeholder': 'Escribe tu mensaje...',
     
     // Chatbot
     'chatbot.greeting': '¡Hola! 👋 Soy el asistente virtual de Simplia Spain.\n¿En qué puedo ayudarte hoy?',
@@ -299,6 +310,9 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.collaborating': 'Powered by the best technology',
     'hero.available': 'AVAILABLE',
     'hero.strategyCall': 'Strategy Call (15 mins)',
+
+    // Partners marquee
+    'partners.title': 'Powered by the best technology',
     
     // CTA Section
     'cta.startNow': 'Start now',
@@ -398,6 +412,13 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.rights': 'All rights reserved.',
     'footer.hereToHelp': 'We\'re here to help you 24/7',
     'footer.chatWithBot': 'Chat with Simplia Bot',
+    'footer.openChatbot': 'Open chatbot',
+    'footer.call': 'Call',
+
+    // Chat widget chrome
+    'chat.open': 'Open chat',
+    'chat.close': 'Close chat',
+    'chat.placeholder': 'Type your message...',
     
     // Chatbot
     'chatbot.greeting': 'Hello! 👋 I\'m the virtual assistant of Simplia Spain.\nHow can I help you today?',

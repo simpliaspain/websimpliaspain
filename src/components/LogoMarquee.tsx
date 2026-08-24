@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Import SVG logos
 import zapierLogo from "@/assets/logos/zapier.svg";
@@ -54,11 +54,13 @@ const partners: Partner[] = [
 ];
 
 export function LogoMarquee() {
+  const { t } = useLanguage();
+
   return (
     <section id="partners" className="py-16 bg-background overflow-hidden">
       <div className="container mb-8">
         <p className="text-center text-sm font-medium text-muted-foreground">
-          Colaborando con las mejores empresas
+          {t('partners.title')}
         </p>
       </div>
       

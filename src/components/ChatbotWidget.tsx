@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Message {
   role: "user" | "assistant";
@@ -10,6 +11,7 @@ interface Message {
 }
 
 export function ChatbotWidget() {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -186,7 +188,7 @@ export function ChatbotWidget() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
             className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors"
-            aria-label="Abrir chat"
+            aria-label={t('chat.open')}
           >
             <MessageCircle className="w-7 h-7" />
             <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-25" />
@@ -259,7 +261,7 @@ export function ChatbotWidget() {
                 <button
                   onClick={() => setIsOpen(false)}
                   className="w-9 h-9 rounded-full hover:bg-white/20 flex items-center justify-center transition-colors flex-shrink-0"
-                  aria-label="Cerrar chat"
+                  aria-label={t('chat.close')}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -319,7 +321,7 @@ export function ChatbotWidget() {
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
                     onFocus={scrollToBottom}
-                    placeholder="Escribe tu mensaje..."
+                    placeholder={t('chat.placeholder')}
                     className="flex-1 bg-secondary rounded-full px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 min-w-0"
                     disabled={isLoading}
                     enterKeyHint="send"

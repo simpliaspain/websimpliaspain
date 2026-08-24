@@ -39,7 +39,7 @@ export function Footer() {
                     <button
                       onClick={openChatbot}
                       className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                      aria-label="Abrir chatbot"
+                      aria-label={t('footer.openChatbot')}
                     >
                       <Bot className="w-5 h-5 text-primary" />
                     </button>
@@ -53,7 +53,7 @@ export function Footer() {
                     <a 
                       href="tel:+34601755607" 
                       className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                      aria-label="Llamar al +34 601 755 607"
+                      aria-label={`${t('footer.call')} +34 601 755 607`}
                     >
                       <Phone className="w-5 h-5 text-primary" />
                     </a>
@@ -67,7 +67,7 @@ export function Footer() {
                     <a 
                       href="tel:+34608445993" 
                       className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors"
-                      aria-label="Llamar al +34 608 445 993"
+                      aria-label={`${t('footer.call')} +34 608 445 993`}
                     >
                       <Phone className="w-5 h-5 text-primary" />
                     </a>
