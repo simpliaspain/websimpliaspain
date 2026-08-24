@@ -47,6 +47,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Partners marquee. These are technology providers, not clients or
     // partners, so the copy claims what we use rather than who we work with.
     'partners.title': 'Con tecnología de las mejores empresas',
+    'partners.pause': 'Pausar animación',
+    'partners.resume': 'Reanudar animación',
     
     // CTA Section
     'cta.startNow': 'Comienza ahora',
@@ -313,6 +315,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Partners marquee
     'partners.title': 'Powered by the best technology',
+    'partners.pause': 'Pause animation',
+    'partners.resume': 'Resume animation',
     
     // CTA Section
     'cta.startNow': 'Start now',

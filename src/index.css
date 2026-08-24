@@ -216,15 +216,28 @@
   }
 }
 
-/* Ensure animation works on mobile with reduced motion */
-@media (prefers-reduced-motion: no-preference) {
-  .animate-marquee {
-    animation: marquee 40s linear infinite;
-  }
-  @media (max-width: 768px) {
-    .animate-marquee {
-      animation: marquee 18s linear infinite;
-    }
+/* WCAG 2.2.2: motion running longer than five seconds needs a way to stop it.
+   Hover covers pointer users; focus-within covers the keyboard pause control
+   that LogoMarquee renders inside the viewport. */
+.marquee-viewport:hover .animate-marquee,
+.marquee-viewport:focus-within .animate-marquee,
+.marquee-viewport:hover .animate-marquee-reverse,
+.marquee-viewport:focus-within .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* WCAG 2.3.3. The scroll is decorative movement, so reduced motion stops it
+   outright rather than slowing it. The previous rule here was a no-op: it
+   wrapped prefers-reduced-motion: no-preference around the same declaration the
+   unconditional base rule above already sets, so nothing was ever disabled.
+   LogoMarquee drops the duplicated set and the fade overlays under reduce and
+   makes the row scroll horizontally, so the strip stays readable and every
+   logo stays reachable instead of sitting frozen behind a fade. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee,
+  .animate-marquee-reverse {
+    animation: none;
+    transform: none;
   }
 }
 

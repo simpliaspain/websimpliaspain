@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 
 // Import SVG logos
 import zapierLogo from "@/assets/logos/zapier.svg";
@@ -55,6 +57,7 @@ const partners: Partner[] = [
 
 export function LogoMarquee() {
   const { t } = useLanguage();
+  const [paused, setPaused] = useState(false);
 
   return (
     <section id="partners" className="py-16 bg-background overflow-hidden">
@@ -63,39 +66,58 @@ export function LogoMarquee() {
           {t('partners.title')}
         </p>
       </div>
-      
-      <div className="relative">
-        {/* Fade edges */}
-        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
-        
-        <div 
-          className="flex gap-8 items-center animate-marquee will-change-transform"
-          style={{ width: 'max-content' }}
+
+      {/* Under reduced motion the row stops scrolling, so it becomes a plain
+          horizontally scrollable list instead - every logo stays reachable. */}
+      <div className="marquee-viewport relative motion-reduce:overflow-x-auto">
+        {/* Fade edges. They exist to sell the illusion of an endless scroll, so
+            they only obscure the ends once the strip is static. */}
+        <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 motion-reduce:hidden" />
+        <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 motion-reduce:hidden" />
+
+        {/* Keyboard pause control. Hidden until focused so it does not intrude
+            on the strip, and it lives inside .marquee-viewport so focusing it
+            also pauses via :focus-within. */}
+        <button
+          type="button"
+          onClick={() => setPaused((value) => !value)}
+          className="sr-only focus:not-sr-only focus:absolute focus:left-6 focus:top-1 focus:z-20 focus:rounded-full focus:border focus:border-border focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
-          {[...partners, ...partners].map((partner, index) => (
-            <div
-              key={index}
-              // brightness-0 flattens every logo to one silhouette before the
-              // opacity is applied, so a light brand colour (n8n pink, Make purple)
-              // no longer renders far weaker than a black one. dark:invert flips
-              // the silhouette white so it stays visible on the dark background.
-              className="flex items-center justify-center flex-shrink-0 h-12 px-6 grayscale brightness-0 opacity-60 transition-all duration-300 hover:grayscale-0 hover:brightness-100 hover:opacity-100 dark:invert dark:hover:invert-0"
-            >
-              {partner.logo ? (
-                <img 
-                  src={partner.logo} 
-                  alt={partner.name} 
-                  className="h-6 w-auto object-contain"
-                  title={partner.name}
-                />
-              ) : (
-                <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
-                  {partner.textLogo || partner.name}
-                </span>
-              )}
-            </div>
-          ))}
+          {paused ? t('partners.resume') : t('partners.pause')}
+        </button>
+
+        <div
+          className="flex gap-8 items-center animate-marquee will-change-transform"
+          style={{ width: 'max-content', animationPlayState: paused ? 'paused' : undefined }}
+        >
+          {[...partners, ...partners].map((partner, index) => {
+            // The second pass exists only to make the loop seamless. It is
+            // hidden from assistive tech so each brand is announced once, and
+            // dropped entirely when the animation is off.
+            const isClone = index >= partners.length;
+            return (
+              <div
+                key={index}
+                aria-hidden={isClone || undefined}
+                className={cn(
+                  "flex items-center justify-center flex-shrink-0 h-12 px-6 grayscale brightness-0 opacity-60 transition-all duration-300 hover:grayscale-0 hover:brightness-100 hover:opacity-100 dark:invert dark:hover:invert-0",
+                  isClone && "motion-reduce:hidden",
+                )}
+              >
+                {partner.logo ? (
+                  <img
+                    src={partner.logo}
+                    alt={partner.name}
+                    className="h-6 w-auto object-contain"
+                  />
+                ) : (
+                  <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
+                    {partner.textLogo || partner.name}
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
