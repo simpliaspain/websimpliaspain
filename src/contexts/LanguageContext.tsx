@@ -40,7 +40,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.subtitle2': 'Sistemas de Atención al Cliente',
     'hero.subtitle3': 'con',
     'hero.subtitle4': 'Chatbots e Inteligencia Artificial',
-    'hero.collaborating': 'Colaborando con las mejores empresas',
+    'hero.collaborating': 'Con tecnología de las mejores empresas',
     'hero.available': 'DISPONIBLE',
     'hero.strategyCall': 'Llamada de Estrategia (15 mins)',
     
@@ -296,7 +296,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.subtitle2': 'Customer Service Systems',
     'hero.subtitle3': 'with',
     'hero.subtitle4': 'Chatbots and Artificial Intelligence',
-    'hero.collaborating': 'Collaborating with top companies',
+    'hero.collaborating': 'Powered by the best technology',
     'hero.available': 'AVAILABLE',
     'hero.strategyCall': 'Strategy Call (15 mins)',
     
