@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { X, Check, Award, Video, Users, Mic, Clock, Zap, ArrowRight } from "lucide-react";
+import { X, Check, Award, ShieldCheck, Users, Mic, Clock, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -18,7 +18,7 @@ export function BenefitsSection() {
 
   const ourAdvantages = [
     { text: t('benefits.our1'), icon: Award },
-    { text: t('benefits.our2'), icon: Video },
+    { text: t('benefits.our2'), icon: ShieldCheck },
     { text: t('benefits.our3'), icon: Users },
     { text: t('benefits.our4'), icon: Mic },
     { text: t('benefits.our5'), icon: Clock },
