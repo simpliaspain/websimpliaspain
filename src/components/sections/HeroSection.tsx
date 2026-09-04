@@ -3,6 +3,20 @@ import TrustBadge from "@/components/TrustBadge";
 import robertoProfile from "@/assets/roberto-profile.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+// Reused from the marquee below - no new assets. These four are the most
+// recognisable to a non-technical Spanish SME buyer.
+import openaiLogo from "@/assets/logos/openai.svg";
+import metaLogo from "@/assets/logos/meta.svg";
+import microsoftLogo from "@/assets/logos/microsoft.svg";
+import googleLogo from "@/assets/logos/google.svg";
+
+const heroLogos = [
+  { name: "OpenAI", logo: openaiLogo },
+  { name: "Meta", logo: metaLogo },
+  { name: "Microsoft", logo: microsoftLogo },
+  { name: "Google", logo: googleLogo },
+];
+
 export function HeroSection() {
   const { t } = useLanguage();
 
@@ -48,39 +62,20 @@ export function HeroSection() {
             <br />{t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.p>
 
-          {/* Trust badges. The bottom margin below sm keeps the pair clear of the
-              floating chat widget, which occupies the lower-right 84px of the
-              viewport (bottom-5 offset + h-16 button). */}
+          {/* The conversion CTA and the supporting technology line. They are no
+              longer a matched pair, so no equal-height grid: the CTA keeps the
+              TrustBadge shell and the technology line is plain inline content.
+              DOM order is CTA first, which is the mobile order - the action
+              before the evidence. The bottom margin below sm keeps the block
+              clear of the floating chat widget, which occupies the lower-right
+              84px of the viewport (bottom-5 offset + h-16 button). */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mb-24 grid w-full max-w-sm auto-rows-fr grid-cols-1 gap-4 sm:mb-0 sm:max-w-2xl sm:grid-cols-2 sm:gap-6"
+            className="mx-auto mb-24 flex w-full max-w-sm flex-col items-center gap-4 sm:mb-0 sm:max-w-2xl sm:flex-row sm:justify-center sm:gap-6"
           >
-            {/* Social proof - scrolls to the partners marquee */}
-            <TrustBadge asChild>
-              <button type="button" onClick={scrollToPartners}>
-                <span className="flex flex-col items-center gap-1">
-                  <span className="flex items-center gap-0.5">
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="h-4 w-4 fill-current text-yellow-400"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </span>
-                  <span className="text-sm font-medium text-foreground transition-colors group-hover:text-primary motion-reduce:transition-none">
-                    {t('hero.collaborating')}
-                  </span>
-                </span>
-              </button>
-            </TrustBadge>
-
-            {/* Strategy call - opens Calendly */}
+            {/* Strategy call - opens Calendly. Unchanged. */}
             <TrustBadge asChild>
               <a
                 href="https://calendly.com/simpliaspain/30min"
@@ -101,6 +96,33 @@ export function HeroSection() {
                 </span>
               </a>
             </TrustBadge>
+
+            {/* Technology line - a caption, not a card. No shell, sits straight
+                on the hero gradient. py-3 buys the 44px hit area without adding
+                visible bulk. */}
+            <button
+              type="button"
+              onClick={scrollToPartners}
+              aria-label={t('hero.poweredByAria')}
+              className="group flex shrink-0 items-center justify-center gap-3 rounded-xl px-2 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:order-first"
+            >
+              <span className="text-xs font-medium text-muted-foreground sm:text-sm">
+                {t('hero.poweredBy')}
+              </span>
+              <span className="flex items-center gap-3">
+                {/* All four fit at 320px: measured 243px (es) / 208px (en)
+                    inside 272px of available width, no wrap, no overflow. */}
+                {heroLogos.map((item) => (
+                  <img
+                    key={item.name}
+                    src={item.logo}
+                    alt=""
+                    aria-hidden="true"
+                    className="h-5 w-auto object-contain grayscale brightness-0 opacity-60 transition-opacity duration-300 group-hover:opacity-90 dark:invert motion-reduce:transition-none"
+                  />
+                ))}
+              </span>
+            </button>
           </motion.div>
         </div>
       </div>

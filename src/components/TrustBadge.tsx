@@ -2,7 +2,11 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@/lib/utils";
 
-interface TrustBadgeProps extends HTMLAttributes<HTMLElement> {
+// className is omitted on purpose: the spread below lands after the shell's
+// own className, so an accepted class would replace the shell rather than
+// merge with it. Omitting makes the guarantee in the doc comment enforceable
+// by the type checker instead of by convention.
+interface TrustBadgeProps extends Omit<HTMLAttributes<HTMLElement>, "className"> {
   /** Render as the child element (a link or a button) rather than a div. */
   asChild?: boolean;
   children: ReactNode;

@@ -41,6 +41,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.subtitle3': 'con',
     'hero.subtitle4': 'Chatbots e Inteligencia Artificial',
     'hero.collaborating': 'Con tecnología de las mejores empresas',
+    'hero.poweredBy': 'Con tecnología de',
+    'hero.poweredByAria': 'Ver las tecnologías que utilizamos',
     'hero.available': 'DISPONIBLE',
     'hero.strategyCall': 'Llamada de Estrategia (15 mins)',
 
@@ -310,6 +312,8 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.subtitle3': 'with',
     'hero.subtitle4': 'Chatbots and Artificial Intelligence',
     'hero.collaborating': 'Powered by the best technology',
+    'hero.poweredBy': 'Powered by',
+    'hero.poweredByAria': 'See the technologies we use',
     'hero.available': 'AVAILABLE',
     'hero.strategyCall': 'Strategy Call (15 mins)',
 
