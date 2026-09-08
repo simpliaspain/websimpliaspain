@@ -56,10 +56,12 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-3xl mb-12"
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground mx-auto max-w-3xl mb-12 text-balance"
           >
-            {t('hero.subtitle1')} <span className="font-semibold text-foreground">{t('hero.subtitle2')}</span>
-            <br />{t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
+            {/* The explicit space matters: the removed <br /> was the only
+                separator between subtitle2 and subtitle3. */}
+            {t('hero.subtitle1')} <span className="font-semibold text-foreground">{t('hero.subtitle2')}</span>{' '}
+            {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.p>
 
           {/* The conversion CTA and the supporting technology line. They are no
