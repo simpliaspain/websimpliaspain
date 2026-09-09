@@ -56,11 +56,14 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-muted-foreground mx-auto max-w-3xl mb-12 text-pretty sm:text-balance"
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground mx-auto max-w-3xl mb-12 text-pretty"
           >
-            {/* The explicit space matters: the removed <br /> was the only
-                separator between subtitle2 and subtitle3. */}
+            {/* The break falls on the conjunction, splitting the two ideas
+                rather than equalising line lengths. Only from sm up: below that
+                it is display:none and the {' '} carries the spacing, so mobile
+                keeps plain greedy wrapping. */}
             {t('hero.subtitle1')} <span className="font-semibold text-foreground">{t('hero.subtitle2')}</span>{' '}
+            <br className="hidden sm:inline" />
             {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.p>
 
