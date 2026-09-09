@@ -310,7 +310,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.subtitle1': 'Boost your business with',
     'hero.subtitle2': 'Customer Service Systems',
     'hero.subtitle3': 'with',
-    'hero.subtitle4': 'Chatbots and Artificial Intelligence',
+    'hero.subtitle4': 'Chatbots and Artificial\u00A0Intelligence',
     'hero.collaborating': 'Powered by the best technology',
     'hero.poweredBy': 'Powered by',
     'hero.poweredByAria': 'See the technologies we use',

@@ -56,7 +56,7 @@ export function HeroSection() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl text-muted-foreground mx-auto max-w-3xl mb-12 text-balance"
+            className="text-lg md:text-xl lg:text-2xl text-muted-foreground mx-auto max-w-3xl mb-12 text-pretty sm:text-balance"
           >
             {/* The explicit space matters: the removed <br /> was the only
                 separator between subtitle2 and subtitle3. */}
