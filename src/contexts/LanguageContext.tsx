@@ -28,7 +28,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.opensNewTab': '(abre en una nueva pestaña)',
     
     // Services
-    'service.chatbots': 'Chatbots Multicanal',
+    'service.chatbots': 'Agentes Multicanal',
     'service.chatbotsDesc': 'WhatsApp, Instagram, Telegram y Web',
     'service.agents': 'Agentes Telefónicos IA',
     'service.agentsDesc': 'Atiende llamadas 24/7 con IA',
@@ -110,7 +110,7 @@ const translations: Record<Language, Record<string, string>> = {
     'services.badge': 'Servicios Principales',
     'services.title1': 'Soluciones de IA',
     'services.title2': 'Para Tu Negocio',
-    'services.chatbotsTitle': 'Chatbots Multicanal',
+    'services.chatbotsTitle': 'Agentes Multicanal',
     'services.chatbotsDesc': 'Automatiza tu atención en WhatsApp, Web, Instagram y Telegram con IA conversacional disponible 24/7. Captura leads, resuelve dudas y agenda citas automáticamente.',
     'services.agentsTitle': 'Agentes Telefónicos IA',
     'services.agentsDesc': 'Nunca pierdas una llamada. Agentes virtuales que atienden, registran información, agenda citas y transfieren a agentes humanos cuando es necesario.',
@@ -248,7 +248,7 @@ const translations: Record<Language, Record<string, string>> = {
     'agents.readyCardDesc': 'Agenda una demo gratuita y escucha cómo suena tu agente',
     
     // Chatbots Multichannel Page
-    'chatbots.badge': 'Chatbots Multicanal',
+    'chatbots.badge': 'Agentes Multicanal',
     'chatbots.heroTitle1': 'Atiende a tus clientes en',
     'chatbots.heroTitle2': 'todos los canales',
     'chatbots.heroDesc': 'Un solo chatbot con IA que opera en WhatsApp, Instagram, Telegram y tu web. Captura leads, resuelve dudas y agenda citas automáticamente.',
@@ -299,7 +299,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.opensNewTab': '(opens in a new tab)',
     
     // Services
-    'service.chatbots': 'Multichannel Chatbots',
+    'service.chatbots': 'Multichannel AI Agents',
     'service.chatbotsDesc': 'WhatsApp, Instagram, Telegram & Web',
     'service.agents': 'AI Phone Agents',
     'service.agentsDesc': 'Answer calls 24/7 with AI',
@@ -380,7 +380,7 @@ const translations: Record<Language, Record<string, string>> = {
     'services.badge': 'Main Services',
     'services.title1': 'AI Solutions',
     'services.title2': 'For Your Business',
-    'services.chatbotsTitle': 'Multichannel Chatbots',
+    'services.chatbotsTitle': 'Multichannel AI Agents',
     'services.chatbotsDesc': 'Automate your support on WhatsApp, Web, Instagram and Telegram with conversational AI available 24/7. Capture leads, resolve doubts and schedule appointments automatically.',
     'services.agentsTitle': 'AI Phone Agents',
     'services.agentsDesc': 'Never miss a call. Virtual agents that answer, record information, schedule appointments and transfer to human agents when necessary.',
@@ -518,7 +518,7 @@ const translations: Record<Language, Record<string, string>> = {
     'agents.readyCardDesc': 'Schedule a free demo and hear how your agent sounds',
     
     // Chatbots Multichannel Page
-    'chatbots.badge': 'Multichannel Chatbots',
+    'chatbots.badge': 'Multichannel AI Agents',
     'chatbots.heroTitle1': 'Serve your customers on',
     'chatbots.heroTitle2': 'all channels',
     'chatbots.heroDesc': 'A single AI chatbot that operates on WhatsApp, Instagram, Telegram and your website. Capture leads, resolve doubts and schedule appointments automatically.',
