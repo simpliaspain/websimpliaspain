@@ -27,9 +27,14 @@
     <meta name="twitter:image" content="https://www.simpliaspain.com/og-image.png" />
     <meta name="twitter:creator" content="@simpliaspain" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon.ico" />
+    <!-- Icons: white S on brand blue, generated in public/. The SVG is what
+         modern browsers use; the ICO (16/32/48) is the fallback; iOS needs a
+         real PNG for the home-screen icon. icon-192/512.png exist for a web
+         manifest, which this site does not have yet. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#0080FF" media="(prefers-color-scheme: light)" />
