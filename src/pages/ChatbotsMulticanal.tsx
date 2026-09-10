@@ -145,8 +145,10 @@ export default function ChatbotsMulticanal() {
           
           <div className="container relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* No entrance fade on the hero (see HeroSection): the hero text is
+                  the LCP element and must be visible in the prerendered HTML. */}
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
@@ -189,7 +191,7 @@ export default function ChatbotsMulticanal() {
 
               {/* Demo Preview */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
+                initial={false}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="relative hidden lg:block"
