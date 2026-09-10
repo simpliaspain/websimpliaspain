@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { writeSitemap } from "./scripts/sitemap.mjs";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -29,5 +30,7 @@ export default defineConfig(({ mode }) => ({
     // rewrites the stylesheet link, which the deploy guards did not expect.
     crittersOptions: false,
     beastiesOptions: false,
+    // Runs after every page has been written: one sitemap entry per page.
+    onFinished: writeSitemap,
   },
 }));
