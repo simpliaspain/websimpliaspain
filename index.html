@@ -40,16 +40,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     
+    <!-- JSON-LD, site-wide. Service and FAQPage blocks are emitted per page
+         by src/components/JsonLd.tsx next to the content they describe. -->
     <!-- JSON-LD Organization Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": "https://www.simpliaspain.com/#organization",
       "name": "Simplia Spain",
       "alternateName": "SimpliaSpain",
       "description": "Chatbots inteligentes y agentes telefónicos IA para automatizar la atención al cliente en España",
       "url": "https://www.simpliaspain.com",
-      "logo": "https://www.simpliaspain.com/logo.png",
       "email": "info@simpliaspain.com",
       "telephone": "+34608445993",
       "address": {
@@ -76,64 +78,12 @@
     }
     </script>
     
-    <!-- JSON-LD Service Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Service",
-      "name": "Chatbots y Agentes Telefónicos IA",
-      "serviceType": "Automatización de Atención al Cliente",
-      "provider": {
-        "@type": "Organization",
-        "name": "Simplia Spain",
-        "url": "https://www.simpliaspain.com"
-      },
-      "areaServed": {
-        "@type": "Country",
-        "name": "España"
-      },
-      "description": "Automatización de atención al cliente con chatbots inteligentes en WhatsApp, Web, Telegram e Instagram, y agentes telefónicos con IA disponibles 24/7",
-      "offers": {
-        "@type": "Offer",
-        "availability": "https://schema.org/InStock",
-        "priceCurrency": "EUR"
-      }
-    }
-    </script>
-    
-    <!-- JSON-LD FAQ Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "¿Qué es un chatbot con IA?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Un chatbot con IA es un asistente virtual que utiliza inteligencia artificial para mantener conversaciones naturales con tus clientes en canales como WhatsApp, Telegram y tu página web, disponible 24/7."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "¿Cómo funciona un agente telefónico con IA?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Nuestros agentes telefónicos IA atienden llamadas automáticamente, capturan información del cliente, agendan citas y pueden transferir a agentes humanos cuando es necesario."
-          }
-        }
-      ]
-    }
-    </script>
-    
     <!-- JSON-LD LocalBusiness Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
       "name": "Simplia Spain",
-      "image": "https://www.simpliaspain.com/logo.png",
       "telephone": "+34608445993",
       "email": "info@simpliaspain.com",
       "url": "https://www.simpliaspain.com",

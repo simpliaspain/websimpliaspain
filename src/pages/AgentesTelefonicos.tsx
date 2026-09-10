@@ -24,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
+import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 
 // Phone demo transcript synced with trimmed audio (3 seconds removed from start)
 const phoneTranscript = [
@@ -174,6 +176,16 @@ export default function AgentesTelefonicos() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Seo titleKey="seo.agents.title" descriptionKey="seo.agents.description" path="/agentes-telefonicos" />
+      <JsonLd
+        data={{
+          "@type": "Service",
+          name: t("agents.badge"),
+          description: t("agents.heroDesc"),
+          url: `${SITE_URL}/agentes-telefonicos`,
+          provider: { "@id": ORGANIZATION_ID },
+          areaServed: { "@type": "Country", name: "España" },
+        }}
+      />
       <Navbar />
       <main>
         {/* Hero Section */}

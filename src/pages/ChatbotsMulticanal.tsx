@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
+import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
+import { SITE_URL } from "@/lib/site";
 
 // Chat demo messages with timing - realistic conversation flow
 // Chat demo messages - office rental sector
@@ -125,6 +127,16 @@ export default function ChatbotsMulticanal() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Seo titleKey="seo.chatbots.title" descriptionKey="seo.chatbots.description" path="/chatbots-multicanal" />
+      <JsonLd
+        data={{
+          "@type": "Service",
+          name: t("chatbots.badge"),
+          description: t("chatbots.heroDesc"),
+          url: `${SITE_URL}/chatbots-multicanal`,
+          provider: { "@id": ORGANIZATION_ID },
+          areaServed: { "@type": "Country", name: "España" },
+        }}
+      />
       <Navbar />
       <main>
         {/* Hero Section */}

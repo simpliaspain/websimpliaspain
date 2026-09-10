@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { JsonLd } from "@/components/JsonLd";
 
 export function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -36,6 +37,17 @@ export function FAQSection() {
 
   return (
     <section id="faq" className="py-20 md:py-32 relative bg-background">
+      {/* Same questions and answers as the accordion below, in JSON-LD. */}
+      <JsonLd
+        data={{
+          "@type": "FAQPage",
+          mainEntity: faqs.map((faq) => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: { "@type": "Answer", text: faq.answer },
+          })),
+        }}
+      />
       <div className="container">
         {/* Section Header */}
         <motion.div
