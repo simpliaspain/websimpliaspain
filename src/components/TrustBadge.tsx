@@ -27,7 +27,10 @@ const TrustBadge = forwardRef<HTMLElement, TrustBadgeProps>(
       <Comp
         ref={ref as React.Ref<never>}
         className={cn(
-          "group flex min-h-[4rem] w-full flex-1 items-center justify-center gap-3",
+          // Full width in the mobile stack; from sm up the badge is exactly as
+          // wide as its content, so it tracks the locale like the technology
+          // line next to it. The max-width is a safety bound, not the width.
+          "group flex min-h-[4rem] w-full items-center justify-center gap-3 sm:w-auto",
           "rounded-full border border-border bg-card px-5 py-3 text-center text-foreground shadow-sm",
           "transition-all hover:border-primary/30 hover:shadow-md motion-reduce:transition-none",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
