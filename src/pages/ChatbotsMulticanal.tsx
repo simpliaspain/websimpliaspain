@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { 
   MessageSquare, 
   Calendar, 
-  Star, 
   CheckCircle2, 
   Play,
   ArrowRight,
@@ -172,14 +171,6 @@ export default function ChatbotsMulticanal() {
                   </Button>
                 </div>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                    ))}
-                  </div>
-                  <span className="text-sm text-muted-foreground">{t('chatbots.excellentRating')}</span>
-                </div>
               </motion.div>
 
               {/* Demo Preview */}
