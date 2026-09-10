@@ -10,6 +10,7 @@ import { Send, CheckCircle2 } from "lucide-react";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 // Validation schema
 const contactSchema = z.object({
@@ -109,6 +110,7 @@ export default function Contacto() {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-background">
+        <Seo titleKey="seo.contact.title" descriptionKey="seo.contact.description" path="/contacto" />
         <Navbar />
         <main className="pt-32 pb-20">
           <div className="container">
@@ -190,6 +192,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
 
   return (
     <div className="min-h-screen bg-background">
+      <Seo titleKey="seo.contact.title" descriptionKey="seo.contact.description" path="/contacto" />
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container max-w-xl mx-auto px-4">

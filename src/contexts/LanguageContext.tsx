@@ -10,6 +10,20 @@ interface LanguageContextType {
 
 const translations: Record<Language, Record<string, string>> = {
   es: {
+    // SEO: <title> y meta description por ruta (src/components/Seo.tsx).
+    // Solo texto que ya existe en la web; la home conserva los de index.html.
+    'seo.home.title': 'Simplia Spain | Chatbots IA y Agentes Telefónicos 24/7 para Empresas',
+    'seo.home.description': 'Automatiza tu atención al cliente con chatbots inteligentes en WhatsApp, Web y Telegram. Agentes telefónicos IA disponibles 24/7. Más clientes, menos esfuerzo.',
+    'seo.chatbots.title': 'Agentes Multicanal (Chatbots IA) | Simplia Spain',
+    'seo.chatbots.description': 'Un solo agente con IA, lo que muchos conocen como chatbot, que opera en WhatsApp, Instagram, Telegram y tu web. Captura leads, resuelve dudas y agenda citas automáticamente.',
+    'seo.agents.title': 'Agentes Telefónicos IA | Simplia Spain',
+    'seo.agents.description': 'Agentes virtuales con IA que atienden tus llamadas 24/7, capturan información, agendan citas y transfieren cuando es necesario.',
+    'seo.contact.title': 'Contacto | Simplia Spain',
+    'seo.contact.description': 'Hablemos de tu proyecto. Completa el formulario y te contactaremos en menos de 24h.',
+    'seo.privacy.title': 'Política de Privacidad | Simplia Spain',
+    'seo.privacy.description': 'Política de privacidad de Simplia Spain: responsable del tratamiento, datos que recopilamos, finalidad y tus derechos.',
+    'seo.notFound.title': 'Página no encontrada | Simplia Spain',
+    'seo.notFound.description': 'La página que buscas no existe.',
     // Navbar
     'nav.home': 'Inicio',
     'nav.method': 'Método',
@@ -281,6 +295,19 @@ const translations: Record<Language, Record<string, string>> = {
     'chatbots.readyCardDesc': 'Agenda una demo gratuita y descubre cómo podemos ayudarte',
   },
   en: {
+    // SEO
+    'seo.home.title': 'Simplia Spain | AI Chatbots and 24/7 Phone Agents for Businesses',
+    'seo.home.description': 'Automate your customer service with smart chatbots on WhatsApp, Web and Telegram. AI phone agents available 24/7. More customers, less effort.',
+    'seo.chatbots.title': 'Multichannel AI Agents (AI Chatbots) | Simplia Spain',
+    'seo.chatbots.description': 'A single AI agent, what most people call a chatbot, that operates on WhatsApp, Instagram, Telegram and your website. Capture leads, resolve doubts and schedule appointments automatically.',
+    'seo.agents.title': 'AI Phone Agents | Simplia Spain',
+    'seo.agents.description': 'Virtual agents with AI that answer your calls 24/7, capture information, schedule appointments and transfer when necessary.',
+    'seo.contact.title': 'Contact | Simplia Spain',
+    'seo.contact.description': 'Let\'s talk about your project. Fill out the form and we\'ll contact you within 24h.',
+    'seo.privacy.title': 'Privacy Policy | Simplia Spain',
+    'seo.privacy.description': 'Simplia Spain privacy policy: data controller, the data we collect, its purpose and your rights.',
+    'seo.notFound.title': 'Page not found | Simplia Spain',
+    'seo.notFound.description': 'The page you are looking for does not exist.',
     // Navbar
     'nav.home': 'Home',
     'nav.method': 'Method',

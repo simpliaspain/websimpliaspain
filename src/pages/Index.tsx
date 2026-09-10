@@ -7,10 +7,12 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { LogoMarquee } from "@/components/LogoMarquee";
+import { Seo } from "@/components/Seo";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
+      <Seo titleKey="seo.home.title" descriptionKey="seo.home.description" path="/" />
       <Navbar />
       <main>
         <HeroSection />

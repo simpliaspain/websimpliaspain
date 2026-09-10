@@ -21,6 +21,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 // Chat demo messages with timing - realistic conversation flow
 // Chat demo messages - office rental sector
@@ -123,6 +124,7 @@ export default function ChatbotsMulticanal() {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo titleKey="seo.chatbots.title" descriptionKey="seo.chatbots.description" path="/chatbots-multicanal" />
       <Navbar />
       <main>
         {/* Hero Section */}

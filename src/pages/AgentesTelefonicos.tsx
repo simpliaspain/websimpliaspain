@@ -23,6 +23,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Seo } from "@/components/Seo";
 
 // Phone demo transcript synced with trimmed audio (3 seconds removed from start)
 const phoneTranscript = [
@@ -172,6 +173,7 @@ export default function AgentesTelefonicos() {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo titleKey="seo.agents.title" descriptionKey="seo.agents.description" path="/agentes-telefonicos" />
       <Navbar />
       <main>
         {/* Hero Section */}

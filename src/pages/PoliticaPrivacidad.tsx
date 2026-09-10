@@ -1,10 +1,18 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
+import { Seo } from "@/components/Seo";
+
+// Date the policy text was last changed (ISO). Update it by hand when the
+// policy changes. It used to be `new Date()`, i.e. "today" for every visitor,
+// which is not an update date and would also break hydration of the
+// prerendered page from the day after each build.
+const POLICY_UPDATED = "2026-07-16";
 
 export default function PoliticaPrivacidad() {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
+      <Seo titleKey="seo.privacy.title" descriptionKey="seo.privacy.description" path="/politica-privacidad" />
       <Navbar />
       <main className="pt-32 pb-20">
         <div className="container max-w-4xl mx-auto px-4">
@@ -19,7 +27,7 @@ export default function PoliticaPrivacidad() {
 
             <div className="prose prose-neutral dark:prose-invert max-w-none space-y-6 text-muted-foreground">
               <p className="text-lg">
-                Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}
+                Última actualización: {new Date(POLICY_UPDATED).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}
               </p>
 
               <section className="space-y-4">
