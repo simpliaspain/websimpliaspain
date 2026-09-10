@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -67,6 +67,8 @@ export function FAQSection() {
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
                 className={`w-full flex items-center justify-between p-5 bg-card border rounded-xl transition-all text-left group ${
                   openIndex === index 
                     ? "border-primary/30 shadow-sm" 
@@ -80,21 +82,26 @@ export function FAQSection() {
                   }`}
                 />
               </button>
-              <AnimatePresence>
-                {openIndex === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-5 pt-3 text-muted-foreground text-sm leading-relaxed">
-                      {faq.answer}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* The answer stays in the DOM while collapsed, so it is part of
+                  the prerendered HTML that crawlers read; only its height is
+                  animated. initial={false} makes the first render match the
+                  static markup: collapsed, no layout shift on hydration. */}
+              <motion.div
+                id={`faq-answer-${index}`}
+                initial={false}
+                animate={
+                  openIndex === index
+                    ? { height: "auto", opacity: 1 }
+                    : { height: 0, opacity: 0 }
+                }
+                transition={{ duration: 0.2 }}
+                aria-hidden={openIndex !== index}
+                className="overflow-hidden"
+              >
+                <div className="p-5 pt-3 text-muted-foreground text-sm leading-relaxed">
+                  {faq.answer}
+                </div>
+              </motion.div>
             </motion.div>
           ))}
         </div>
