@@ -18,6 +18,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history: the sitemap takes each page's <lastmod> from the
+          # last commit that touched its source. A shallow clone has one
+          # commit, so every page would carry the same date.
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4

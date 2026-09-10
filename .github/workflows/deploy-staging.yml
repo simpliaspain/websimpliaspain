@@ -20,6 +20,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history: the sitemap takes each page's <lastmod> from the
+          # last commit that touched its source. A shallow clone has one
+          # commit, so every page would carry the same date.
+          fetch-depth: 0
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -32,6 +37,19 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      # Staging is the only place that builds from a real checkout before the
+      # production workflow does, so it proves here what production's guard
+      # will demand: dist/CNAME byte-exact, LF, whatever the clone depth.
+      - name: Guard - dist/CNAME must be exactly www.simpliaspain.com (before it is stripped)
+        run: |
+          if ! grep -qx 'www.simpliaspain.com' dist/CNAME; then
+            echo "::error::dist/CNAME is not exactly 'www.simpliaspain.com' - production would refuse this build. Actual bytes:"
+            cat -A dist/CNAME
+            exit 1
+          fi
+          echo "CNAME guard (pre-strip) passed:"
+          cat -A dist/CNAME
 
       # Hard Rule 4: staging must never claim the custom domain, and must not
       # be indexed. Two repos serving www.simpliaspain.com would detach the
