@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import TrustBadge from "@/components/TrustBadge";
-import robertoProfile from "@/assets/roberto-profile.jpg";
+import robertoProfile from "@/assets/roberto-profile-2026.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 // Reused from the marquee below - no new assets. These four are the most
