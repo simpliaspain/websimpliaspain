@@ -1,14 +1,37 @@
+# Buscadores
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
 Allow: /
 
+# Previsualizaciones en redes sociales
 User-agent: Twitterbot
 Allow: /
 
 User-agent: facebookexternalhit
 Allow: /
 
+# Rastreadores de IA: permitidos explícitamente
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 User-agent: *
 Allow: /
+
+Sitemap: https://www.simpliaspain.com/sitemap.xml
