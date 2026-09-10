@@ -1,0 +1,23 @@
+{
+  "_client-Q30s6XMP.js": {
+    "file": "assets/client-Q30s6XMP.js",
+    "name": "client",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html"
+    ]
+  },
+  "index.html": {
+    "file": "assets/app-BXe6X_Ql.js",
+    "name": "app",
+    "src": "index.html",
+    "isEntry": true,
+    "dynamicImports": [
+      "_client-Q30s6XMP.js",
+      "_client-Q30s6XMP.js"
+    ],
+    "css": [
+      "assets/app-DMUodpfl.css"
+    ]
+  }
+}
