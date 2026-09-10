@@ -15,4 +15,19 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Build-time prerender (vite-react-ssg). GitHub Pages is static hosting, so
+  // every route is rendered to its own HTML file here; the client then
+  // hydrates it. Only the Spanish default is prerendered - see RootLayout.
+  ssgOptions: {
+    entry: "src/main.tsx",
+    // /route -> dist/route.html. GitHub Pages serves route.html on the
+    // extensionless URL with no redirect, so public URLs do not change.
+    dirStyle: "flat",
+    // No prettifying: reformatting the markup causes hydration mismatches.
+    formatting: "none",
+    // No critical-CSS inlining: it needs an extra optional dependency and
+    // rewrites the stylesheet link, which the deploy guards did not expect.
+    crittersOptions: false,
+    beastiesOptions: false,
+  },
 }));

@@ -295,6 +295,8 @@ function ModalMenu({ controller, navLinks, services }: ModeProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const prefersReducedMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -363,6 +365,9 @@ function ModalMenu({ controller, navLinks, services }: ModeProps) {
         exit: { opacity: 0, y: -8 },
         transition: { duration: 0.25, ease: "easeOut" as const },
       };
+
+  // No document during the build-time prerender, so nothing to portal into.
+  if (!mounted) return null;
 
   // The portal must wrap AnimatePresence, not the other way round: a portal is
   // not a valid React element, so AnimatePresence drops it and nothing renders.

@@ -21,12 +21,10 @@ const DROPDOWN_QUERY = "(hover: hover) and (pointer: fine)";
 const LG_QUERY = "(min-width: 1024px)";
 
 export function useMenuMode(): MenuMode {
-  const read = () =>
-    typeof window === "undefined"
-      ? false
-      : window.matchMedia(DROPDOWN_QUERY).matches && window.matchMedia(LG_QUERY).matches;
-
-  const [isDropdown, setIsDropdown] = useState(read);
+  // Starts as "modal" on every render path - the static HTML from the build
+  // and the browser's first render must match exactly for hydration - and
+  // switches to the real mode in an effect, before any interaction.
+  const [isDropdown, setIsDropdown] = useState(false);
 
   useEffect(() => {
     const pointer = window.matchMedia(DROPDOWN_QUERY);

@@ -56,6 +56,16 @@ async function isolate(page: Page) {
   );
 }
 
+/**
+ * The pages are prerendered, so `goto` resolves with the UI painted but not
+ * yet interactive. Wait for the hydration marker RootLayout sets, or the first
+ * click/event of a test can land on a dead page.
+ */
+async function open(page: Page, path: string) {
+  await page.goto(path);
+  await page.waitForSelector("html[data-hydrated]");
+}
+
 const overlayState = () => {
   const root = document.getElementById("root");
   const panel = document.getElementById("main-menu");
@@ -90,7 +100,7 @@ test.describe("dropdown mode", () => {
 
   test("opens on hover intent and stays non-modal", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
 
     await trigger.hover();
@@ -108,7 +118,7 @@ test.describe("dropdown mode", () => {
 
   test("closes after the grace period, and Escape restores focus", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
 
     await trigger.hover();
@@ -140,7 +150,7 @@ test.describe("dropdown mode", () => {
    */
   test("a click on a hover-opened menu confirms it instead of closing it", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
     const panel = page.locator("#main-menu");
 
@@ -167,7 +177,7 @@ test.describe("dropdown mode", () => {
    */
   test("plain click-to-open still toggles closed on the next click", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
     const panel = page.locator("#main-menu");
 
@@ -189,7 +199,7 @@ test.describe("modal mode", () => {
 
   test("PORTAL-1 / PORTAL-2: an open menu always has a visible dialog", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     await scrollTo(page, 500);
     await page.evaluate(clickVisibleTrigger);
     await expect(page.locator("#main-menu")).toBeVisible();
@@ -211,7 +221,7 @@ test.describe("modal mode", () => {
 
   test("traps focus and cleans up on Escape", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     await scrollTo(page, 500);
     await page.evaluate(clickVisibleTrigger);
     await expect(page.locator("#main-menu")).toBeVisible();
@@ -235,7 +245,7 @@ test.describe("modal mode", () => {
 
   test("LOCK-1: chat + menu share one reference-counted scroll lock", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
     await scrollTo(page, 500);
 
     // `inert` does not block programmatic events; the widget listens on window.
@@ -273,7 +283,7 @@ test.describe("guard integrity", () => {
 
   test("the PORTAL guards actually fire on the broken state", async ({ page }) => {
     await isolate(page);
-    await page.goto("/");
+    await open(page, "/");
 
     const healthy = await page.evaluate(overlayState);
     expect(healthy.triggerSaysOpen && healthy.dialogCount === 0).toBe(false);

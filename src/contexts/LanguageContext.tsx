@@ -554,8 +554,15 @@ const translations: Record<Language, Record<string, string>> = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('es');
+export function LanguageProvider({
+  children,
+  initialLanguage = 'es',
+}: {
+  children: ReactNode;
+  /** Language of the first render - and therefore of the prerendered HTML. */
+  initialLanguage?: Language;
+}) {
+  const [language, setLanguage] = useState<Language>(initialLanguage);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Load language from localStorage after mount
