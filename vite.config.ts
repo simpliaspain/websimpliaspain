@@ -44,7 +44,8 @@ export default defineConfig(({ mode }) => ({
     // the attribute gone the loader is never attached: no request, nothing to
     // go stale. Production builds still hydrate (the attribute only affects
     // render-vs-hydrate in development). tests/navigation.spec.ts pins this;
-    // upstream has no supported switch for it (vite-react-ssg 0.9.x).
+    // upstream has no supported switch for it (vite-react-ssg 0.9.x); asked
+    // for one in https://github.com/Daydreamer-riri/vite-react-ssg/issues/93.
     onPageRendered: (_route, html) => html.replace(' data-server-rendered="true"', ""),
     // Runs after every page has been written: one sitemap entry per page.
     onFinished: writeSitemap,
