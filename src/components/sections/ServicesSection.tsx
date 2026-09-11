@@ -66,7 +66,7 @@ export function ServicesSection() {
       bgColor: "bg-green-500/10",
       demoText: t('services.watchDemo'),
       link: "/chatbots-multicanal",
-      featured: true,
+      badge: "popular" as const,
       key: "Chatbots Multicanal",
     },
     {
@@ -78,7 +78,8 @@ export function ServicesSection() {
       bgColor: "bg-primary/10",
       demoText: t('services.listenDemo'),
       link: "/agentes-telefonicos",
-      featured: true,
+      // In beta: labelled as such, neutrally, rather than as a promotion.
+      badge: "beta" as const,
       key: "Agentes Telefónicos IA",
     },
   ];
@@ -235,14 +236,21 @@ export function ServicesSection() {
                 viewport={{ once: true }}
                 className="group bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
-                {/* Featured badge */}
-                {service.featured && (
-                  <div className="absolute top-4 right-4">
+                {/* Corner badge. "popular" is the brand-blue highlight; "beta"
+                    is deliberately neutral - card surface, hairline border,
+                    muted text (4.68:1 light / 7.74:1 dark) - so it reads as a
+                    status, not a promotion. Tokens only. */}
+                <div className="absolute top-4 right-4">
+                  {service.badge === "popular" ? (
                     <span className="px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
                       {t('services.popular')}
                     </span>
-                  </div>
-                )}
+                  ) : (
+                    <span className="px-3 py-1 text-xs font-medium bg-card text-muted-foreground border border-border rounded-full">
+                      {t('services.beta')}
+                    </span>
+                  )}
+                </div>
 
                 {/* Icon */}
                 <div className={`w-20 h-20 rounded-2xl ${service.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform`}>
