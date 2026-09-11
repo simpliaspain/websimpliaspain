@@ -40,6 +40,9 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.alreadyClient': '¿Ya eres cliente?',
     'nav.clientAccess': 'Acceso clientes',
     'nav.opensNewTab': '(abre en una nueva pestaña)',
+    // Press coverage strip (src/components/sections/PressSection.tsx)
+    'press.heading': 'Nos han entrevistado en',
+    'press.alsoOn': 'también en',
     
     // Services
     'service.chatbots': 'Agentes Multicanal',
@@ -325,6 +328,8 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.alreadyClient': 'Already a client?',
     'nav.clientAccess': 'Client login',
     'nav.opensNewTab': '(opens in a new tab)',
+    'press.heading': 'Featured in',
+    'press.alsoOn': 'also on',
     
     // Services
     'service.chatbots': 'Multichannel AI Agents',

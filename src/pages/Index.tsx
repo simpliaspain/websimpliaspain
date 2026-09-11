@@ -7,6 +7,7 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CTASection } from "@/components/sections/CTASection";
 import { LogoMarquee } from "@/components/LogoMarquee";
+import { PressSection } from "@/components/sections/PressSection";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
@@ -32,6 +33,8 @@ const Index = () => {
       <main>
         <HeroSection />
         <MethodSection />
+        {/* Third-party coverage sits above the tooling logos on purpose. */}
+        <PressSection />
         <LogoMarquee />
         <BenefitsSection />
         <ServicesSection />
