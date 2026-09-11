@@ -41,7 +41,10 @@ export function HeroSection() {
               until the bundle hydrated - LCP 3.8 s instead of 1.2 s on a
               throttled mobile. initial={false} renders the final state at once.
               Sections further down keep their scroll-in animations. */}
-          {/* Main Headline - Two lines with different sizes */}
+          {/* Display headline - the biggest thing on screen, but not the h1:
+              on its own it is a single word ("Clientes?"), which is what
+              crawlers were reading as the page heading. The h1 is the subtitle
+              below, which actually describes the page. Visuals unchanged. */}
           <motion.div
             initial={false}
             animate={{ opacity: 1, y: 0 }}
@@ -51,13 +54,15 @@ export function HeroSection() {
             <span className="text-4xl md:text-4xl lg:text-5xl font-medium text-foreground mb-1">
               {t('hero.wantMore')}
             </span>
-            <h1 className="text-7xl md:text-8xl lg:text-[8rem] xl:text-[10rem] font-bold leading-none">
+            <div className="text-7xl md:text-8xl lg:text-[8rem] xl:text-[10rem] font-bold leading-none">
               <span className="text-gradient italic pr-2">{t('hero.clients')}</span>
-            </h1>
+            </div>
           </motion.div>
 
-          {/* Subheadline - increased x1.5 */}
-          <motion.p
+          {/* Subheadline, and the page's h1 (see above). Tailwind's preflight
+              resets heading size/weight/margin, so the same utility classes
+              render it exactly as the <p> did. */}
+          <motion.h1
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -70,7 +75,7 @@ export function HeroSection() {
             {t('hero.subtitle1')} <span className="font-semibold text-foreground">{t('hero.subtitle2')}</span>{' '}
             <br className="hidden sm:inline" />
             {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
-          </motion.p>
+          </motion.h1>
 
           {/* The conversion CTA and the supporting technology line. They are no
               longer a matched pair, so no equal-height grid: the CTA keeps the
