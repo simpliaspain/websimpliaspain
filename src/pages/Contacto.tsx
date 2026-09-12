@@ -182,7 +182,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
 `
     );
 
-    window.location.href = `mailto:info@simpliaspain.es?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:info@simpliaspain.com?subject=${subject}&body=${body}`;
     
     toast({
       title: "¡Borrador creado!",
