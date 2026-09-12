@@ -70,17 +70,24 @@ export function PressSection() {
 
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           {/* Photo first in DOM: it leads on mobile and sits left on lg. Below
-              the fold on every viewport (the hero is min-h-screen), so lazy. */}
+              the fold on every viewport (the hero is min-h-screen), so lazy -
+              but Chromium's lazy lookahead still fetches it during the initial
+              load on phones, where it competed with CSS/JS for bandwidth and
+              cost ~150 ms of LCP on a throttled profile. fetchpriority=low
+              keeps it behind the critical resources, and the sizes value is
+              the real rendered width (container minus 2x24px padding), so a
+              390px@2x phone gets the 40 KB 720 file, not the 97 KB 1440 one. */}
           <figure className="m-0">
             <img
               src={photo720}
               srcSet={`${photo720} 720w, ${photo1440} 1440w`}
-              sizes="(min-width: 1024px) 592px, (min-width: 768px) 720px, 100vw"
+              sizes="(min-width: 1024px) 592px, (min-width: 768px) 720px, calc(100vw - 48px)"
               width={1440}
               height={810}
               alt={t("press.photoAlt")}
               loading="lazy"
               decoding="async"
+              fetchPriority="low"
               className="aspect-video w-full rounded-3xl border border-border object-cover"
             />
             <figcaption className="mt-3 text-sm text-muted-foreground">{t("press.caption")}</figcaption>
