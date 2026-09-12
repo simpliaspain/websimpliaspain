@@ -234,7 +234,7 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className="group flex flex-col bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
                 {/* Corner badge. "popular" is the brand-blue highlight; "beta"
                     is deliberately neutral - card surface, hairline border,
@@ -263,8 +263,11 @@ export function ServicesSection() {
                   {service.description}
                 </p>
 
-                {/* Badges */}
-                <div className="flex flex-wrap gap-2 mb-8">
+                {/* Badges. mt-auto anchors the pills + buttons block to the
+                    bottom of the card, so both cards' pill rows and button
+                    rows land on the same lines however long the description
+                    above is; the slack goes between description and pills. */}
+                <div className="mt-auto flex flex-wrap gap-2 mb-8">
                   {service.badges.map((badge) => (
                     <span
                       key={badge}
