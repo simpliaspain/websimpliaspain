@@ -10,8 +10,15 @@ import photo1440 from "@/assets/press/ondacero-entrevista-1440.jpg";
  * three items are described to crawlers in the Organization JSON-LD
  * (index.html, `subjectOf`); keep both in step.
  *
+ * Hierarchy: a supporting section. Heading one step below the primary
+ * section headings (text-3xl/4xl/5xl elsewhere), same vertical rhythm and
+ * the same max-w-5xl measure as the Benefits and Services grids. The
+ * outlet's headline leads the section full-width, then the photo and the
+ * list sit side by side from lg, tops aligned; below lg the photo comes
+ * first.
+ *
  * The photograph is used exactly as supplied (full frame, overlays intact),
- * exported at 720 and 1440 px wide for the ~600 px column it renders in.
+ * exported at 720 and 1440 px wide for the ~470 px column it renders in.
  */
 const YOUTUBE = "https://www.youtube.com/watch?v=wOunqxmnvKY";
 const ARTICLE =
@@ -19,18 +26,23 @@ const ARTICLE =
 const SPOTIFY = "https://open.spotify.com/episode/18D90WvJn5pAct1zdtcEHf";
 const IVOOX = "https://go.ivoox.com/rf/175866987";
 
+// One treatment for every outbound link in the section: same size, weight,
+// colour, icon and hit area, whether an item has one link or two.
 const linkClass =
-  "inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 -ml-2 font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none";
+  "inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 -ml-2 text-sm font-medium text-primary underline decoration-primary/30 underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none";
 
 function OutLink({ href, label, newTab }: { href: string; label: string; newTab: string }) {
   return (
     <a href={href} target="_blank" rel="noopener" className={linkClass}>
       {label}
-      <ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
       <span className="sr-only">{newTab}</span>
     </a>
   );
 }
+
+// The muted "medium · date" line and the photo caption share this style.
+const metaClass = "text-sm text-muted-foreground";
 
 export function PressSection() {
   const { t } = useLanguage();
@@ -48,7 +60,7 @@ export function PressSection() {
       links: [{ href: ARTICLE, label: t("press.action.read") }],
     },
     {
-      // One episode on two platforms: one item, two links.
+      // One episode on two platforms: one item, two links, same treatment.
       name: "esRadio",
       meta: t("press.medium.radio"),
       links: [
@@ -59,56 +71,60 @@ export function PressSection() {
   ];
 
   return (
-    <section aria-labelledby="press-heading" className="bg-background py-20 md:py-24">
+    <section aria-labelledby="press-heading" className="bg-background py-24 md:py-32">
       <div className="container">
-        <h2
-          id="press-heading"
-          className="mb-10 text-center text-3xl font-bold text-foreground md:mb-14 md:text-4xl"
-        >
-          {t("press.heading")}
-        </h2>
+        <div className="mx-auto max-w-5xl">
+          <h2
+            id="press-heading"
+            className="text-center text-2xl font-bold text-foreground md:text-3xl lg:text-4xl"
+          >
+            {t("press.heading")}
+          </h2>
 
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-          {/* Photo first in DOM: it leads on mobile and sits left on lg. Below
-              the fold on every viewport (the hero is min-h-screen), so lazy -
-              but Chromium's lazy lookahead still fetches it during the initial
-              load on phones, where it competed with CSS/JS for bandwidth and
-              cost ~150 ms of LCP on a throttled profile. fetchpriority=low
-              keeps it behind the critical resources, and the sizes value is
-              the real rendered width (container minus 2x24px padding), so a
-              390px@2x phone gets the 40 KB 720 file, not the 97 KB 1440 one. */}
-          <figure className="m-0">
-            <img
-              src={photo720}
-              srcSet={`${photo720} 720w, ${photo1440} 1440w`}
-              sizes="(min-width: 1024px) 592px, (min-width: 768px) 720px, calc(100vw - 48px)"
-              width={1440}
-              height={810}
-              alt={t("press.photoAlt")}
-              loading="lazy"
-              decoding="async"
-              fetchPriority="low"
-              className="aspect-video w-full rounded-3xl border border-border object-cover"
-            />
-            <figcaption className="mt-3 text-sm text-muted-foreground">{t("press.caption")}</figcaption>
-          </figure>
+          {/* The outlet's own headline leads the section, full measure, so the
+              strongest line is read first and the photo + list below read as
+              its evidence rather than as a column competing with a quote. */}
+          <blockquote className="mx-auto mt-6 max-w-3xl text-center">
+            <p className="text-xl font-semibold leading-snug text-foreground md:text-2xl">
+              &ldquo;{t("press.quote")}&rdquo;
+            </p>
+            <footer className={`mt-2 ${metaClass}`}>
+              <OutLink href={ARTICLE} label={t("press.quoteSource")} newTab={newTab} />
+            </footer>
+          </blockquote>
 
-          <div>
-            <blockquote className="border-l-4 border-primary/40 pl-5">
-              <p className="text-xl font-semibold leading-snug text-foreground md:text-2xl">
-                &ldquo;{t("press.quote")}&rdquo;
-              </p>
-              <footer className="mt-3 text-sm text-muted-foreground">
-                <OutLink href={ARTICLE} label={t("press.quoteSource")} newTab={newTab} />
-              </footer>
-            </blockquote>
+          <div className="mt-12 grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
+            {/* Photo first in DOM: it leads below lg and sits left from lg,
+                top-aligned with the list. Below the fold on every viewport, so
+                lazy + low priority; sizes is the real rendered width so phones
+                get the 720 file. */}
+            <figure className="m-0">
+              <img
+                src={photo720}
+                srcSet={`${photo720} 720w, ${photo1440} 1440w`}
+                sizes="(min-width: 1024px) 488px, (min-width: 768px) 720px, calc(100vw - 48px)"
+                width={1440}
+                height={810}
+                alt={t("press.photoAlt")}
+                loading="lazy"
+                decoding="async"
+                fetchPriority="low"
+                className="aspect-video w-full rounded-3xl border-2 border-border object-cover"
+              />
+              <figcaption className={`mt-3 ${metaClass}`}>{t("press.caption")}</figcaption>
+            </figure>
 
-            <ul className="mt-8 divide-y divide-border border-t border-border">
+            <ul className="divide-y divide-border border-y border-border">
               {items.map((item) => (
-                <li key={item.name} className="py-4">
-                  <p className="text-lg font-semibold text-foreground">{item.name}</p>
-                  <p className="text-sm text-muted-foreground">{item.meta}</p>
-                  <div className="mt-1 flex flex-wrap gap-x-4">
+                <li
+                  key={item.name}
+                  className="flex flex-col gap-1 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                >
+                  <div>
+                    <p className="text-lg font-semibold text-foreground">{item.name}</p>
+                    <p className={metaClass}>{item.meta}</p>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 sm:shrink-0 sm:justify-end">
                     {item.links.map((l) => (
                       <OutLink key={l.href} href={l.href} label={l.label} newTab={newTab} />
                     ))}
