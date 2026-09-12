@@ -128,6 +128,12 @@
       }
     }
     </script>
+    <!-- Cookieless analytics (Umami Cloud). data-domains restricts tracking to
+         the production host, so staging (simpliaspain.github.io) and localhost
+         send nothing. The tracker writes no cookies or storage; it only reads
+         localStorage "umami.disabled" as an opt-out. Disclosed in the privacy
+         policy under "Analítica web". -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="722465f2-89ac-4464-b8d0-afbeb7e7dce2" data-domains="www.simpliaspain.com"></script>
   </head>
 
   <body>

@@ -122,13 +122,43 @@ export default function PoliticaPrivacidad() {
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold text-foreground">9. Cookies</h2>
                 <p>
-                  Nuestra web utiliza cookies técnicas y analíticas para mejorar la experiencia de navegación. 
-                  Puedes configurar tu navegador para rechazar las cookies o ser informado cuando se envían.
+                  Este sitio web no utiliza cookies publicitarias, de seguimiento ni de
+                  elaboración de perfiles.
+                </p>
+                <p>
+                  Únicamente almacenamos en tu navegador tu preferencia de idioma, mediante
+                  almacenamiento local, para que el sitio se muestre en el idioma que elijas.
+                  Esta información no se transmite a ningún servidor ni permite identificarte, y
+                  está exenta del deber de consentimiento conforme al artículo 22.2 de la LSSI.
+                </p>
+                <p>
+                  Para la analítica de uso, consulta el apartado &quot;Analítica web&quot;.
                 </p>
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-foreground">10. Cambios en la Política</h2>
+                <h2 className="text-xl font-semibold text-foreground">10. Analítica web</h2>
+                <p>
+                  Utilizamos Umami Analytics para conocer de forma agregada cómo se usa este
+                  sitio: páginas visitadas, procedencia del tráfico, tipo de dispositivo y país
+                  aproximado.
+                </p>
+                <p>
+                  Umami no instala cookies ni ningún identificador persistente en tu
+                  dispositivo, no recopila datos personales identificables y no rastrea tu
+                  actividad en otros sitios web. Por este motivo no solicitamos consentimiento
+                  para su uso, conforme al artículo 22.2 de la LSSI.
+                </p>
+                <p>
+                  Los datos se almacenan en servidores situados en la Unión Europea y se
+                  conservan de forma agregada. La base jurídica de este tratamiento es nuestro
+                  interés legítimo en comprender y mejorar el funcionamiento del sitio
+                  (art. 6.1.f RGPD).
+                </p>
+              </section>
+
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold text-foreground">11. Cambios en la Política</h2>
                 <p>
                   Nos reservamos el derecho de modificar esta política de privacidad. Cualquier cambio será 
                   publicado en esta página con la fecha de actualización correspondiente.
@@ -136,7 +166,7 @@ export default function PoliticaPrivacidad() {
               </section>
 
               <section className="space-y-4">
-                <h2 className="text-xl font-semibold text-foreground">11. Contacto</h2>
+                <h2 className="text-xl font-semibold text-foreground">12. Contacto</h2>
                 <p>
                   Si tienes alguna pregunta sobre esta política de privacidad o sobre el tratamiento de tus datos, 
                   puedes contactarnos en:
