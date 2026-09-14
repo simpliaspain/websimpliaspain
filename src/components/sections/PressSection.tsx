@@ -2,6 +2,10 @@ import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import photo720 from "@/assets/press/ondacero-entrevista-720.jpg";
 import photo1440 from "@/assets/press/ondacero-entrevista-1440.jpg";
+import logoMn1x from "@/assets/press/logo-mn24h-1x.png";
+import logoMn2x from "@/assets/press/logo-mn24h-2x.png";
+import logoEs1x from "@/assets/press/logo-esradio-1x.png";
+import logoEs2x from "@/assets/press/logo-esradio-2x.png";
 import { Section } from "@/components/Section";
 
 /**
@@ -45,6 +49,19 @@ function OutLink({ href, label, newTab, muted = false, inline = false }: { href:
 // One treatment for the caption and the quote line: the marquee caption's.
 const captionClass = "text-sm font-medium text-muted-foreground";
 
+// One tile for every outlet visual: 96x54 on phones, 128x72 from md, same
+// radius and border, so the row reads as a set. The photograph fills its tile
+// (object-cover); the two logos are contained on a white surface with their
+// own padding, never stretched or cropped. All three are decorative: the
+// outlet name is the link text, so the accessible name of each link stays
+// that name and nothing else.
+const tileClass = "h-[54px] w-24 shrink-0 rounded-xl border border-border md:h-[72px] md:w-32";
+// bg-primary-foreground is white in both palettes: a logo's own white keeps
+// dark marks visible against the dark theme without inverting the mark.
+const logoTileClass = `${tileClass} flex items-center justify-center overflow-hidden bg-primary-foreground`;
+const lowPriority = { fetchpriority: "low" } as Record<string, string>;
+const imgCommon = { alt: "", loading: "lazy" as const, decoding: "async" as const, ...lowPriority };
+
 export function PressSection() {
   const { t } = useLanguage();
   const newTab = t("nav.opensNewTab");
@@ -60,11 +77,8 @@ export function PressSection() {
         </h2>
 
         <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
-          {/* The photograph documents the Onda Cero interview specifically, so
-              it lives inside that link as a thumbnail: evidence attached to the
-              appearance, not decoration for the section. 96px wide on phones,
-              128px from md; sizes matches so the 720 file is fetched, never
-              the 1440. */}
+          {/* Onda Cero: the interview photograph fills its tile. sizes matches
+              the tile so the 720 file is fetched, never the 1440. */}
           <li>
             <a href={YOUTUBE} target="_blank" rel="noopener" className={`${linkClass} gap-3 font-semibold text-foreground`}>
               <img
@@ -73,25 +87,59 @@ export function PressSection() {
                 sizes="(min-width: 768px) 128px, 96px"
                 width={1440}
                 height={810}
-                alt={t("press.photoAlt")}
-                loading="lazy"
-                decoding="async"
-                {...{ fetchpriority: "low" } as Record<string, string>}
-                className="aspect-video w-24 shrink-0 rounded-xl border border-border object-cover md:w-32"
+                {...imgCommon}
+                className={`${tileClass} object-cover`}
               />
               <span>Onda Cero Madrid Norte</span>
               <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
               <span className="sr-only">{newTab}</span>
             </a>
           </li>
+          {/* Madrid Norte 24h: a square mark, contained at 78% of the tile
+              height (56 of 72px). */}
           <li>
-            <OutLink href={ARTICLE} label="Madrid Norte 24 horas" newTab={newTab} />
+            <a href={ARTICLE} target="_blank" rel="noopener" className={`${linkClass} gap-3 font-semibold text-foreground`}>
+              <span className={logoTileClass}>
+                <img
+                  src={logoMn1x}
+                  srcSet={`${logoMn1x} 1x, ${logoMn2x} 2x`}
+                  width={54}
+                  height={56}
+                  {...imgCommon}
+                  className="h-[42px] w-auto md:h-14"
+                />
+              </span>
+              <span>Madrid Norte 24 horas</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <span className="sr-only">{newTab}</span>
+            </a>
           </li>
-          {/* One episode on two platforms: one item, two links. */}
+          {/* esRadio: a wide, short mark. Contained by width at 78% of the
+              tile (100 of 128px) rather than by height, so its ink area is
+              about the same as the square mark's and the two read at one
+              weight. One episode on two platforms: one item, two links; the
+              logo goes with the primary (Spotify) link. */}
           <li className="flex flex-wrap items-center justify-center gap-x-1">
-            <OutLink href={SPOTIFY} label="esRadio" newTab={newTab} />
-            <span aria-hidden="true" className="text-muted-foreground">·</span>
-            <OutLink href={IVOOX} label="iVoox" newTab={newTab} muted />
+            <a href={SPOTIFY} target="_blank" rel="noopener" className={`${linkClass} gap-3 font-semibold text-foreground`}>
+              <span className={logoTileClass}>
+                <img
+                  src={logoEs1x}
+                  srcSet={`${logoEs1x} 1x, ${logoEs2x} 2x`}
+                  width={100}
+                  height={33}
+                  {...imgCommon}
+                  className="h-auto w-[75px] md:w-[100px]"
+                />
+              </span>
+              <span>esRadio</span>
+              <ExternalLink className="h-3.5 w-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <span className="sr-only">{newTab}</span>
+            </a>
+            {/* Kept together so the separator never ends a line on phones. */}
+            <span className="inline-flex items-center gap-x-1">
+              <span aria-hidden="true" className="text-muted-foreground">·</span>
+              <OutLink href={IVOOX} label="iVoox" newTab={newTab} muted />
+            </span>
           </li>
         </ul>
 
