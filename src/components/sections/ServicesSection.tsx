@@ -10,6 +10,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import waDemo400 from "@/assets/services/whatsapp-demo-400.jpg";
+import waDemo800 from "@/assets/services/whatsapp-demo-800.jpg";
 import { Section } from "@/components/Section";
 
 // Chat demo messages - office rental sector
@@ -70,6 +72,9 @@ export function ServicesSection() {
       badge: "popular" as const,
       key: "Chatbots Multicanal",
       listed: true,
+      // Client-authorised screenshot of a real WhatsApp conversation with the
+      // agent (this image only; the client is not named anywhere in text).
+      visual: { src: waDemo400, srcSet: `${waDemo400} 400w, ${waDemo800} 800w`, altKey: "services.chatbotsVisualAlt" },
     },
     {
       // Not on sale yet: kept here (and its demo dialog below) so it can be
@@ -86,9 +91,14 @@ export function ServicesSection() {
       badge: "beta" as const,
       key: "Agentes Telefónicos IA",
       listed: false,
+      visual: null,
     },
   ];
   const listedServices = services.filter((s) => s.listed);
+  // A lone card takes the full measure so its visual can sit beside the copy;
+  // with two or more cards each takes column width and the visual stacks on
+  // top, so button rows still land on one line.
+  const lone = listedServices.length === 1;
 
   // Chat demo animation
   useEffect(() => {
@@ -242,23 +252,36 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group flex w-full flex-col md:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className={`group flex w-full flex-col bg-card border-2 border-border rounded-3xl hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden ${
+                  lone ? "md:grid md:grid-cols-[2fr_3fr]" : "md:w-[calc(50%-1rem)]"
+                }`}
               >
-                {/* Corner badge. "popular" is the brand-blue highlight; "beta"
-                    is deliberately neutral - card surface, hairline border,
-                    muted text (4.68:1 light / 7.74:1 dark) - so it reads as a
-                    status, not a promotion. Tokens only. */}
-                <div className="absolute top-4 right-4">
-                  {service.badge === "popular" ? (
-                    <span className="px-3 py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
-                      {t('services.popular')}
-                    </span>
-                  ) : (
-                    <span className="px-3 py-1 text-xs font-medium bg-card text-muted-foreground border border-border rounded-full">
-                      {t('services.beta')}
-                    </span>
-                  )}
-                </div>
+                {/* Corner badge: not rendered while a single service is shown
+                    - "popular" relative to nothing is noise. The model keeps
+                    `badge` and the i18n keys so it can return with a second
+                    card: service.badge === "popular" / "beta". */}
+
+                {/* Visual bleeds to the card edge (the card clips it with its
+                    own radius) so image and copy read as one card, not two
+                    halves. Far below the fold, so lazy + low priority; sizes is
+                    the real rendered width. Uncropped file; object-cover only
+                    fills the column height beside the copy. */}
+                {service.visual && (
+                  <img
+                    src={service.visual.src}
+                    srcSet={service.visual.srcSet}
+                    sizes={lone ? "(min-width: 1024px) 408px, (min-width: 768px) 286px, calc(100vw - 52px)" : "(min-width: 768px) calc(50vw - 40px), calc(100vw - 52px)"}
+                    width={800}
+                    height={450}
+                    alt={t(service.visual.altKey)}
+                    loading="lazy"
+                    decoding="async"
+                    fetchPriority="low"
+                    className={`w-full object-cover ${lone ? "aspect-video md:aspect-auto md:h-full" : "aspect-video"}`}
+                  />
+                )}
+
+                <div className="flex flex-1 flex-col p-8">
 
                 {/* Icon */}
                 <div className={`w-20 h-20 rounded-2xl ${service.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform`}>
@@ -302,6 +325,7 @@ export function ServicesSection() {
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
+                </div>
                 </div>
               </motion.div>
             ))}
