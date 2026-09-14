@@ -33,12 +33,14 @@ const Index = () => {
       <main>
         <HeroSection />
         <MethodSection />
-        {/* Third-party coverage sits above the tooling logos on purpose. */}
-        <PressSection />
-        <LogoMarquee />
         <BenefitsSection />
         <ServicesSection />
         <FAQSection hidePhoneAgents />
+        {/* Press coverage and the tooling logos are a pair (the marquee's
+            `tight` spacing belongs to the press section above it). They sit
+            here as final reinforcement right before the closing CTA. */}
+        <PressSection />
+        <LogoMarquee />
         <CTASection />
       </main>
       <Footer />
