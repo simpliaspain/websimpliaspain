@@ -3,6 +3,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 
 const Dialog = DialogPrimitive.Root;
 
@@ -27,10 +28,27 @@ const DialogOverlay = React.forwardRef<
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
+// Holds the site's shared, reference-counted body scroll lock for exactly as
+// long as it is mounted. It is rendered *inside* DialogPrimitive.Content,
+// which Radix only mounts while the dialog is open (and through its exit
+// animation) - the DialogContent wrapper itself is always in the tree, so an
+// effect there would lock the page on load. Counting against the same lock
+// the menu and the chat widget use means closing one overlay never releases
+// another's lock. Radix's own RemoveScroll stays for wheel/touch blocking;
+// it never touches body inline styles.
+function BodyScrollLockWhileOpen() {
+  React.useEffect(() => {
+    lockBodyScroll();
+    return unlockBodyScroll;
+  }, []);
+  return null;
+}
+
 const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => {
+  return (
   <DialogPortal>
     <DialogOverlay />
     <DialogPrimitive.Content
@@ -41,6 +59,7 @@ const DialogContent = React.forwardRef<
       )}
       {...props}
     >
+      <BodyScrollLockWhileOpen />
       {children}
       <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity data-[state=open]:bg-accent data-[state=open]:text-muted-foreground hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none">
         <X className="h-4 w-4" />
@@ -48,7 +67,8 @@ const DialogContent = React.forwardRef<
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
-));
+  );
+});
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (

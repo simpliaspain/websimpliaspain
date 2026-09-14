@@ -50,6 +50,14 @@ const transcriptTimestamps = [0, 8, 17, 31, 35, 51, 59, 81, 95, 105, 114];
 export function ServicesSection() {
   const { t } = useLanguage();
   const [demoOpen, setDemoOpen] = useState<string | null>(null);
+  // The button that opened the demo. The dialogs are not opened through a
+  // Radix Trigger, so Radix cannot know where to send focus on close; we
+  // remember it and hand it back in onCloseAutoFocus.
+  const demoTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const returnFocusToTrigger = (event: Event) => {
+    event.preventDefault();
+    demoTriggerRef.current?.focus();
+  };
   const [chatVisibleMessages, setChatVisibleMessages] = useState<number>(0);
   const [userInput, setUserInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -96,38 +104,45 @@ export function ServicesSection() {
   ];
   const listedServices = services.filter((s) => s.listed);
 
-  // Chat demo animation
+  // Chat demo animation. `demoOpen` holds the service's stable `key`, never
+  // its translated title - the title is what the button used to send, and
+  // it stopped matching the moment the service was renamed (and never
+  // matched in English). Every pending timer is cleared on close so a
+  // reopened demo starts clean instead of racing the previous run.
   useEffect(() => {
-    if (demoOpen === "Chatbots Multicanal") {
-      setChatVisibleMessages(0);
-      let messageIndex = 0;
-      
-      const showNextMessage = () => {
-        if (messageIndex < chatMessages.length) {
-          const currentMessage = chatMessages[messageIndex];
-          const nextMessage = chatMessages[messageIndex + 1];
-          
-          setTimeout(() => {
-            // Show typing indicator before bot messages
-            if (currentMessage.type === "bot") {
-              setIsTyping(true);
-              setTimeout(() => {
-                setIsTyping(false);
-                setChatVisibleMessages(prev => prev + 1);
-                messageIndex++;
-                showNextMessage();
-              }, 800);
-            } else {
-              setChatVisibleMessages(prev => prev + 1);
-              messageIndex++;
-              showNextMessage();
-            }
-          }, messageIndex === 0 ? 500 : currentMessage.delay - (chatMessages[messageIndex - 1]?.delay || 0));
+    if (demoOpen !== "Chatbots Multicanal") return;
+    setChatVisibleMessages(0);
+    setIsTyping(false);
+    const timers: number[] = [];
+    let messageIndex = 0;
+
+    const showNextMessage = () => {
+      if (messageIndex >= chatMessages.length) return;
+      const currentMessage = chatMessages[messageIndex];
+      const wait = messageIndex === 0 ? 500 : currentMessage.delay - (chatMessages[messageIndex - 1]?.delay || 0);
+      timers.push(window.setTimeout(() => {
+        // Show typing indicator before bot messages
+        if (currentMessage.type === "bot") {
+          setIsTyping(true);
+          timers.push(window.setTimeout(() => {
+            setIsTyping(false);
+            setChatVisibleMessages(prev => prev + 1);
+            messageIndex++;
+            showNextMessage();
+          }, 800));
+        } else {
+          setChatVisibleMessages(prev => prev + 1);
+          messageIndex++;
+          showNextMessage();
         }
-      };
-      
-      showNextMessage();
-    }
+      }, wait));
+    };
+
+    showNextMessage();
+    return () => {
+      timers.forEach((id) => window.clearTimeout(id));
+      setIsTyping(false);
+    };
   }, [demoOpen]);
 
   // Scroll to bottom of chat
@@ -163,25 +178,15 @@ export function ServicesSection() {
     }
   }, [callTime, isPlaying, currentTranscriptIndex]);
 
-  // Reset phone demo
+  // Reset phone demo. No autoplay: audio with sound starts only from the
+  // visible play button. Closing pauses and rewinds.
   useEffect(() => {
     if (demoOpen === "Agentes Telefónicos IA") {
       setCallTime(0);
       setCurrentTranscriptIndex(0);
-      // Start audio after a brief moment
-      setTimeout(() => {
-        if (audioRef.current) {
-          audioRef.current.currentTime = 0;
-          audioRef.current.play().then(() => {
-            setIsPlaying(true);
-          }).catch(err => {
-            console.log("Audio autoplay blocked:", err);
-            setIsPlaying(false);
-          });
-        }
-      }, 300);
+      if (audioRef.current) audioRef.current.currentTime = 0;
+      setIsPlaying(false);
     } else {
-      // Cleanup when closing
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
@@ -310,7 +315,10 @@ export function ServicesSection() {
                   <Button 
                     variant="outline" 
                     className="flex-1 group/btn border-primary/30 hover:bg-primary/10"
-                    onClick={() => setDemoOpen(service.title)}
+                    onClick={(event) => {
+                      demoTriggerRef.current = event.currentTarget;
+                      setDemoOpen(service.key);
+                    }}
                   >
                     <Play className="w-4 h-4 mr-2 text-primary" />
                     {service.demoText}
@@ -331,7 +339,8 @@ export function ServicesSection() {
 
       {/* Chatbot Demo Dialog - Interactive */}
       <Dialog open={demoOpen === "Chatbots Multicanal"} onOpenChange={() => setDemoOpen(null)}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden" aria-describedby={undefined} onCloseAutoFocus={returnFocusToTrigger}>
+          <DialogTitle className="sr-only">{t('services.chatbotsTitle')} - {t('services.watchDemo')}</DialogTitle>
           <div className="bg-gradient-to-b from-green-500 to-green-600 p-4">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
@@ -422,7 +431,8 @@ export function ServicesSection() {
 
       {/* Phone Agent Demo Dialog - Real Audio */}
       <Dialog open={demoOpen === "Agentes Telefónicos IA"} onOpenChange={() => setDemoOpen(null)}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden" aria-describedby={undefined} onCloseAutoFocus={returnFocusToTrigger}>
+          <DialogTitle className="sr-only">{t('services.agentsTitle')} - {t('services.listenDemo')}</DialogTitle>
           {/* Hidden audio element */}
           <audio 
             ref={audioRef} 
@@ -538,6 +548,7 @@ export function ServicesSection() {
                 variant="outline" 
                 className="rounded-full h-12 w-12"
                 onClick={togglePlayPause}
+                aria-label={isPlaying ? t('demo.pause') : t('demo.play')}
               >
                 {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
               </Button>

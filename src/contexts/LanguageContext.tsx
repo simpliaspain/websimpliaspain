@@ -227,6 +227,8 @@ const translations: Record<Language, Record<string, string>> = {
     'demo.agent': 'Agente Simplia',
     'demo.client': 'Cliente',
     'demo.online': 'En línea',
+    'demo.play': 'Reproducir la demo',
+    'demo.pause': 'Pausar la demo',
     
     // Benefits section (pages)
     'benefits.sectionBadge': 'Beneficios',
@@ -525,6 +527,8 @@ const translations: Record<Language, Record<string, string>> = {
     'demo.agent': 'Simplia Agent',
     'demo.client': 'Client',
     'demo.online': 'Online',
+    'demo.play': 'Play the demo',
+    'demo.pause': 'Pause the demo',
     
     // Benefits section (pages)
     'benefits.sectionBadge': 'Benefits',
