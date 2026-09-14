@@ -76,7 +76,7 @@ export function PressSection() {
                 alt={t("press.photoAlt")}
                 loading="lazy"
                 decoding="async"
-                fetchPriority="low"
+                {...{ fetchpriority: "low" } as Record<string, string>}
                 className="aspect-video w-24 shrink-0 rounded-xl border border-border object-cover md:w-32"
               />
               <span>Onda Cero Madrid Norte</span>

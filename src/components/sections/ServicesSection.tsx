@@ -103,6 +103,9 @@ export function ServicesSection() {
     },
   ];
   const listedServices = services.filter((s) => s.listed);
+  // React 18 does not know the camelCase prop (it warned at build time); the
+  // DOM attribute is lowercase. Spread so the TS types do not object.
+  const lowFetchPriority = { fetchpriority: "low" } as Record<string, string>;
 
   // Chat demo animation. `demoOpen` holds the service's stable `key`, never
   // its translated title - the title is what the button used to send, and
@@ -244,8 +247,36 @@ export function ServicesSection() {
 
           {/* Services grid. Flex-wrap rather than a 2-col grid so a single
               listed card sits centred at column width instead of orphaned in
-              the left half; two cards fill the row exactly as before. */}
+              the left half; two cards fill the row exactly as before.
+
+              The conversation photograph is a sibling block at the same
+              column width as the cards, before them: on md+ it sits to the
+              left of the (single) card as its pair; below md it stacks on top.
+              Side-by-side *inside* a half-width card is impossible (the copy
+              column's minimum content leaves 0-131px for an image), so the
+              image lives here. With two listed cards this row no longer works
+              as [image][card][card] - the visual belongs to the multichannel
+              service and would push the second card to a new row. */}
           <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+            {listedServices.map((service) => service.visual && (
+              <figure
+                key={`${service.key}-visual`}
+                className="m-0 w-full md:w-[calc(50%-1rem)] self-center"
+              >
+                <img
+                  src={service.visual.src}
+                  srcSet={service.visual.srcSet}
+                  sizes="(min-width: 1280px) 492px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 48px)"
+                  width={800}
+                  height={450}
+                  alt={t(service.visual.altKey)}
+                  loading="lazy"
+                  decoding="async"
+                  {...lowFetchPriority}
+                  className="aspect-video w-full rounded-3xl border-2 border-border object-cover"
+                />
+              </figure>
+            ))}
             {listedServices.map((service, index) => (
               <motion.div
                 key={service.title}
@@ -253,36 +284,12 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group flex w-full flex-col md:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className="group flex w-full flex-col md:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
                 {/* Corner badge: not rendered while a single service is shown
                     - "popular" relative to nothing is noise. The model keeps
                     `badge` and the i18n keys so it can return with a second
                     card: service.badge === "popular" / "beta". */}
-
-                {/* Visual on top, bleeding to the card's rounded edge (the card
-                    clips it) so image and copy read as one card. Stacked at
-                    every width on purpose: at half-column width the copy
-                    column's minimum (buttons row + 4 pills) is ~300-340px, so a
-                    side-by-side image collapsed to 0-130px when measured.
-                    Far below the fold, so lazy + low priority; sizes is the
-                    real rendered card width. Uncropped 16:9 file. */}
-                {service.visual && (
-                  <img
-                    src={service.visual.src}
-                    srcSet={service.visual.srcSet}
-                    sizes="(min-width: 1280px) 492px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 52px)"
-                    width={800}
-                    height={450}
-                    alt={t(service.visual.altKey)}
-                    loading="lazy"
-                    decoding="async"
-                    fetchPriority="low"
-                    className="aspect-video w-full object-cover"
-                  />
-                )}
-
-                <div className="flex flex-1 flex-col p-8">
 
                 {/* Icon */}
                 <div className={`w-20 h-20 rounded-2xl ${service.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform`}>
@@ -329,7 +336,6 @@ export function ServicesSection() {
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Link>
                   </Button>
-                </div>
                 </div>
               </motion.div>
             ))}
