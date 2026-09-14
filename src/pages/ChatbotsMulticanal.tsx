@@ -167,7 +167,7 @@ export default function ChatbotsMulticanal() {
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <a 
-                    href="https://calendly.com/simpliaspain/30min"
+                    href="https://calendly.com/simpliaspain/15min"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

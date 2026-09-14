@@ -94,7 +94,7 @@ export function HeroSection() {
             {/* Strategy call - opens Calendly. Unchanged. */}
             <TrustBadge asChild>
               <a
-                href="https://calendly.com/simpliaspain/30min"
+                href="https://calendly.com/simpliaspain/15min"
                 target="_blank"
                 rel="noopener noreferrer"
               >
