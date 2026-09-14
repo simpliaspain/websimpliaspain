@@ -115,7 +115,7 @@ export default function Contacto() {
         <main className="pt-32 pb-20">
           <div className="container">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={false}
               animate={{ opacity: 1, scale: 1 }}
               className="max-w-lg mx-auto text-center"
             >
@@ -196,8 +196,10 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
       <Navbar />
       <main className="pt-28 pb-16">
         <div className="container max-w-xl mx-auto px-4">
+          {/* No entrance fade: the page is prerendered and this block holds the
+              LCP text, which sat at opacity 0 until hydration (LCP ~2.4s). */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="text-center mb-8"
@@ -211,7 +213,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
           </motion.div>
 
           <motion.form
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             onSubmit={handleSubmit}

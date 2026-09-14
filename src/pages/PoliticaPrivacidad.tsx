@@ -16,8 +16,10 @@ export default function PoliticaPrivacidad() {
       <Navbar />
       <main className="pt-32 pb-20">
         <div className="container max-w-4xl mx-auto px-4">
+          {/* No entrance fade: the page is prerendered and this block holds the
+              LCP text, which sat at opacity 0 until hydration (LCP ~2.4s). */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
