@@ -1,6 +1,6 @@
 {
-  "_client-jCVjyHuY.js": {
-    "file": "assets/client-jCVjyHuY.js",
+  "_client-EHWVKtpT.js": {
+    "file": "assets/client-EHWVKtpT.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,16 +8,43 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-D73lIXO4.js",
+    "file": "assets/app-DVdOxx8p.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-jCVjyHuY.js",
-      "_client-jCVjyHuY.js"
+      "_client-EHWVKtpT.js",
+      "_client-EHWVKtpT.js"
     ],
     "css": [
-      "assets/app-BDl_f18n.css"
+      "assets/app-Djr1zK6L.css"
+    ],
+    "assets": [
+      "assets/whatsapp-demo-400-B_kmVO9T.jpg",
+      "assets/whatsapp-demo-800-DwxIlXuu.jpg",
+      "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
+      "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
+      "assets/logo-mn24h-2x-M8oDfTNa.png"
     ]
+  },
+  "src/assets/press/logo-mn24h-2x.png": {
+    "file": "assets/logo-mn24h-2x-M8oDfTNa.png",
+    "src": "src/assets/press/logo-mn24h-2x.png"
+  },
+  "src/assets/press/ondacero-entrevista-1440.jpg": {
+    "file": "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
+    "src": "src/assets/press/ondacero-entrevista-1440.jpg"
+  },
+  "src/assets/press/ondacero-entrevista-720.jpg": {
+    "file": "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
+    "src": "src/assets/press/ondacero-entrevista-720.jpg"
+  },
+  "src/assets/services/whatsapp-demo-400.jpg": {
+    "file": "assets/whatsapp-demo-400-B_kmVO9T.jpg",
+    "src": "src/assets/services/whatsapp-demo-400.jpg"
+  },
+  "src/assets/services/whatsapp-demo-800.jpg": {
+    "file": "assets/whatsapp-demo-800-DwxIlXuu.jpg",
+    "src": "src/assets/services/whatsapp-demo-800.jpg"
   }
 }
