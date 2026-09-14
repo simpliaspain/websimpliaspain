@@ -9,6 +9,7 @@ import openaiLogo from "@/assets/logos/openai.svg";
 import metaLogo from "@/assets/logos/meta.svg";
 import microsoftLogo from "@/assets/logos/microsoft.svg";
 import googleLogo from "@/assets/logos/google.svg";
+import { Section } from "@/components/Section";
 
 const heroLogos = [
   { name: "OpenAI", logo: openaiLogo },
@@ -30,7 +31,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center pt-20 overflow-hidden bg-gradient-hero">
+    <Section variant="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-gradient-hero">
       {/* Decorative blobs */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-primary/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -144,6 +145,6 @@ export function HeroSection() {
 
       {/* Bottom decorative gradient */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
-    </section>
+    </Section>
   );
 }

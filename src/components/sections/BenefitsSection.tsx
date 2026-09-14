@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { X, Check, Award, ShieldCheck, Users, Mic, Clock, Zap, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Section } from "@/components/Section";
 
 export function BenefitsSection() {
   const { t } = useLanguage();
@@ -26,7 +27,7 @@ export function BenefitsSection() {
   ];
 
   return (
-    <section id="beneficios" className="py-24 md:py-32 relative overflow-hidden">
+    <Section variant="default" id="beneficios" className="relative overflow-hidden">
       {/* Smooth gradient background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary/40 to-background" />
       
@@ -127,6 +128,6 @@ export function BenefitsSection() {
           </Link>
         </motion.div>
       </div>
-    </section>
+    </Section>
   );
 }

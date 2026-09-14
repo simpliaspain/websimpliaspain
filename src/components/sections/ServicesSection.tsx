@@ -10,6 +10,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Section } from "@/components/Section";
 
 // Chat demo messages - office rental sector
 const chatMessages = [
@@ -209,7 +210,7 @@ export function ServicesSection() {
 
   return (
     <>
-      <section id="servicios" className="py-24 md:py-32 relative bg-background">
+      <Section variant="default" id="servicios" className="relative bg-background">
         <div className="container">
           {/* Section Header */}
           <motion.div
@@ -306,7 +307,7 @@ export function ServicesSection() {
             ))}
           </div>
         </div>
-      </section>
+      </Section>
 
       {/* Chatbot Demo Dialog - Interactive */}
       <Dialog open={demoOpen === "Chatbots Multicanal"} onOpenChange={() => setDemoOpen(null)}>

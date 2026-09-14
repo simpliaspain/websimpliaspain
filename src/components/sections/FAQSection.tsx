@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { JsonLd } from "@/components/JsonLd";
+import { Section } from "@/components/Section";
 
 /**
  * `hidePhoneAgents` drops the phone-agent question (faq.q2) - and, because the
@@ -45,7 +46,7 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
   ];
 
   return (
-    <section id="faq" className="py-20 md:py-32 relative bg-background">
+    <Section variant="default" id="faq" className="relative bg-background">
       {/* Same questions and answers as the accordion below, in JSON-LD. */}
       <JsonLd
         data={{
@@ -127,6 +128,6 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

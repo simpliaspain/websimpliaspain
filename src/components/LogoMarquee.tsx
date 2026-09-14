@@ -24,6 +24,7 @@ import anthropicLogo from "@/assets/logos/anthropic.svg";
 import hostingerLogo from "@/assets/logos/hostinger.svg";
 import perplexityLogo from "@/assets/logos/perplexity.svg";
 import apolloLogo from "@/assets/logos/apollo.svg";
+import { Section } from "@/components/Section";
 
 interface Partner {
   name: string;
@@ -60,7 +61,7 @@ export function LogoMarquee() {
   const [paused, setPaused] = useState(false);
 
   return (
-    <section id="partners" className="py-16 bg-background overflow-hidden">
+    <Section variant="tight" id="partners" className="bg-background overflow-hidden">
       <div className="container mb-8">
         <p className="text-center text-sm font-medium text-muted-foreground">
           {t('partners.title')}
@@ -120,6 +121,6 @@ export function LogoMarquee() {
           })}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

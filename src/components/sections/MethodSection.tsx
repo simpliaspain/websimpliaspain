@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Target, Headphones, CreditCard, Sparkles, Users, CheckCircle2, DollarSign } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Section } from "@/components/Section";
 
 export function MethodSection() {
   const { t } = useLanguage();
@@ -39,7 +40,7 @@ export function MethodSection() {
   ];
 
   return (
-    <section id="metodo" className="py-24 md:py-32 relative bg-background">
+    <Section variant="default" id="metodo" className="relative bg-background">
       <div className="container">
         {/* Section Header */}
         <motion.div
@@ -119,6 +120,6 @@ export function MethodSection() {
           ))}
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

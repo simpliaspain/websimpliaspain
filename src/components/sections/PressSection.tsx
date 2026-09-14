@@ -2,6 +2,7 @@ import { ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import photo720 from "@/assets/press/ondacero-entrevista-720.jpg";
 import photo1440 from "@/assets/press/ondacero-entrevista-1440.jpg";
+import { Section } from "@/components/Section";
 
 /**
  * Third-party coverage, verified links only. Outlet names are proper nouns and
@@ -71,7 +72,7 @@ export function PressSection() {
   ];
 
   return (
-    <section aria-labelledby="press-heading" className="bg-background py-24 md:py-32">
+    <Section variant="default" aria-labelledby="press-heading" className="bg-background">
       <div className="container">
         <div className="mx-auto max-w-5xl">
           {/* Still the section's h2 for the outline and assistive tech, but
@@ -141,6 +142,6 @@ export function PressSection() {
           </div>
         </div>
       </div>
-    </section>
+    </Section>
   );
 }

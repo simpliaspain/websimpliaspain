@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Section } from "@/components/Section";
 
 export function CTASection() {
   const { t } = useLanguage();
   
   return (
-    <section id="contacto" className="py-24 md:py-32 relative overflow-hidden">
+    <Section variant="default" id="contacto" className="relative overflow-hidden">
       {/* Smooth gradient background that blends with surrounding sections */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
       
@@ -53,6 +54,6 @@ export function CTASection() {
           </p>
         </motion.div>
       </div>
-    </section>
+    </Section>
   );
 }
