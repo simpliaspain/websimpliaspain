@@ -250,8 +250,12 @@ export function ServicesSection() {
               the left half; two cards fill the row exactly as before.
 
               The conversation photograph is a sibling block at the same
-              column width as the cards, before them: on md+ it sits to the
-              left of the (single) card as its pair; below md it stacks on top.
+              column width as the cards, before them: from lg it sits to the
+              left of the (single) card, stretched to the card's height
+              (object-cover keeps the phone and the person; the edges of the
+              frame go); below lg it stacks on top at its natural 16:9. lg
+              rather than md because at 768 the card is ~536px tall and a
+              height-matched crop would keep only a third of the frame.
               Side-by-side *inside* a half-width card is impossible (the copy
               column's minimum content leaves 0-131px for an image), so the
               image lives here. With two listed cards this row no longer works
@@ -261,19 +265,19 @@ export function ServicesSection() {
             {listedServices.map((service) => service.visual && (
               <figure
                 key={`${service.key}-visual`}
-                className="m-0 w-full md:w-[calc(50%-1rem)] self-center"
+                className="m-0 w-full lg:w-[calc(50%-1rem)] lg:self-stretch"
               >
                 <img
                   src={service.visual.src}
                   srcSet={service.visual.srcSet}
-                  sizes="(min-width: 1280px) 492px, (min-width: 768px) calc(50vw - 40px), calc(100vw - 48px)"
+                  sizes="(min-width: 1280px) 492px, (min-width: 1024px) calc(50vw - 40px), calc(100vw - 48px)"
                   width={800}
                   height={450}
                   alt={t(service.visual.altKey)}
                   loading="lazy"
                   decoding="async"
                   {...lowFetchPriority}
-                  className="aspect-video w-full rounded-3xl border-2 border-border object-cover"
+                  className="aspect-video w-full rounded-3xl border-2 border-border object-cover object-center lg:aspect-auto lg:h-full"
                 />
               </figure>
             ))}
@@ -284,7 +288,7 @@ export function ServicesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group flex w-full flex-col md:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className="group flex w-full flex-col lg:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
                 {/* Corner badge: not rendered while a single service is shown
                     - "popular" relative to nothing is noise. The model keeps
@@ -292,13 +296,13 @@ export function ServicesSection() {
                     card: service.badge === "popular" / "beta". */}
 
                 {/* Icon */}
-                <div className={`w-20 h-20 rounded-2xl ${service.bgColor} flex items-center justify-center mb-6 group-hover:scale-105 transition-transform`}>
-                  <service.icon className={`w-10 h-10 ${service.color}`} />
+                <div className={`w-14 h-14 rounded-2xl ${service.bgColor} flex items-center justify-center mb-5 group-hover:scale-105 transition-transform`}>
+                  <service.icon className={`w-7 h-7 ${service.color}`} />
                 </div>
 
                 {/* Content */}
                 <h3 className="text-2xl font-bold text-foreground mb-4">{service.title}</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="text-muted-foreground mb-5 leading-relaxed">
                   {service.description}
                 </p>
 
@@ -306,7 +310,7 @@ export function ServicesSection() {
                     bottom of the card, so both cards' pill rows and button
                     rows land on the same lines however long the description
                     above is; the slack goes between description and pills. */}
-                <div className="mt-auto flex flex-wrap gap-2 mb-8">
+                <div className="mt-auto flex flex-wrap gap-2 mb-6">
                   {service.badges.map((badge) => (
                     <span
                       key={badge}
