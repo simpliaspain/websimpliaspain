@@ -330,7 +330,7 @@ export default function ChatbotsMulticanal() {
           </div>
         </section>
 
-        <FAQSection />
+        <FAQSection hidePhoneAgents />
         <CTASection />
       </main>
       <Footer />

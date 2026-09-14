@@ -87,7 +87,8 @@ export function Footer() {
               <li><Link to="/chatbots-multicanal" className="hover:text-foreground transition-colors">{t('footer.chatbotsWhatsapp')}</Link></li>
               <li><Link to="/chatbots-multicanal" className="hover:text-foreground transition-colors">{t('footer.chatbotsTelegram')}</Link></li>
               <li><Link to="/chatbots-multicanal" className="hover:text-foreground transition-colors">{t('footer.chatbotsWeb')}</Link></li>
-              <li><Link to="/agentes-telefonicos" className="hover:text-foreground transition-colors">{t('footer.phoneAgents')}</Link></li>
+              {/* Phone agents link removed while the service is not on sale;
+                  the page stays live. Restore: <Link to="/agentes-telefonicos">{t('footer.phoneAgents')}</Link> */}
             </ul>
           </div>
 

@@ -4,7 +4,12 @@ import { ChevronDown, HelpCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { JsonLd } from "@/components/JsonLd";
 
-export function FAQSection() {
+/**
+ * `hidePhoneAgents` drops the phone-agent question (faq.q2) - and, because the
+ * FAQPage JSON-LD is built from the same list, its schema entry - on pages
+ * where that service is not offered. The phone agents page itself keeps it.
+ */
+export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: boolean } = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { t } = useLanguage();
 
@@ -13,10 +18,14 @@ export function FAQSection() {
       question: t('faq.q1'),
       answer: t('faq.a1'),
     },
-    {
-      question: t('faq.q2'),
-      answer: t('faq.a2'),
-    },
+    ...(hidePhoneAgents
+      ? []
+      : [
+          {
+            question: t('faq.q2'),
+            answer: t('faq.a2'),
+          },
+        ]),
     {
       question: t('faq.q3'),
       answer: t('faq.a3'),

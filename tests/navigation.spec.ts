@@ -20,7 +20,10 @@ import { test, expect, type Page } from "@playwright/test";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-const ROUTES = ["/contacto", "/chatbots-multicanal", "/agentes-telefonicos", "/politica-privacidad", "/"];
+// Routes reachable through a visible in-app link. /agentes-telefonicos is
+// live but deliberately unlinked while the service is not on sale, so it is
+// not navigated here; add it back when its entry points return.
+const ROUTES = ["/contacto", "/chatbots-multicanal", "/politica-privacidad", "/"];
 
 async function isolate(page: Page) {
   await page.route("**://*/**", (route) =>

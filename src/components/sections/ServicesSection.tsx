@@ -68,8 +68,11 @@ export function ServicesSection() {
       link: "/chatbots-multicanal",
       badge: "popular" as const,
       key: "Chatbots Multicanal",
+      listed: true,
     },
     {
+      // Not on sale yet: kept here (and its demo dialog below) so it can be
+      // relisted by flipping `listed`. The page /agentes-telefonicos stays live.
       icon: Phone,
       title: t('services.agentsTitle'),
       description: t('services.agentsDesc'),
@@ -81,8 +84,10 @@ export function ServicesSection() {
       // In beta: labelled as such, neutrally, rather than as a promotion.
       badge: "beta" as const,
       key: "Agentes Telefónicos IA",
+      listed: false,
     },
   ];
+  const listedServices = services.filter((s) => s.listed);
 
   // Chat demo animation
   useEffect(() => {
@@ -225,16 +230,18 @@ export function ServicesSection() {
             </h2>
           </motion.div>
 
-          {/* Services Grid - 2 main services */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {services.map((service, index) => (
+          {/* Services grid. Flex-wrap rather than a 2-col grid so a single
+              listed card sits centred at column width instead of orphaned in
+              the left half; two cards fill the row exactly as before. */}
+          <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+            {listedServices.map((service, index) => (
               <motion.div
                 key={service.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="group flex flex-col bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+                className="group flex w-full flex-col md:w-[calc(50%-1rem)] bg-card border-2 border-border rounded-3xl p-8 hover:border-primary/30 hover:shadow-xl transition-all duration-300 relative overflow-hidden"
               >
                 {/* Corner badge. "popular" is the brand-blue highlight; "beta"
                     is deliberately neutral - card surface, hairline border,

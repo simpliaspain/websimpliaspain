@@ -32,14 +32,10 @@ export function Navbar() {
       color: "text-service-chatbots",
       bgColor: "bg-service-chatbots/10",
     },
-    {
-      icon: Phone,
-      title: t('service.agents'),
-      description: t('service.agentsDesc'),
-      href: "/agentes-telefonicos",
-      color: "text-service-agents",
-      bgColor: "bg-service-agents/10",
-    },
+    // Phone agents are not on sale yet: entry removed from the menu; the page
+    // and route stay live. Restore by re-adding:
+    //   { icon: Phone, title: t('service.agents'), description: t('service.agentsDesc'),
+    //     href: "/agentes-telefonicos", color: "text-service-agents", bgColor: "bg-service-agents/10" }
   ];
 
   // The header floats over the page at the top of the document and only

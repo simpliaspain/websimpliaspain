@@ -38,7 +38,7 @@ const Index = () => {
         <LogoMarquee />
         <BenefitsSection />
         <ServicesSection />
-        <FAQSection />
+        <FAQSection hidePhoneAgents />
         <CTASection />
       </main>
       <Footer />
