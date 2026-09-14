@@ -75,13 +75,14 @@ export function PressSection() {
       <div className="container">
         <div className="mx-auto max-w-5xl">
           {/* Still the section's h2 for the outline and assistive tech, but
-              styled as the eyebrow label the menu and demo dialog already use
-              (text-xs uppercase tracking-wider muted): the photo and the
-              outlet names are the proof; this only labels them. Centred to
-              sit on the same axis as the centred headline below it. */}
+              visually identical to the logo marquee's caption
+              ("Con tecnología de las mejores empresas", LogoMarquee.tsx): both
+              label a strip of social proof on the same page, so they share
+              one treatment - same classes, and the same 32px (mb-8 there,
+              mt-8 here) to the element below. */}
           <h2
             id="press-heading"
-            className="text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+            className="text-center text-sm font-medium text-muted-foreground"
           >
             {t("press.heading")}
           </h2>
@@ -89,7 +90,7 @@ export function PressSection() {
           {/* The outlet's own headline leads the section, full measure, so the
               strongest line is read first and the photo + list below read as
               its evidence rather than as a column competing with a quote. */}
-          <blockquote className="mx-auto mt-4 max-w-3xl text-center">
+          <blockquote className="mx-auto mt-8 max-w-3xl text-center">
             <p className="text-xl font-semibold leading-snug text-foreground md:text-2xl">
               &ldquo;{t("press.quote")}&rdquo;
             </p>
