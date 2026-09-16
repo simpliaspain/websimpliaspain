@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -26,6 +26,51 @@ type ContactFormData = z.infer<typeof contactSchema>;
 // Webhook URL
 const FORM_LEAD_WEBHOOK = "https://simpliaspain-n8n.nlhico.easypanel.host/webhook/form-lead";
 
+/**
+ * Client-side spam protection. No third-party challenge (cookies,
+ * fingerprinting, consent banner); everything here is local and silent - a
+ * submission judged automated gets the normal success state and is simply
+ * not posted, so a bot never learns what tripped it. It does nothing against
+ * a bot that posts to the webhook URL directly; that is the webhook's job.
+ *
+ *  - Honeypot: a "website" field humans never see or tab into.
+ *  - Time to submit: under MIN_SUBMIT_MS after the form became interactive.
+ *    3 s is well under the time a person needs to read five fields and click,
+ *    even with browser autofill, and far above what scripts take.
+ *  - Content: MAX_URLS_IN_MESSAGE or more distinct links in the optional
+ *    message. One (the prospect's site) or two (site + LinkedIn) pass; three
+ *    in a first-contact note is the classic pattern.
+ *  - Rate limit: after a submission, further ones from the same session are
+ *    dropped for RATE_LIMIT_MS (sessionStorage; if storage is unavailable the
+ *    check is skipped and the submission goes through).
+ */
+const MIN_SUBMIT_MS = 3000;
+const MAX_URLS_IN_MESSAGE = 3;
+const RATE_LIMIT_MS = 60_000;
+const RATE_LIMIT_KEY = "contact:lastSubmitAt";
+const URL_PATTERN = /\b(?:https?:\/\/|www\.)[^\s]+/gi;
+
+function countUrls(text: string): number {
+  return new Set((text.match(URL_PATTERN) || []).map((u) => u.toLowerCase())).size;
+}
+
+function readLastSubmit(): number | null {
+  try {
+    const v = sessionStorage.getItem(RATE_LIMIT_KEY);
+    return v ? Number(v) : null;
+  } catch {
+    return null; // storage unavailable: no rate limit, never block a real user
+  }
+}
+
+function recordSubmit(): void {
+  try {
+    sessionStorage.setItem(RATE_LIMIT_KEY, String(Date.now()));
+  } catch {
+    // ignore
+  }
+}
+
 export default function Contacto() {
   const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
@@ -38,7 +83,32 @@ export default function Contacto() {
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [website, setWebsite] = useState(""); // honeypot; never sent
+  const readyAt = useRef<number | null>(null);
   const { toast } = useToast();
+
+  // The page is prerendered; the form becomes interactive at hydration, which
+  // is when the submit clock starts.
+  useEffect(() => {
+    readyAt.current = Date.now();
+  }, []);
+
+  const looksAutomated = (): boolean => {
+    if (website.trim() !== "") return true;
+    if (readyAt.current !== null && Date.now() - readyAt.current < MIN_SUBMIT_MS) return true;
+    if (countUrls(formData.informacion || "") >= MAX_URLS_IN_MESSAGE) return true;
+    const last = readLastSubmit();
+    if (last !== null && Date.now() - last < RATE_LIMIT_MS) return true;
+    return false;
+  };
+
+  const showSuccess = () => {
+    setIsSubmitted(true);
+    toast({
+      title: "¡Mensaje enviado!",
+      description: "Nos pondremos en contacto contigo pronto.",
+    });
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -66,6 +136,13 @@ export default function Contacto() {
       return;
     }
 
+    // Silent drop: same success state, nothing posted.
+    if (looksAutomated()) {
+      recordSubmit();
+      showSuccess();
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -87,11 +164,8 @@ export default function Contacto() {
       const data = await response.json();
 
       if (data.success === true) {
-        setIsSubmitted(true);
-        toast({
-          title: "¡Mensaje enviado!",
-          description: "Nos pondremos en contacto contigo pronto.",
-        });
+        recordSubmit();
+        showSuccess();
       } else {
         throw new Error("El servidor no confirmó el envío");
       }
@@ -217,7 +291,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             onSubmit={handleSubmit}
-            className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-[0_20px_60px_-15px_hsl(var(--primary)/0.25)] space-y-5"
+            className="relative bg-card border border-border rounded-2xl p-6 md:p-8 shadow-[0_20px_60px_-15px_hsl(var(--primary)/0.25)] space-y-5"
           >
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
@@ -293,6 +367,23 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
                 placeholder={t('contact.messagePlaceholder')}
                 rows={3}
                 className={errors.informacion ? "border-destructive" : ""}
+              />
+            </div>
+
+            {/* Honeypot. Positioned off-screen rather than display:none so
+                naive bots still "see" it; aria-hidden + tabindex=-1 keep it
+                out of assistive tech and the tab order; autocomplete off keeps
+                browsers from filling it for real users. */}
+            <div aria-hidden="true" className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden">
+              <label htmlFor="website">{t('contact.websiteField')}</label>
+              <input
+                id="website"
+                name="website"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
               />
             </div>
 

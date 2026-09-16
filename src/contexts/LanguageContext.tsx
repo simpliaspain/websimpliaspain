@@ -218,6 +218,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.lastNamePlaceholder': 'Tus apellidos',
     'contact.emailPlaceholder': 'tu@empresa.com',
     'contact.phonePlaceholder': '+34 600 000 000',
+    'contact.websiteField': 'Sitio web',
     
     // Demo Dialog
     'demo.automated': 'Esta es una demostración automatizada',
@@ -518,6 +519,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.lastNamePlaceholder': 'Your last name',
     'contact.emailPlaceholder': 'you@company.com',
     'contact.phonePlaceholder': '+1 555 000 000',
+    'contact.websiteField': 'Website',
     
     // Demo Dialog
     'demo.automated': 'This is an automated demonstration',
