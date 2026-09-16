@@ -37,22 +37,13 @@ const FORM_LEAD_WEBHOOK = "https://simpliaspain-n8n.nlhico.easypanel.host/webhoo
  *  - Time to submit: under MIN_SUBMIT_MS after the form became interactive.
  *    3 s is well under the time a person needs to read five fields and click,
  *    even with browser autofill, and far above what scripts take.
- *  - Content: MAX_URLS_IN_MESSAGE or more distinct links in the optional
- *    message. One (the prospect's site) or two (site + LinkedIn) pass; three
- *    in a first-contact note is the classic pattern.
  *  - Rate limit: after a submission, further ones from the same session are
  *    dropped for RATE_LIMIT_MS (sessionStorage; if storage is unavailable the
  *    check is skipped and the submission goes through).
  */
 const MIN_SUBMIT_MS = 3000;
-const MAX_URLS_IN_MESSAGE = 3;
 const RATE_LIMIT_MS = 60_000;
 const RATE_LIMIT_KEY = "contact:lastSubmitAt";
-const URL_PATTERN = /\b(?:https?:\/\/|www\.)[^\s]+/gi;
-
-function countUrls(text: string): number {
-  return new Set((text.match(URL_PATTERN) || []).map((u) => u.toLowerCase())).size;
-}
 
 function readLastSubmit(): number | null {
   try {
@@ -96,7 +87,6 @@ export default function Contacto() {
   const looksAutomated = (): boolean => {
     if (website.trim() !== "") return true;
     if (readyAt.current !== null && Date.now() - readyAt.current < MIN_SUBMIT_MS) return true;
-    if (countUrls(formData.informacion || "") >= MAX_URLS_IN_MESSAGE) return true;
     const last = readLastSubmit();
     if (last !== null && Date.now() - last < RATE_LIMIT_MS) return true;
     return false;
