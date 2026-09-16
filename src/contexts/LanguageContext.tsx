@@ -42,7 +42,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.opensNewTab': '(abre en una nueva pestaña)',
     // Press coverage strip (src/components/sections/PressSection.tsx)
     'press.heading': 'Nos han entrevistado en',
-    'press.photoAlt': 'Roberto Zúñiga, cofundador de Simplia Spain, entrevistado ante el micrófono en el estudio de Onda Cero Madrid Norte 100.1 FM',
+    'press.photoAlt': 'Roberto Zúñiga, cofundador de Simplia Spain, entrevistado ante el micrófono en un estudio de radio',
     'press.caption': 'Onda Cero Madrid Norte · junio 2026',
     // Verbatim headline of the Madrid Norte 24 horas article: a quotation, not our copy, so it stays in Spanish in both locales.
     'press.quote': 'Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas',
@@ -344,7 +344,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.clientAccess': 'Client login',
     'nav.opensNewTab': '(opens in a new tab)',
     'press.heading': 'Featured in',
-    'press.photoAlt': 'Roberto Zúñiga, co-founder of Simplia Spain, being interviewed at the microphone in the Onda Cero Madrid Norte 100.1 FM studio',
+    'press.photoAlt': 'Roberto Zúñiga, co-founder of Simplia Spain, being interviewed at the microphone in a radio studio',
     'press.caption': 'Onda Cero Madrid Norte · June 2026',
     'press.quote': 'Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas',
     'press.quoteSource': 'Headline in Madrid Norte 24 horas',

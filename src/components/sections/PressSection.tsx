@@ -52,15 +52,20 @@ const captionClass = "text-sm font-medium text-muted-foreground";
 // One tile for every outlet visual: 96x54 on phones, 128x72 from md, same
 // radius and border, so the row reads as a set. The photograph fills its tile
 // (object-cover); the two logos are contained on a white surface with their
-// own padding, never stretched or cropped. All three are decorative: the
-// outlet name is the link text, so the accessible name of each link stays
-// that name and nothing else.
+// own padding, never stretched or cropped.
+//
+// Alt text: the two LOGOS are decorative (alt="") - a mark beside the
+// outlet's own name adds nothing a screen reader needs, and the link's
+// accessible name stays the outlet name. The PHOTOGRAPH is content: it
+// documents that the interview happened, so it carries an alt describing
+// the scene (not the outlet, which the link text already says).
 const tileClass = "h-[54px] w-24 shrink-0 rounded-xl border border-border md:h-[72px] md:w-32";
 // bg-primary-foreground is white in both palettes: a logo's own white keeps
 // dark marks visible against the dark theme without inverting the mark.
 const logoTileClass = `${tileClass} flex items-center justify-center overflow-hidden bg-primary-foreground`;
 const lowPriority = { fetchpriority: "low" } as Record<string, string>;
-const imgCommon = { alt: "", loading: "lazy" as const, decoding: "async" as const, ...lowPriority };
+const imgCommon = { loading: "lazy" as const, decoding: "async" as const, ...lowPriority };
+const decorative = { alt: "", ...imgCommon };
 
 export function PressSection() {
   const { t } = useLanguage();
@@ -87,6 +92,7 @@ export function PressSection() {
                 sizes="(min-width: 768px) 128px, 96px"
                 width={1440}
                 height={810}
+                alt={t("press.photoAlt")}
                 {...imgCommon}
                 className={`${tileClass} object-cover`}
               />
@@ -105,7 +111,7 @@ export function PressSection() {
                   srcSet={`${logoMn1x} 1x, ${logoMn2x} 2x`}
                   width={54}
                   height={56}
-                  {...imgCommon}
+                  {...decorative}
                   className="h-[42px] w-auto md:h-14"
                 />
               </span>
@@ -127,7 +133,7 @@ export function PressSection() {
                   srcSet={`${logoEs1x} 1x, ${logoEs2x} 2x`}
                   width={100}
                   height={33}
-                  {...imgCommon}
+                  {...decorative}
                   className="h-auto w-[75px] md:w-[100px]"
                 />
               </span>
