@@ -11,19 +11,23 @@ import { PressSection } from "@/components/sections/PressSection";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Index = () => {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
       <Seo titleKey="seo.home.title" descriptionKey="seo.home.description" path="/" />
-      {/* Moved from index.html unchanged, minus an Offer that carried no price. */}
+      {/* Describes the one service the page lists (the services card), with
+          the card's own strings, so the structured data cannot drift from
+          the visible page. Phone agents have their own block on
+          /agentes-telefonicos. */}
       <JsonLd
         data={{
           "@type": "Service",
-          name: "Chatbots y Agentes Telefónicos IA",
+          name: t("services.chatbotsTitle"),
           serviceType: "Automatización de Atención al Cliente",
-          description:
-            "Automatización de atención al cliente con chatbots inteligentes en WhatsApp, Web, Telegram e Instagram, y agentes telefónicos con IA disponibles 24/7",
+          description: t("services.chatbotsDesc"),
           url: `${SITE_URL}/`,
           provider: { "@id": ORGANIZATION_ID },
           areaServed: { "@type": "Country", name: "España" },

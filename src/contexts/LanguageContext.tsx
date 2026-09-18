@@ -12,8 +12,8 @@ const translations: Record<Language, Record<string, string>> = {
   es: {
     // SEO: <title> y meta description por ruta (src/components/Seo.tsx).
     // Solo texto que ya existe en la web; la home conserva los de index.html.
-    'seo.home.title': 'Simplia Spain | Chatbots IA y Agentes Telefónicos 24/7 para Empresas',
-    'seo.home.description': 'Automatiza tu atención al cliente con chatbots inteligentes en WhatsApp, Web y Telegram. Agentes telefónicos IA disponibles 24/7. Más clientes, menos esfuerzo.',
+    'seo.home.title': 'Simplia Spain | Chatbots IA y Agentes Multicanal',
+    'seo.home.description': 'Automatiza tu atención al cliente con agentes multicanal IA, también llamados chatbots, en WhatsApp, Instagram, Telegram y tu web. Más clientes, menos esfuerzo.',
     'seo.chatbots.title': 'Agentes Multicanal (Chatbots IA) | Simplia Spain',
     'seo.chatbots.description': 'Un solo agente con IA, lo que muchos conocen como chatbot, que opera en WhatsApp, Instagram, Telegram y tu web. Captura leads, resuelve dudas y agenda citas automáticamente.',
     'seo.agents.title': 'Agentes Telefónicos IA | Simplia Spain',
@@ -316,8 +316,8 @@ const translations: Record<Language, Record<string, string>> = {
   },
   en: {
     // SEO
-    'seo.home.title': 'Simplia Spain | AI Chatbots and 24/7 Phone Agents for Businesses',
-    'seo.home.description': 'Automate your customer service with smart chatbots on WhatsApp, Web and Telegram. AI phone agents available 24/7. More customers, less effort.',
+    'seo.home.title': 'Simplia Spain | AI Chatbots and Multichannel AI Agents',
+    'seo.home.description': 'Automate customer service with multichannel AI agents, also called chatbots, on WhatsApp, Instagram, Telegram and your website. More customers, less effort.',
     'seo.chatbots.title': 'Multichannel AI Agents (AI Chatbots) | Simplia Spain',
     'seo.chatbots.description': 'A single AI agent, what most people call a chatbot, that operates on WhatsApp, Instagram, Telegram and your website. Capture leads, resolve doubts and schedule appointments automatically.',
     'seo.agents.title': 'AI Phone Agents | Simplia Spain',
