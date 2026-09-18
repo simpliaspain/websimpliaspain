@@ -1,6 +1,6 @@
 {
-  "_client-CDbMj_1p.js": {
-    "file": "assets/client-CDbMj_1p.js",
+  "_client-Bl1yKV9B.js": {
+    "file": "assets/client-Bl1yKV9B.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,20 +8,20 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-DhCtOlPn.js",
+    "file": "assets/app-CMcb2BY_.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-CDbMj_1p.js",
-      "_client-CDbMj_1p.js"
+      "_client-Bl1yKV9B.js",
+      "_client-Bl1yKV9B.js"
     ],
     "css": [
       "assets/app-Bu5-xiPr.css"
     ],
     "assets": [
-      "assets/whatsapp-demo-400-WPr1qRwE.jpg",
-      "assets/whatsapp-demo-800-BI6jAB2F.jpg",
+      "assets/whatsapp-demo-400-DMr6at3r.jpg",
+      "assets/whatsapp-demo-800-CUFQwzgY.jpg",
       "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
       "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
       "assets/logo-mn24h-2x-M8oDfTNa.png"
@@ -40,11 +40,11 @@
     "src": "src/assets/press/ondacero-entrevista-720.jpg"
   },
   "src/assets/services/whatsapp-demo-400.jpg": {
-    "file": "assets/whatsapp-demo-400-WPr1qRwE.jpg",
+    "file": "assets/whatsapp-demo-400-DMr6at3r.jpg",
     "src": "src/assets/services/whatsapp-demo-400.jpg"
   },
   "src/assets/services/whatsapp-demo-800.jpg": {
-    "file": "assets/whatsapp-demo-800-BI6jAB2F.jpg",
+    "file": "assets/whatsapp-demo-800-CUFQwzgY.jpg",
     "src": "src/assets/services/whatsapp-demo-800.jpg"
   }
 }
