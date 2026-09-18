@@ -168,7 +168,7 @@ const translations: Record<Language, Record<string, string>> = {
     'faq.a6': 'Sí, ofrecemos una demo gratuita donde podrás ver cómo funcionaría el sistema con tu negocio antes de tomar cualquier decisión.',
     
     // Footer
-    'footer.description': 'Democratizando la IA para empresas de todos los tamaños. Agentes multicanal, también llamados chatbots, y agentes telefónicos IA para automatizar tu atención al cliente.',
+    'footer.description': 'Democratizando la IA para empresas en España. Agentes multicanal IA, también conocidos como chatbots para automatizar tu atención al cliente.',
     'footer.services': 'Servicios',
     'footer.chatbotsWhatsapp': 'Agentes WhatsApp',
     'footer.chatbotsTelegram': 'Agentes Telegram',
@@ -469,7 +469,7 @@ const translations: Record<Language, Record<string, string>> = {
     'faq.a6': 'Yes, we offer a free demo where you can see how the system would work with your business before making any decision.',
     
     // Footer
-    'footer.description': 'Democratizing AI for businesses of all sizes. Multichannel AI agents, also known as chatbots, and AI phone agents to automate your customer service.',
+    'footer.description': 'Democratizing AI for businesses in Spain. Multichannel AI agents, also known as chatbots, that automate your customer service.',
     'footer.services': 'Services',
     'footer.chatbotsWhatsapp': 'WhatsApp AI Agents',
     'footer.chatbotsTelegram': 'Telegram AI Agents',
