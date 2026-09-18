@@ -12,6 +12,29 @@ import {
 import { useLanguage } from "@/contexts/LanguageContext";
 import waDemo400 from "@/assets/services/whatsapp-demo-400.jpg";
 import waDemo800 from "@/assets/services/whatsapp-demo-800.jpg";
+import waDemo1200 from "@/assets/services/whatsapp-demo-1200.jpg";
+import waDemo1600 from "@/assets/services/whatsapp-demo-1600.jpg";
+import waDemo400w from "@/assets/services/whatsapp-demo-400.webp";
+import waDemo800w from "@/assets/services/whatsapp-demo-800.webp";
+import waDemo1200w from "@/assets/services/whatsapp-demo-1200.webp";
+import waDemo1600w from "@/assets/services/whatsapp-demo-1600.webp";
+
+// Conversation photograph. Four tiers because the frame is mostly a phone
+// screenshot and the box crops it: at lg the box is 496x408 and object-cover
+// (height-fit) shows only 68% of the frame width, so the source must be
+// 408 * 16/9 = 725 CSS px wide there - 1450 device px on a 2x display. 1600
+// covers that; 1200 covers 1.5x desktops and 3x phones (342 * 3 = 1026); 800
+// covers 2x phones and 1x desktops; 400 covers 1x phones. WebP first because
+// the screen text is where JPEG's subsampling and ringing show: at the 1600
+// tier WebP q85 (104 KB) is cleaner on the screen region than JPEG q88
+// (196 KB). The JPEG tiers are the fallback for browsers without WebP.
+const WA_DEMO_JPG = `${waDemo400} 400w, ${waDemo800} 800w, ${waDemo1200} 1200w, ${waDemo1600} 1600w`;
+const WA_DEMO_WEBP = `${waDemo400w} 400w, ${waDemo800w} 800w, ${waDemo1200w} 1200w, ${waDemo1600w} 1600w`;
+// `sizes` must declare the source width the crop needs, not the box width:
+// from lg the image is height-fit into a 408px-tall box (both locales, every
+// lg width), so 408 * 16/9 = 725px; below lg it is full width at 16:9 inside
+// the 24px page padding.
+const WA_DEMO_SIZES = "(min-width: 1024px) 725px, calc(100vw - 48px)";
 import { Section } from "@/components/Section";
 
 // Chat demo messages - office rental sector
@@ -82,7 +105,7 @@ export function ServicesSection() {
       listed: true,
       // Client-authorised screenshot of a real WhatsApp conversation with the
       // agent (this image only; the client is not named anywhere in text).
-      visual: { src: waDemo400, srcSet: `${waDemo400} 400w, ${waDemo800} 800w`, altKey: "services.chatbotsVisualAlt" },
+      visual: { src: waDemo800, srcSet: WA_DEMO_JPG, srcSetWebp: WA_DEMO_WEBP, sizes: WA_DEMO_SIZES, altKey: "services.chatbotsVisualAlt" },
     },
     {
       // Not on sale yet: kept here (and its demo dialog below) so it can be
@@ -267,18 +290,23 @@ export function ServicesSection() {
                 key={`${service.key}-visual`}
                 className="m-0 w-full lg:w-[calc(50%-1rem)] lg:self-stretch"
               >
-                <img
-                  src={service.visual.src}
-                  srcSet={service.visual.srcSet}
-                  sizes="(min-width: 1280px) 492px, (min-width: 1024px) calc(50vw - 40px), calc(100vw - 48px)"
-                  width={800}
-                  height={450}
-                  alt={t(service.visual.altKey)}
-                  loading="lazy"
-                  decoding="async"
-                  {...lowFetchPriority}
-                  className="aspect-video w-full rounded-3xl border-2 border-border object-cover object-center lg:aspect-auto lg:h-full"
-                />
+                {/* display:contents so the img keeps the figure as its
+                    containing block (lg:h-full). */}
+                <picture className="contents">
+                  <source type="image/webp" srcSet={service.visual.srcSetWebp} sizes={service.visual.sizes} />
+                  <img
+                    src={service.visual.src}
+                    srcSet={service.visual.srcSet}
+                    sizes={service.visual.sizes}
+                    width={800}
+                    height={450}
+                    alt={t(service.visual.altKey)}
+                    loading="lazy"
+                    decoding="async"
+                    {...lowFetchPriority}
+                    className="aspect-video w-full rounded-3xl border-2 border-border object-cover object-center lg:aspect-auto lg:h-full"
+                  />
+                </picture>
               </figure>
             ))}
             {listedServices.map((service, index) => (
