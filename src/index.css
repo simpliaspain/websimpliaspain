@@ -231,8 +231,8 @@
    wrapped prefers-reduced-motion: no-preference around the same declaration the
    unconditional base rule above already sets, so nothing was ever disabled.
    LogoMarquee drops the duplicated set and the fade overlays under reduce and
-   makes the row scroll horizontally, so the strip stays readable and every
-   logo stays reachable instead of sitting frozen behind a fade. */
+   wraps the row into centred lines, so the strip stays readable and every
+   logo stays visible instead of sitting frozen behind a fade. */
 @media (prefers-reduced-motion: reduce) {
   .animate-marquee,
   .animate-marquee-reverse {

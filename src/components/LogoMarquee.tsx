@@ -30,14 +30,21 @@ interface Partner {
   name: string;
   logo: string | null;
   textLogo?: string;
+  /** Rendered width in px at the fixed 24px height (the mark's own ratio). */
+  width?: number;
 }
+
+// Explicit px, not rem or intrinsic SVG size: the strip must render the same
+// whatever the browser's default font size, and the SVGs do not all declare
+// a size (most are a bare 24x24 viewBox, Apollo carries 2500x901).
+const LOGO_HEIGHT = 24;
 
 const partners: Partner[] = [
   { name: "N8N", logo: n8nLogo },
   { name: "Make", logo: makeLogo },
   { name: "Zapier", logo: zapierLogo },
   { name: "Notion", logo: notionLogo },
-  { name: "Apollo", logo: apolloLogo },
+  { name: "Apollo", logo: apolloLogo, width: 67 },
   { name: "Airtable", logo: airtableLogo },
   { name: "Brevo", logo: brevoLogo },
   { name: "Google Cloud", logo: googleCloudLogo },
@@ -62,15 +69,20 @@ export function LogoMarquee() {
 
   return (
     <Section variant="tight" id="partners" className="bg-background overflow-hidden">
-      <div className="container mb-8">
+      {/* 20px + the tile's 12px above its 24px mark = 32px from caption to
+          logos, the same caption-to-row distance as the press section. */}
+      <div className="container mb-[20px]">
         <p className="text-center text-sm font-medium text-muted-foreground">
           {t('partners.title')}
         </p>
       </div>
 
-      {/* Under reduced motion the row stops scrolling, so it becomes a plain
-          horizontally scrollable list instead - every logo stays reachable. */}
-      <div className="marquee-viewport relative motion-reduce:overflow-x-auto">
+      {/* The viewport clips its own track rather than relying on the Section.
+          Under reduced motion the row stops moving and wraps into centred
+          rows instead - every logo stays visible, and nothing scrolls (an
+          overflow-x:auto strip drew a draggable scrollbar under the row on
+          machines with classic scrollbars). */}
+      <div className="marquee-viewport relative overflow-hidden motion-reduce:px-4">
         {/* Fade edges. They exist to sell the illusion of an endless scroll, so
             they only obscure the ends once the strip is static. */}
         <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 motion-reduce:hidden" />
@@ -88,8 +100,8 @@ export function LogoMarquee() {
         </button>
 
         <div
-          className="flex gap-8 items-center animate-marquee will-change-transform"
-          style={{ width: 'max-content', animationPlayState: paused ? 'paused' : undefined }}
+          className="flex w-max items-center gap-8 animate-marquee will-change-transform motion-reduce:w-auto motion-reduce:flex-wrap motion-reduce:justify-center motion-reduce:gap-x-0 motion-reduce:gap-y-2"
+          style={{ animationPlayState: paused ? 'paused' : undefined }}
         >
           {[...partners, ...partners].map((partner, index) => {
             // The second pass exists only to make the loop seamless. It is
@@ -101,7 +113,7 @@ export function LogoMarquee() {
                 key={index}
                 aria-hidden={isClone || undefined}
                 className={cn(
-                  "flex items-center justify-center flex-shrink-0 h-12 px-6 grayscale brightness-0 opacity-60 transition-all duration-300 hover:grayscale-0 hover:brightness-100 hover:opacity-100 dark:invert dark:hover:invert-0",
+                  "flex items-center justify-center flex-shrink-0 h-[48px] px-[24px] motion-reduce:px-[16px] grayscale brightness-0 opacity-60 transition-all duration-300 hover:grayscale-0 hover:brightness-100 hover:opacity-100 dark:invert dark:hover:invert-0",
                   isClone && "motion-reduce:hidden",
                 )}
               >
@@ -109,7 +121,10 @@ export function LogoMarquee() {
                   <img
                     src={partner.logo}
                     alt={partner.name}
-                    className="h-6 w-auto object-contain"
+                    width={partner.width ?? LOGO_HEIGHT}
+                    height={LOGO_HEIGHT}
+                    style={{ width: partner.width ?? LOGO_HEIGHT, height: LOGO_HEIGHT }}
+                    className="object-contain"
                   />
                 ) : (
                   <span className="text-sm font-semibold text-muted-foreground whitespace-nowrap">
