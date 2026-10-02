@@ -182,15 +182,23 @@ export function ServicesSection() {
               (single) card, below lg it stacks on top. It is 4:3 at every
               width and never cropped - its frames carry headlines 80px and
               dashboards 111px from the edges, and the phone mockups run off
-              the bottom - so the same full frame shows everywhere. The price
-              is that it no longer matches the card's height: from lg it is
-              centred beside it (372 vs 408px at 1280+, 348 vs 408 at 1024).
+              the bottom - so the same full frame shows everywhere.
+
+              From lg the two are equal padded siblings, and the row's default
+              stretch makes them one height (the taller sets it). The row is
+              74rem (1184px), not 5xl: with the frame's 32px padding that is a
+              576px column and a 508px video - the widest box the 1024px encode
+              still covers at 2x - and it stays inside the 1232px the Method
+              grid and press row already use. At 1184+ the frame (449px) is the
+              taller block, so the card's slack falls between its description
+              and pills (mt-auto). The card can never shrink to the frame: at
+              any narrower row its copy needs 408px.
               Side-by-side *inside* a half-width card is impossible (the copy
               column's minimum content leaves 0-131px for an image), so the
               image lives here. With two listed cards this row no longer works
               as [image][card][card] - the visual belongs to the multichannel
               service and would push the second card to a new row. */}
-          <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
+          <div className="flex flex-wrap justify-center gap-8 max-w-[74rem] mx-auto">
             {listedServices.map((service) => service.visual && (
               <ServiceDemoVideo
                 key={`${service.key}-visual`}
@@ -199,7 +207,7 @@ export function ServicesSection() {
                 width={service.visual.width}
                 height={service.visual.height}
                 labelKey={service.visual.labelKey}
-                className="w-full lg:w-[calc(50%-1rem)] lg:self-center"
+                className="w-full lg:w-[calc(50%-1rem)]"
               />
             ))}
             {listedServices.map((service, index) => (

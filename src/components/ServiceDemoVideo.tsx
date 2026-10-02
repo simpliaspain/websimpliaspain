@@ -117,38 +117,44 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
   };
 
   return (
+    // The frame is the service card's sibling: same surface, border, radius
+    // and padding (16px below lg so phones keep most of the video). When the
+    // row stretches it taller than the video, the 4:3 video stays whole and
+    // centred - the padding absorbs the difference, nothing is cropped.
     <figure
       ref={figureRef}
-      className={cn("relative m-0 overflow-hidden rounded-3xl border-2 border-border bg-secondary", className)}
+      className={cn("m-0 flex items-center justify-center rounded-3xl border-2 border-border bg-card p-4 lg:p-8", className)}
     >
-      {/* React sets `muted` as a property, never as the attribute, so it is
-          also forced in the effect above before any play(). */}
-      <video
-        ref={videoRef}
-        width={width}
-        height={height}
-        poster={near ? poster : undefined}
-        autoPlay={autoplay && attached}
-        muted
-        loop
-        playsInline
-        preload="none"
-        aria-label={t(labelKey)}
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        className="block h-auto w-full object-cover"
-        style={{ aspectRatio: `${width} / ${height}` }}
-      >
-        {attached && <source src={src} type="video/mp4" />}
-      </video>
-      <button
-        type="button"
-        onClick={toggle}
-        aria-label={playing ? t("demo.pause") : t("demo.play")}
-        className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-sm backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
-      >
-        {playing ? <Pause className="h-5 w-5" aria-hidden="true" /> : <Play className="h-5 w-5" aria-hidden="true" />}
-      </button>
+      <div className="relative w-full">
+        {/* React sets `muted` as a property, never as the attribute, so it is
+            also forced in the effect above before any play(). */}
+        <video
+          ref={videoRef}
+          width={width}
+          height={height}
+          poster={near ? poster : undefined}
+          autoPlay={autoplay && attached}
+          muted
+          loop
+          playsInline
+          preload="none"
+          aria-label={t(labelKey)}
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          className="block h-auto w-full rounded-xl bg-secondary object-contain"
+          style={{ aspectRatio: `${width} / ${height}` }}
+        >
+          {attached && <source src={src} type="video/mp4" />}
+        </video>
+        <button
+          type="button"
+          onClick={toggle}
+          aria-label={playing ? t("demo.pause") : t("demo.play")}
+          className="absolute bottom-3 right-3 flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background/90 text-foreground shadow-sm backdrop-blur transition-colors hover:bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
+        >
+          {playing ? <Pause className="h-5 w-5" aria-hidden="true" /> : <Play className="h-5 w-5" aria-hidden="true" />}
+        </button>
+      </div>
     </figure>
   );
 }
