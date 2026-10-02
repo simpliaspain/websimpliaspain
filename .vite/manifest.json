@@ -1,6 +1,6 @@
 {
-  "_client-C63dhOle.js": {
-    "file": "assets/client-C63dhOle.js",
+  "_client-BfRgwRna.js": {
+    "file": "assets/client-BfRgwRna.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,26 +8,20 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-COgVsuUx.js",
+    "file": "assets/app-DgxMrXoI.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-C63dhOle.js",
-      "_client-C63dhOle.js"
+      "_client-BfRgwRna.js",
+      "_client-BfRgwRna.js"
     ],
     "css": [
-      "assets/app-pwVSb5LS.css"
+      "assets/app-MEZf8x0z.css"
     ],
     "assets": [
-      "assets/whatsapp-demo-400-BZgspJqu.jpg",
-      "assets/whatsapp-demo-800-aeGY4lMa.jpg",
-      "assets/whatsapp-demo-1200-C3Q1Uw-m.jpg",
-      "assets/whatsapp-demo-1600-9I-1a83j.jpg",
-      "assets/whatsapp-demo-400-DsI17QB-.webp",
-      "assets/whatsapp-demo-800-Dt4knXES.webp",
-      "assets/whatsapp-demo-1200-B2PtpJwp.webp",
-      "assets/whatsapp-demo-1600-C1Bg6HJv.webp",
+      "assets/simplia-demo-1024-DesuuYu1.mp4",
+      "assets/simplia-demo-poster-1024-Dmip3UZ6.webp",
       "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
       "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
       "assets/logo-mn24h-2x-M8oDfTNa.png"
@@ -45,36 +39,12 @@
     "file": "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
     "src": "src/assets/press/ondacero-entrevista-720.jpg"
   },
-  "src/assets/services/whatsapp-demo-1200.jpg": {
-    "file": "assets/whatsapp-demo-1200-C3Q1Uw-m.jpg",
-    "src": "src/assets/services/whatsapp-demo-1200.jpg"
+  "src/assets/services/simplia-demo-1024.mp4": {
+    "file": "assets/simplia-demo-1024-DesuuYu1.mp4",
+    "src": "src/assets/services/simplia-demo-1024.mp4"
   },
-  "src/assets/services/whatsapp-demo-1200.webp": {
-    "file": "assets/whatsapp-demo-1200-B2PtpJwp.webp",
-    "src": "src/assets/services/whatsapp-demo-1200.webp"
-  },
-  "src/assets/services/whatsapp-demo-1600.jpg": {
-    "file": "assets/whatsapp-demo-1600-9I-1a83j.jpg",
-    "src": "src/assets/services/whatsapp-demo-1600.jpg"
-  },
-  "src/assets/services/whatsapp-demo-1600.webp": {
-    "file": "assets/whatsapp-demo-1600-C1Bg6HJv.webp",
-    "src": "src/assets/services/whatsapp-demo-1600.webp"
-  },
-  "src/assets/services/whatsapp-demo-400.jpg": {
-    "file": "assets/whatsapp-demo-400-BZgspJqu.jpg",
-    "src": "src/assets/services/whatsapp-demo-400.jpg"
-  },
-  "src/assets/services/whatsapp-demo-400.webp": {
-    "file": "assets/whatsapp-demo-400-DsI17QB-.webp",
-    "src": "src/assets/services/whatsapp-demo-400.webp"
-  },
-  "src/assets/services/whatsapp-demo-800.jpg": {
-    "file": "assets/whatsapp-demo-800-aeGY4lMa.jpg",
-    "src": "src/assets/services/whatsapp-demo-800.jpg"
-  },
-  "src/assets/services/whatsapp-demo-800.webp": {
-    "file": "assets/whatsapp-demo-800-Dt4knXES.webp",
-    "src": "src/assets/services/whatsapp-demo-800.webp"
+  "src/assets/services/simplia-demo-poster-1024.webp": {
+    "file": "assets/simplia-demo-poster-1024-Dmip3UZ6.webp",
+    "src": "src/assets/services/simplia-demo-poster-1024.webp"
   }
 }
