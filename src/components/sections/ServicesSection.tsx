@@ -229,7 +229,12 @@ export function ServicesSection() {
 
                 {/* Content */}
                 <h3 className="text-2xl font-bold text-foreground mb-4">{service.title}</h3>
-                <p className="text-muted-foreground mb-5 leading-relaxed">
+                {/* max-w-lg (512px): when the card spans the full width
+                    (md, 720px) the line ran to 80-91 characters. 65ch was not
+                    enough (ch is the width of "0"; prose runs narrower, so it
+                    still allowed 81). From lg the text column is 508px, so the
+                    cap does not bind there. */}
+                <p className="max-w-lg text-muted-foreground mb-5 leading-relaxed">
                   {service.description}
                 </p>
 
@@ -253,10 +258,16 @@ export function ServicesSection() {
                     clear next step, never two co-equal filled buttons. A card
                     with a demo dialog (the unlisted phone card) keeps its
                     demo + "Saber Más" pair. Both 44px tall; one row from sm,
-                    stacked full width below. */}
+                    stacked full width below. From lg, where the card is a
+                    half-width column, the primary takes the remaining width
+                    and "Saber Más" stays content-width (about 2.6:1 at
+                    1440, 2:1 at 1024), so the row spans the card without
+                    turning the secondary into a second bar. Between sm and lg
+                    the card is full width and a stretched primary would be a
+                    500px bar, so both stay content-width there. */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   {service.contactText && (
-                    <Button asChild className="h-11 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <Button asChild className="h-11 w-full sm:w-auto lg:flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
                       <Link to="/contacto">
                         {service.contactText}
                         <ArrowRight className="w-4 h-4 ml-2" />
