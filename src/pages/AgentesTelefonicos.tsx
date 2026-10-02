@@ -210,11 +210,6 @@ export default function AgentesTelefonicos() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-6">
-                  <Phone className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-muted-foreground">{t('agents.badge')}</span>
-                </div>
-
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
                   {t('agents.heroTitle1')} <span className="text-italic-gradient">{t('agents.heroTitle2')}</span> {t('agents.heroTitle3')}
                 </h1>
@@ -324,10 +319,6 @@ export default function AgentesTelefonicos() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-6">
-                <Mic className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{t('agents.featuresBadge')}</span>
-              </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
                 {t('agents.featuresTitle1')} <span className="text-italic-gradient">{t('agents.featuresTitle2')}</span>
               </h2>
@@ -367,10 +358,6 @@ export default function AgentesTelefonicos() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-6">
-                <Users className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{t('agents.useCasesBadge')}</span>
-              </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
                 {t('agents.useCasesTitle').split(' ')[0]} <span className="text-italic-gradient">{t('agents.useCasesTitle').split(' ').slice(1).join(' ')}</span>
               </h2>
@@ -413,10 +400,6 @@ export default function AgentesTelefonicos() {
                 transition={{ duration: 0.6 }}
                 viewport={{ once: true }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-6">
-                  <CheckCircle2 className="w-4 h-4 text-primary" />
-                  <span className="text-sm font-medium text-primary">{t('benefits.sectionBadge')}</span>
-                </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
                   {t('agents.benefitsSectionTitle')} <span className="text-italic-gradient">{t('agents.benefitsSectionTitle2')}</span>
                 </h2>

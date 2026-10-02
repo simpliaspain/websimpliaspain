@@ -153,11 +153,6 @@ export default function ChatbotsMulticanal() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-6">
-                  <MessageSquare className="w-4 h-4 text-green-500" />
-                  <span className="text-sm font-medium text-muted-foreground">{t('chatbots.badge')}</span>
-                </div>
-
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6">
                   {t('chatbots.heroTitle1')} <span className="text-italic-gradient">{t('chatbots.heroTitle2')}</span>
                 </h1>
@@ -242,10 +237,6 @@ export default function ChatbotsMulticanal() {
               viewport={{ once: true }}
               className="text-center mb-16"
             >
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-6">
-                <MessageSquare className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium text-primary">{t('chatbots.featuresBadge')}</span>
-              </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
                 {t('chatbots.featuresTitle1')} <span className="text-italic-gradient">{t('chatbots.featuresTitle2')}</span>
               </h2>

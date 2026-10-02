@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Phone, Sparkles, Play, ArrowRight, Mic, User, Pause, Volume2 } from "lucide-react";
+import { MessageSquare, Phone, Play, ArrowRight, Mic, User, Pause, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -162,11 +162,6 @@ export function ServicesSection() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-6">
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-muted-foreground">{t('services.badge')}</span>
-            </div>
-            
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
               {t('services.title1')} <br />
               <span className="text-italic-gradient">{t('services.title2')}</span>

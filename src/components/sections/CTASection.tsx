@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Calendar, Sparkles } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Section } from "@/components/Section";
@@ -24,11 +24,6 @@ export function CTASection() {
           viewport={{ once: true }}
           className="text-center max-w-2xl mx-auto"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 mb-8">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">{t('cta.startNow')}</span>
-          </div>
-
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6">
             {t('cta.readyTo')} <span className="text-italic-gradient">{t('cta.automate')}</span>?
           </h2>

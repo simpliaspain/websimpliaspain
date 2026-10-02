@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { JsonLd } from "@/components/JsonLd";
 import { Section } from "@/components/Section";
@@ -67,11 +67,6 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-6">
-            <HelpCircle className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-muted-foreground">{t('faq.badge')}</span>
-          </div>
-          
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             {t('faq.title')}
           </h2>

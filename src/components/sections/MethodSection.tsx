@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Target, Headphones, CreditCard, Sparkles, Users, CheckCircle2, DollarSign } from "lucide-react";
+import { Target, Headphones, CreditCard, Users, CheckCircle2, DollarSign } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Section } from "@/components/Section";
 
@@ -47,11 +47,6 @@ export function MethodSection() {
           viewport={{ once: true }}
           className="mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-secondary mb-6">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-muted-foreground">{t('method.badge')}</span>
-          </div>
-          
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             <span className="text-foreground">{t('method.title1')}</span>
             <br />
