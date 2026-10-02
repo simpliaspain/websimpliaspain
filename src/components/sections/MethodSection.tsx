@@ -8,7 +8,6 @@ export function MethodSection() {
 
   const steps = [
     {
-      step: t('method.step1'),
       icon: Target,
       title: t('method.step1Title'),
       description: t('method.step1Desc'),
@@ -18,7 +17,6 @@ export function MethodSection() {
       badges: [t('method.step1Badge1'), t('method.step1Badge2')],
     },
     {
-      step: t('method.step2'),
       icon: Headphones,
       title: t('method.step2Title'),
       description: t('method.step2Desc'),
@@ -28,7 +26,6 @@ export function MethodSection() {
       badges: [t('method.step2Badge1'), t('method.step2Badge2')],
     },
     {
-      step: t('method.step3'),
       icon: CreditCard,
       title: t('method.step3Title'),
       description: t('method.step3Desc'),
@@ -79,8 +76,17 @@ export function MethodSection() {
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <step.icon className="w-6 h-6 text-primary" />
                 </div>
-                <span className="text-xs font-medium text-muted-foreground bg-secondary px-3 py-1 rounded-full">
-                  {step.step}
+                {/* Step marker: sequence, not an attribute, so it does not
+                    share the tag pills' neutral treatment. The numeral leads,
+                    in an outlined ring. Text is accent-foreground (4.57:1 on
+                    the light card, 8.64:1 dark); the ring is primary, a
+                    graphic needing 3:1 (3.80 light, 5.70 dark). White on
+                    primary would be 3.80:1 and fail for this size. */}
+                <span className="flex items-center gap-2 text-accent-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-wider">{t('method.stepLabel')}</span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary text-base font-bold tabular-nums">
+                    {index + 1}
+                  </span>
                 </span>
               </div>
 
