@@ -117,15 +117,16 @@ export function BenefitsSection() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <Link to="/contacto">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 h-12 rounded-xl group"
-            >
+          <Button
+            asChild
+            size="lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-8 h-12 rounded-xl group"
+          >
+            <Link to="/contacto">
               {t('benefits.scheduleCall')}
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </motion.div>
       </div>
     </Section>

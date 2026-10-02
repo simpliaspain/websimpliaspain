@@ -37,9 +37,19 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onKeyDown, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props} />;
+    // A link styled as a button (asChild around <a>/<Link>) keeps link
+    // semantics, but it looks like a button, so Space must work as it does on
+    // one; browsers only activate links on Enter.
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+      onKeyDown?.(event);
+      if (asChild && event.key === " " && !event.defaultPrevented && event.currentTarget instanceof HTMLAnchorElement) {
+        event.preventDefault();
+        event.currentTarget.click();
+      }
+    };
+    return <Comp className={cn(buttonVariants({ variant, size, className }))} ref={ref} onKeyDown={handleKeyDown} {...props} />;
   },
 );
 Button.displayName = "Button";

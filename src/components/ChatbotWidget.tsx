@@ -332,6 +332,7 @@ export function ChatbotWidget() {
                     size="icon"
                     onClick={sendMessage}
                     disabled={!input.trim() || isLoading}
+                    aria-label={t('chat.send')}
                     className="rounded-full w-10 h-10 flex-shrink-0 bg-primary hover:bg-primary/90"
                   >
                     {isLoading ? (

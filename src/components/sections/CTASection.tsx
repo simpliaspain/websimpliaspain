@@ -37,16 +37,17 @@ export function CTASection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link to="/contacto">
-              <Button 
-                size="lg" 
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-10 h-14 rounded-xl text-lg group"
-              >
+            <Button
+              asChild
+              size="lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-10 h-14 rounded-xl text-lg group"
+            >
+              <Link to="/contacto">
                 <Calendar className="mr-2 w-5 h-5" />
                 {t('cta.requestFreeConsult')}
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+              </Link>
+            </Button>
           </div>
 
           <p className="mt-6 text-sm text-muted-foreground">

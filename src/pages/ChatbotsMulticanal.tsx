@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { motion, AnimatePresence } from "framer-motion";
@@ -166,16 +167,17 @@ export default function ChatbotsMulticanal() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <a 
-                    href="https://calendly.com/simpliaspain/15min"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                  {/* The link IS the button (asChild): one element, one tab stop. */}
+                  <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <a
+                      href="https://calendly.com/simpliaspain/15min"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <Calendar className="w-5 h-5 mr-2" />
                       {t('chatbots.schedule')}
-                    </Button>
-                  </a>
+                    </a>
+                  </Button>
                   <Button 
                     size="lg" 
                     variant="outline" 
@@ -320,9 +322,13 @@ export default function ChatbotsMulticanal() {
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-2">{t('chatbots.readyCard')}</h3>
                   <p className="text-muted-foreground mb-6">{t('chatbots.readyCardDesc')}</p>
-                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
-                    {t('cta.requestDemo')}
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                  {/* Was a bare <Button> with no handler or link from the first
+                      commit: a silent no-op in both locales. */}
+                  <Button asChild className="bg-primary hover:bg-primary/90 text-primary-foreground w-full">
+                    <Link to="/contacto">
+                      {t('cta.requestDemo')}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
                   </Button>
                 </div>
               </motion.div>

@@ -24,6 +24,8 @@ const translations: Record<Language, Record<string, string>> = {
     'seo.privacy.description': 'Política de privacidad de Simplia Spain: responsable del tratamiento, datos que recopilamos, finalidad y tus derechos.',
     'seo.notFound.title': 'Página no encontrada | Simplia Spain',
     'seo.notFound.description': 'La página que buscas no existe.',
+    'notFound.message': 'Vaya, esta página no existe',
+    'notFound.back': 'Volver al inicio',
     // Navbar
     'nav.home': 'Inicio',
     'nav.method': 'Método',
@@ -185,6 +187,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Chat widget chrome
     'chat.open': 'Abrir chat',
     'chat.close': 'Cerrar chat',
+    'chat.send': 'Enviar mensaje',
     'chat.placeholder': 'Escribe tu mensaje...',
     
     // Chatbot
@@ -326,6 +329,8 @@ const translations: Record<Language, Record<string, string>> = {
     'seo.privacy.description': 'Simplia Spain privacy policy: data controller, the data we collect, its purpose and your rights.',
     'seo.notFound.title': 'Page not found | Simplia Spain',
     'seo.notFound.description': 'The page you are looking for does not exist.',
+    'notFound.message': 'Oops! Page not found',
+    'notFound.back': 'Return to Home',
     // Navbar
     'nav.home': 'Home',
     'nav.method': 'Method',
@@ -484,6 +489,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Chat widget chrome
     'chat.open': 'Open chat',
     'chat.close': 'Close chat',
+    'chat.send': 'Send message',
     'chat.placeholder': 'Type your message...',
     
     // Chatbot
