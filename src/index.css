@@ -27,12 +27,8 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 10%;
 
-    /* Primary - Blue (SimpliaSpain brand). 45% lightness (#0073E6), not
-       50% (#0080FF): the smallest step at the same hue and saturation where
-       white on it, and it on white, reach 4.5:1 (4.57). Same value as
-       --accent-foreground, so the site has one blue. Every light-palette
-       copy of the brand blue below follows it. */
-    --primary: 210 100% 45%;
+    /* Primary - Blue (SimpliaSpain brand) */
+    --primary: 210 100% 50%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary - Light gray */
@@ -51,7 +47,7 @@
 
     --border: 240 6% 90%;
     --input: 240 6% 90%;
-    --ring: 210 100% 45%;
+    --ring: 210 100% 50%;
 
     --radius: 1rem;
 
@@ -60,7 +56,7 @@
        tailwind green-500 still used by the unmigrated occurrences, so the
        migrated chip shows zero visual delta against them. */
     --service-chatbots: 142.09 70.56% 45.29%;
-    --service-agents: 210 100% 45%;
+    --service-agents: 210 100% 50%;
 
     /* Border for interactive surfaces that must clear 3:1. --input is far
        below that but is shared by every input and outline button site-wide,
@@ -68,24 +64,24 @@
     --border-interactive: 214 20% 52%;
 
     /* Custom tokens */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(200 100% 45%) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
     --gradient-hero: linear-gradient(180deg, hsl(210 100% 97%) 0%, hsl(0 0% 100%) 100%);
     --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
     
     /* Shadows */
-    --shadow-glow: 0 0 60px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 60px hsl(210 100% 50% / 0.15);
     --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.08);
     --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.05);
     
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 210 15% 10%;
-    --sidebar-primary: 210 100% 45%;
+    --sidebar-primary: 210 100% 50%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 210 20% 96%;
     --sidebar-accent-foreground: 210 15% 10%;
     --sidebar-border: 210 15% 90%;
-    --sidebar-ring: 210 100% 45%;
+    --sidebar-ring: 210 100% 50%;
   }
 
   .dark {
@@ -146,7 +142,7 @@
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(200 100% 45%) 100%);
+    background-image: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
   }
 
   .bg-gradient-hero {
@@ -158,16 +154,16 @@
   }
 
   .glow {
-    box-shadow: 0 0 60px hsl(var(--primary) / 0.2);
+    box-shadow: 0 0 60px hsl(210 100% 50% / 0.2);
   }
 
   .glow-sm {
-    box-shadow: 0 0 30px hsl(var(--primary) / 0.15);
+    box-shadow: 0 0 30px hsl(210 100% 50% / 0.15);
   }
 
   .text-italic-gradient {
     @apply italic;
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(200 100% 45%) 100%);
+    background: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -264,10 +260,10 @@
 /* Pulse glow animation */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+    box-shadow: 0 0 20px hsl(210 100% 50% / 0.3);
   }
   50% {
-    box-shadow: 0 0 40px hsl(var(--primary) / 0.5);
+    box-shadow: 0 0 40px hsl(210 100% 50% / 0.5);
   }
 }
 
