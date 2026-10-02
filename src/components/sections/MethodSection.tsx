@@ -60,7 +60,11 @@ export function MethodSection() {
           </h2>
         </motion.div>
 
-        {/* Steps Grid */}
+        {/* Steps Grid. Each card is a subgrid spanning five shared rows
+            (marker, title, description, icon, tags), so every section starts
+            at the same Y in every card whatever its copy runs to, in either
+            locale and at any width - no fixed heights. The card's own gap-y-0
+            keeps its internal spacing to the margins below. */}
         <div className="grid lg:grid-cols-3 gap-6">
           {steps.map((step, index) => (
             <motion.div
@@ -69,7 +73,7 @@ export function MethodSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group relative bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
+              className="group relative grid grid-rows-subgrid row-span-5 gap-y-0 bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
             >
               {/* Step indicator */}
               <div className="flex items-center justify-between mb-6">

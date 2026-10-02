@@ -52,7 +52,13 @@ export function BenefitsSection() {
           </h2>
         </motion.div>
 
-        {/* Comparison Grid */}
+        {/* Comparison Grid. Each column is a subgrid over seven shared rows
+            (heading + six items): the headings differ in size (a muted label
+            vs the wordmark) and items wrap differently per column, so without
+            shared rows the two lists drifted 5-21px apart and their icons did
+            not line up. The lists are display: contents so each <li> is a
+            row of the subgrid; role="list" keeps the list semantics that
+            display: contents can drop in some browsers. */}
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
           {/* Others Column */}
           <motion.div
@@ -60,10 +66,10 @@ export function BenefitsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="bg-card border border-border rounded-2xl p-8"
+            className="grid grid-rows-subgrid row-span-7 gap-y-0 bg-card border border-border rounded-2xl p-8"
           >
             <h3 className="text-lg font-semibold text-muted-foreground mb-6">{t('benefits.others')}</h3>
-            <ul className="space-y-4">
+            <ul role="list" className="contents space-y-4">
               {othersDownsides.map((item, index) => (
                 <li key={index} className="flex items-center gap-3 text-muted-foreground">
                   <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0">
@@ -81,13 +87,15 @@ export function BenefitsSection() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
             viewport={{ once: true }}
-            className="bg-card border-2 border-primary/30 rounded-2xl p-8 relative overflow-hidden"
+            className="grid grid-rows-subgrid row-span-7 gap-y-0 bg-card border-2 border-primary/30 rounded-2xl p-8 relative overflow-hidden"
           >
             {/* Glow effect */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
             
-            <div className="relative">
-              <div className="flex items-center gap-2 mb-6">
+            {/* display: contents so the heading and list are the subgrid's
+                items; each keeps `relative` to sit above the glow. */}
+            <div className="contents">
+              <div className="relative flex items-center gap-2 mb-6">
                 <div className="flex items-center gap-1 text-2xl font-bold">
                   <span className="text-foreground">Simplia</span>
                   <span className="text-primary">Spain</span>
@@ -95,9 +103,9 @@ export function BenefitsSection() {
                 </div>
               </div>
               
-              <ul className="space-y-4">
+              <ul role="list" className="contents space-y-4">
                 {ourAdvantages.map((item, index) => (
-                  <li key={index} className="flex items-center gap-3 text-foreground">
+                  <li key={index} className="relative flex items-center gap-3 text-foreground">
                     <div className="w-6 h-6 rounded-full bg-green-500/10 flex items-center justify-center flex-shrink-0">
                       <Check className="w-3 h-3 text-green-500" />
                     </div>
