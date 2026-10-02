@@ -59,6 +59,8 @@ export function ServicesSection() {
       bgColor: "bg-green-500/10",
       // No demo dialog: the video beside the card is the demo.
       demoText: null,
+      // Primary next step for this card: talk to us (/contacto).
+      contactText: t('services.contactCta'),
       link: "/chatbots-multicanal",
       badge: "popular" as const,
       key: "Chatbots Multicanal",
@@ -78,6 +80,7 @@ export function ServicesSection() {
       color: "text-primary",
       bgColor: "bg-primary/10",
       demoText: t('services.listenDemo'),
+      contactText: null,
       link: "/agentes-telefonicos",
       // In beta: labelled as such, neutrally, rather than as a promotion.
       badge: "beta" as const,
@@ -245,9 +248,21 @@ export function ServicesSection() {
                   ))}
                 </div>
 
-                {/* Demo & CTA buttons. Only a service with a demo dialog
-                    (demoText) gets the demo button. */}
+                {/* Actions. A card with a contact CTA leads with it: filled
+                    primary to /contacto, "Saber Más" demoted to outline - one
+                    clear next step, never two co-equal filled buttons. A card
+                    with a demo dialog (the unlisted phone card) keeps its
+                    demo + "Saber Más" pair. Both 44px tall; one row from sm,
+                    stacked full width below. */}
                 <div className="flex flex-col sm:flex-row gap-3">
+                  {service.contactText && (
+                    <Button asChild className="h-11 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+                      <Link to="/contacto">
+                        {service.contactText}
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Link>
+                    </Button>
+                  )}
                   {service.demoText && (
                     <Button
                       variant="outline"
@@ -261,14 +276,21 @@ export function ServicesSection() {
                       {service.demoText}
                     </Button>
                   )}
-                  {/* Alone it is the card's only action: auto width from sm, so it
-                      reads as a button rather than a bar across the card. */}
-                  <Button asChild className={`${service.demoText ? "flex-1" : "w-full sm:w-auto"} bg-primary hover:bg-primary/90 text-primary-foreground`}>
-                    <Link to={service.link}>
-                      {t('services.learnMore')}
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </Button>
+                  {service.contactText ? (
+                    <Button asChild variant="outline" className="h-11 w-full sm:w-auto border-primary/30 hover:bg-primary/10">
+                      <Link to={service.link}>
+                        {t('services.learnMore')}
+                        <ArrowRight className="w-4 h-4 ml-2 text-primary" />
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button asChild className="h-11 flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+                      <Link to={service.link}>
+                        {t('services.learnMore')}
+                        <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </motion.div>
             ))}

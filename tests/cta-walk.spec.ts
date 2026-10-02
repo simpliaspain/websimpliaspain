@@ -313,3 +313,35 @@ for (const lang of LOCALES) {
     }
   }
 }
+
+/**
+ *   CARD-CTA  The multichannel card has two actions with a clear hierarchy:
+ *             the contact CTA (filled, primary) and "Saber Más" (outline,
+ *             secondary). Both are 44px tall and navigate client-side to the
+ *             right place in both locales.
+ */
+for (const lang of LOCALES) {
+  test(`CARD-CTA: the service card's contact and learn-more actions (${lang})`, async ({ browser }) => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await setup(context, lang);
+    const page = await context.newPage();
+    const names = lang === "es" ? { contact: "Hablemos de tu caso", more: "Saber Más" } : { contact: "Let's talk about your case", more: "Learn More" };
+    for (const [name, path] of [[names.contact, "/contacto"], [names.more, "/chatbots-multicanal"]] as const) {
+      await load(page, "/");
+      await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
+      const link = page.locator("#servicios").getByRole("link", { name, exact: true });
+      await link.scrollIntoViewIfNeeded();
+      const box = await link.boundingBox();
+      expect(box?.height, `${name}: 44px hit area`).toBeGreaterThanOrEqual(44);
+      await link.click();
+      await page.waitForURL(`**${path}`);
+      expect(await page.evaluate(() => (window as unknown as { __noReload?: boolean }).__noReload), `${name}: client-side`).toBe(true);
+    }
+    await load(page, "/");
+    const bg = (name: string) => page.locator("#servicios").getByRole("link", { name, exact: true }).evaluate((el) => getComputedStyle(el).backgroundColor);
+    const primary = await page.evaluate(() => { const d = document.createElement("div"); d.className = "bg-primary"; document.body.append(d); const c = getComputedStyle(d).backgroundColor; d.remove(); return c; });
+    expect(await bg(names.contact), "contact CTA is the filled primary").toBe(primary);
+    expect(await bg(names.more), "learn more is not filled primary").not.toBe(primary);
+    await context.close();
+  });
+}

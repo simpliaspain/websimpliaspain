@@ -150,6 +150,7 @@ const translations: Record<Language, Record<string, string>> = {
     'services.beta': 'Fase beta',
     'services.chatbotsVideoLabel': 'Vídeo de demostración: un cliente pregunta por WhatsApp por una oficina, el agente de IA de Simplia responde en segundos y reserva la visita, la cita aparece en la agenda del equipo, el cliente recibe recordatorio y ubicación, y el panel muestra cómo avanza cada lead',
     'services.listenDemo': 'Escuchar Demo',
+    'services.contactCta': 'Hablemos de tu caso',
     'services.learnMore': 'Saber Más',
     
     // FAQ Section
@@ -453,6 +454,7 @@ const translations: Record<Language, Record<string, string>> = {
     'services.beta': 'Beta',
     'services.chatbotsVideoLabel': 'Demo video: a customer asks about an office on WhatsApp, the Simplia AI agent replies in seconds and books the visit, the appointment appears in the team calendar, the customer gets a reminder and the location, and the dashboard shows how each lead progresses',
     'services.listenDemo': 'Listen Demo',
+    'services.contactCta': 'Let\'s talk about your case',
     'services.learnMore': 'Learn More',
     
     // FAQ Section
