@@ -70,24 +70,23 @@ export function MethodSection() {
               viewport={{ once: true }}
               className="group relative grid grid-rows-subgrid row-span-5 gap-y-0 bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
             >
-              {/* Step indicator. The numeral leads the card: a filled
-                  primary disc, the same 48px as the icon tile beside it, so
-                  it is the heaviest mark in the row - heavier than the
-                  tinted tile and unlike the grey word-pills (tags). "Paso"
-                  is implied by the heading ("en 3 pasos") and kept for
-                  screen readers only. White on primary 4.57:1 (text); the
-                  disc on the card 4.57:1 (graphic, 3:1 needed). No rule
-                  joins the steps: the cards are bordered and stack below
-                  lg, and the subgrid already puts the three discs on one
-                  line. */}
+              {/* Step indicator */}
               <div className="flex items-center justify-between mb-6">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-xl font-bold tabular-nums text-primary-foreground">
-                  <span className="sr-only">{t('method.stepLabel')} </span>
-                  {index + 1}
-                </span>
                 <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <step.icon className="w-6 h-6 text-primary" aria-hidden="true" />
+                  <step.icon className="w-6 h-6 text-primary" />
                 </div>
+                {/* Step marker: sequence, not an attribute, so it does not
+                    share the tag pills' neutral treatment. The numeral leads,
+                    in an outlined ring. Text is accent-foreground (4.57:1 on
+                    the light card, 8.64:1 dark); the ring is primary, a
+                    graphic needing 3:1 (3.80 light, 5.70 dark). White on
+                    primary would be 3.80:1 and fail for this size. */}
+                <span className="flex items-center gap-2 text-accent-foreground">
+                  <span className="text-xs font-semibold uppercase tracking-wider">{t('method.stepLabel')}</span>
+                  <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary text-base font-bold tabular-nums">
+                    {index + 1}
+                  </span>
+                </span>
               </div>
 
               {/* Content */}
