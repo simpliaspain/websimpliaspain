@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageSquare, Phone, Sparkles, Play, ArrowRight, MessageCircle, Mic, User, Send, Pause, PhoneOff, Volume2 } from "lucide-react";
+import { MessageSquare, Phone, Sparkles, Play, ArrowRight, Mic, User, Pause, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import {
@@ -10,47 +10,10 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
-import waDemo400 from "@/assets/services/whatsapp-demo-400.jpg";
-import waDemo800 from "@/assets/services/whatsapp-demo-800.jpg";
-import waDemo1200 from "@/assets/services/whatsapp-demo-1200.jpg";
-import waDemo1600 from "@/assets/services/whatsapp-demo-1600.jpg";
-import waDemo400w from "@/assets/services/whatsapp-demo-400.webp";
-import waDemo800w from "@/assets/services/whatsapp-demo-800.webp";
-import waDemo1200w from "@/assets/services/whatsapp-demo-1200.webp";
-import waDemo1600w from "@/assets/services/whatsapp-demo-1600.webp";
-
-// Conversation photograph. Four tiers because the frame is mostly a phone
-// screenshot and the box crops it: at lg the box is 496x408 and object-cover
-// (height-fit) shows only 68% of the frame width, so the source must be
-// 408 * 16/9 = 725 CSS px wide there - 1450 device px on a 2x display. 1600
-// covers that; 1200 covers 1.5x desktops and 3x phones (342 * 3 = 1026); 800
-// covers 2x phones and 1x desktops; 400 covers 1x phones. WebP first because
-// the screen text is where JPEG's subsampling and ringing show: at the 1600
-// tier WebP q85 (104 KB) is cleaner on the screen region than JPEG q88
-// (196 KB). The JPEG tiers are the fallback for browsers without WebP.
-const WA_DEMO_JPG = `${waDemo400} 400w, ${waDemo800} 800w, ${waDemo1200} 1200w, ${waDemo1600} 1600w`;
-const WA_DEMO_WEBP = `${waDemo400w} 400w, ${waDemo800w} 800w, ${waDemo1200w} 1200w, ${waDemo1600w} 1600w`;
-// `sizes` must declare the source width the crop needs, not the box width:
-// from lg the image is height-fit into a 408px-tall box (both locales, every
-// lg width), so 408 * 16/9 = 725px; below lg it is full width at 16:9 inside
-// the 24px page padding.
-const WA_DEMO_SIZES = "(min-width: 1024px) 725px, calc(100vw - 48px)";
+import demoVideo from "@/assets/services/simplia-demo-1024.mp4";
+import demoPoster from "@/assets/services/simplia-demo-poster-1024.webp";
+import { ServiceDemoVideo } from "@/components/ServiceDemoVideo";
 import { Section } from "@/components/Section";
-
-// Chat demo messages - office rental sector
-const chatMessages = [
-  { type: "bot", text: "¡Hola! 👋 Soy el asistente virtual de Espacios Pro. ¿En qué puedo ayudarte hoy?", delay: 0 },
-  { type: "user", text: "Hola, busco una oficina para alquilar en Madrid centro", delay: 1800 },
-  { type: "bot", text: "¡Perfecto! Tenemos oficinas disponibles en zonas premium como Salamanca, Chamberí y Retiro. ¿Para cuántas personas necesitas el espacio?", delay: 3500 },
-  { type: "user", text: "Somos un equipo de 4 personas", delay: 5500 },
-  { type: "bot", text: "Genial. Para equipos de 4 personas tenemos oficinas privadas desde 650€/mes, totalmente equipadas con internet de alta velocidad, sala de reuniones incluida y acceso 24/7. ¿Te gustaría agendar una visita?", delay: 7500 },
-  { type: "user", text: "Sí, me interesa ver las de Salamanca", delay: 10000 },
-  { type: "bot", text: "Perfecto. Para reservar tu visita necesito algunos datos. ¿Cuál es tu nombre?", delay: 11500 },
-  { type: "user", text: "Soy Carlos Martínez", delay: 13500 },
-  { type: "bot", text: "Gracias Carlos. ¿Y cuál es el mejor teléfono para contactarte?", delay: 15000 },
-  { type: "user", text: "Mi teléfono es 654 321 987", delay: 17000 },
-  { type: "bot", text: "¡Perfecto Carlos! ✅ He agendado tu visita a las oficinas de Salamanca. Un asesor te contactará al 654 321 987 para confirmar fecha y hora. ¡Gracias por confiar en Espacios Pro!", delay: 18500 },
-];
 
 // Phone demo transcript synced with trimmed audio (3 seconds removed from start)
 const phoneTranscript = [
@@ -81,13 +44,9 @@ export function ServicesSection() {
     event.preventDefault();
     demoTriggerRef.current?.focus();
   };
-  const [chatVisibleMessages, setChatVisibleMessages] = useState<number>(0);
-  const [userInput, setUserInput] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
   const [callTime, setCallTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTranscriptIndex, setCurrentTranscriptIndex] = useState(0);
-  const chatEndRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const services = [
@@ -98,14 +57,16 @@ export function ServicesSection() {
       badges: ["WhatsApp", "Instagram", "Telegram", "Web"],
       color: "text-green-500",
       bgColor: "bg-green-500/10",
-      demoText: t('services.watchDemo'),
+      // No demo dialog: the video beside the card is the demo.
+      demoText: null,
       link: "/chatbots-multicanal",
       badge: "popular" as const,
       key: "Chatbots Multicanal",
       listed: true,
-      // Client-authorised screenshot of a real WhatsApp conversation with the
-      // agent (this image only; the client is not named anywhere in text).
-      visual: { src: waDemo800, srcSet: WA_DEMO_JPG, srcSetWebp: WA_DEMO_WEBP, sizes: WA_DEMO_SIZES, altKey: "services.chatbotsVisualAlt" },
+      // Product demo, 1024x768 H.264 (see ServiceDemoVideo for loading and
+      // playback rules). 1024 wide covers the 492px desktop box at 2x and a
+      // 342px phone at 3x.
+      visual: { video: demoVideo, poster: demoPoster, width: 1024, height: 768, labelKey: "services.chatbotsVideoLabel" },
     },
     {
       // Not on sale yet: kept here (and its demo dialog below) so it can be
@@ -126,56 +87,6 @@ export function ServicesSection() {
     },
   ];
   const listedServices = services.filter((s) => s.listed);
-  // React 18 does not know the camelCase prop (it warned at build time); the
-  // DOM attribute is lowercase. Spread so the TS types do not object.
-  const lowFetchPriority = { fetchpriority: "low" } as Record<string, string>;
-
-  // Chat demo animation. `demoOpen` holds the service's stable `key`, never
-  // its translated title - the title is what the button used to send, and
-  // it stopped matching the moment the service was renamed (and never
-  // matched in English). Every pending timer is cleared on close so a
-  // reopened demo starts clean instead of racing the previous run.
-  useEffect(() => {
-    if (demoOpen !== "Chatbots Multicanal") return;
-    setChatVisibleMessages(0);
-    setIsTyping(false);
-    const timers: number[] = [];
-    let messageIndex = 0;
-
-    const showNextMessage = () => {
-      if (messageIndex >= chatMessages.length) return;
-      const currentMessage = chatMessages[messageIndex];
-      const wait = messageIndex === 0 ? 500 : currentMessage.delay - (chatMessages[messageIndex - 1]?.delay || 0);
-      timers.push(window.setTimeout(() => {
-        // Show typing indicator before bot messages
-        if (currentMessage.type === "bot") {
-          setIsTyping(true);
-          timers.push(window.setTimeout(() => {
-            setIsTyping(false);
-            setChatVisibleMessages(prev => prev + 1);
-            messageIndex++;
-            showNextMessage();
-          }, 800));
-        } else {
-          setChatVisibleMessages(prev => prev + 1);
-          messageIndex++;
-          showNextMessage();
-        }
-      }, wait));
-    };
-
-    showNextMessage();
-    return () => {
-      timers.forEach((id) => window.clearTimeout(id));
-      setIsTyping(false);
-    };
-  }, [demoOpen]);
-
-  // Scroll to bottom of chat
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatVisibleMessages, isTyping]);
-
   // Update call timer from audio currentTime
   useEffect(() => {
     if (demoOpen === "Agentes Telefónicos IA" && isPlaying && audioRef.current) {
@@ -227,12 +138,6 @@ export function ServicesSection() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const handleSendMessage = () => {
-    if (userInput.trim()) {
-      setUserInput("");
-    }
-  };
-
   const togglePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -272,13 +177,14 @@ export function ServicesSection() {
               listed card sits centred at column width instead of orphaned in
               the left half; two cards fill the row exactly as before.
 
-              The conversation photograph is a sibling block at the same
-              column width as the cards, before them: from lg it sits to the
-              left of the (single) card, stretched to the card's height
-              (object-cover keeps the phone and the person; the edges of the
-              frame go); below lg it stacks on top at its natural 16:9. lg
-              rather than md because at 768 the card is ~536px tall and a
-              height-matched crop would keep only a third of the frame.
+              The demo video is a sibling block at the same column width as
+              the cards, before them: from lg it sits to the left of the
+              (single) card, below lg it stacks on top. It is 4:3 at every
+              width and never cropped - its frames carry headlines 80px and
+              dashboards 111px from the edges, and the phone mockups run off
+              the bottom - so the same full frame shows everywhere. The price
+              is that it no longer matches the card's height: from lg it is
+              centred beside it (372 vs 408px at 1280+, 348 vs 408 at 1024).
               Side-by-side *inside* a half-width card is impossible (the copy
               column's minimum content leaves 0-131px for an image), so the
               image lives here. With two listed cards this row no longer works
@@ -286,28 +192,15 @@ export function ServicesSection() {
               service and would push the second card to a new row. */}
           <div className="flex flex-wrap justify-center gap-8 max-w-5xl mx-auto">
             {listedServices.map((service) => service.visual && (
-              <figure
+              <ServiceDemoVideo
                 key={`${service.key}-visual`}
-                className="m-0 w-full lg:w-[calc(50%-1rem)] lg:self-stretch"
-              >
-                {/* display:contents so the img keeps the figure as its
-                    containing block (lg:h-full). */}
-                <picture className="contents">
-                  <source type="image/webp" srcSet={service.visual.srcSetWebp} sizes={service.visual.sizes} />
-                  <img
-                    src={service.visual.src}
-                    srcSet={service.visual.srcSet}
-                    sizes={service.visual.sizes}
-                    width={800}
-                    height={450}
-                    alt={t(service.visual.altKey)}
-                    loading="lazy"
-                    decoding="async"
-                    {...lowFetchPriority}
-                    className="aspect-video w-full rounded-3xl border-2 border-border object-cover object-center lg:aspect-auto lg:h-full"
-                  />
-                </picture>
-              </figure>
+                src={service.visual.video}
+                poster={service.visual.poster}
+                width={service.visual.width}
+                height={service.visual.height}
+                labelKey={service.visual.labelKey}
+                className="w-full lg:w-[calc(50%-1rem)] lg:self-center"
+              />
             ))}
             {listedServices.map((service, index) => (
               <motion.div
@@ -349,20 +242,25 @@ export function ServicesSection() {
                   ))}
                 </div>
 
-                {/* Demo & CTA buttons */}
+                {/* Demo & CTA buttons. Only a service with a demo dialog
+                    (demoText) gets the demo button. */}
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    variant="outline" 
-                    className="flex-1 group/btn border-primary/30 hover:bg-primary/10"
-                    onClick={(event) => {
-                      demoTriggerRef.current = event.currentTarget;
-                      setDemoOpen(service.key);
-                    }}
-                  >
-                    <Play className="w-4 h-4 mr-2 text-primary" />
-                    {service.demoText}
-                  </Button>
-                  <Button asChild className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground">
+                  {service.demoText && (
+                    <Button
+                      variant="outline"
+                      className="flex-1 group/btn border-primary/30 hover:bg-primary/10"
+                      onClick={(event) => {
+                        demoTriggerRef.current = event.currentTarget;
+                        setDemoOpen(service.key);
+                      }}
+                    >
+                      <Play className="w-4 h-4 mr-2 text-primary" />
+                      {service.demoText}
+                    </Button>
+                  )}
+                  {/* Alone it is the card's only action: auto width from sm, so it
+                      reads as a button rather than a bar across the card. */}
+                  <Button asChild className={`${service.demoText ? "flex-1" : "w-full sm:w-auto"} bg-primary hover:bg-primary/90 text-primary-foreground`}>
                     <Link to={service.link}>
                       {t('services.learnMore')}
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -374,98 +272,6 @@ export function ServicesSection() {
           </div>
         </div>
       </Section>
-
-      {/* Chatbot Demo Dialog - Interactive */}
-      <Dialog open={demoOpen === "Chatbots Multicanal"} onOpenChange={() => setDemoOpen(null)}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden" aria-describedby={undefined} onCloseAutoFocus={returnFocusToTrigger}>
-          <DialogTitle className="sr-only">{t('services.chatbotsTitle')} - {t('services.watchDemo')}</DialogTitle>
-          <div className="bg-gradient-to-b from-green-500 to-green-600 p-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center">
-                <MessageCircle className="w-6 h-6 text-green-500" />
-              </div>
-              <div className="flex-1">
-                <p className="font-semibold text-white">Simplia Bot</p>
-                <p className="text-xs text-green-100 flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-green-300 animate-pulse" />
-                  En línea
-                </p>
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 bg-secondary/30 min-h-[320px] max-h-[400px] overflow-y-auto">
-            <div className="space-y-3">
-              <AnimatePresence>
-                {chatMessages.slice(0, chatVisibleMessages).map((msg, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                    className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
-                  >
-                    {msg.type === "user" ? (
-                      <div className="bg-primary text-primary-foreground rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-[85%] shadow-sm">
-                        <p className="text-sm">{msg.text}</p>
-                      </div>
-                    ) : (
-                      <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-[85%] shadow-sm">
-                        <p className="text-sm text-foreground">{msg.text}</p>
-                      </div>
-                    )}
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              
-              {/* Typing indicator */}
-              {isTyping && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex justify-start"
-                >
-                  <div className="bg-card border border-border rounded-2xl rounded-tl-sm px-4 py-3">
-                    <div className="flex gap-1">
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-              <div ref={chatEndRef} />
-            </div>
-          </div>
-
-          {/* Professional demo footer - no input field */}
-          <div className="p-4 bg-background border-t border-border">
-            <div className="text-center space-y-3">
-              <p className="text-sm text-muted-foreground">
-                {t('services.demoAuto')}
-              </p>
-              <div className="flex flex-wrap justify-center gap-2">
-                <span className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                  WhatsApp
-                </span>
-                <span className="px-3 py-1.5 bg-pink-100 text-pink-700 rounded-full text-xs font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-pink-500" />
-                  Instagram
-                </span>
-                <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                  Telegram
-                </span>
-                <span className="px-3 py-1.5 bg-primary/10 text-primary rounded-full text-xs font-medium flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                  Web
-                </span>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Phone Agent Demo Dialog - Real Audio */}
       <Dialog open={demoOpen === "Agentes Telefónicos IA"} onOpenChange={() => setDemoOpen(null)}>

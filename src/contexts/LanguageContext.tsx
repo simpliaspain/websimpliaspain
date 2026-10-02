@@ -145,11 +145,9 @@ const translations: Record<Language, Record<string, string>> = {
     'services.agentsDesc': 'Nunca pierdas una llamada. Agentes virtuales que atienden, registran información, agenda citas y transfieren a agentes humanos cuando es necesario.',
     'services.popular': 'Popular',
     'services.beta': 'Fase beta',
-    'services.chatbotsVisualAlt': 'Móvil en mano con una conversación de WhatsApp: una persona pregunta por oficinas en alquiler en la zona de Gran Vía y el agente de IA responde con las opciones disponibles y ofrece enviar el listado o que llame un asesor',
-    'services.watchDemo': 'Ver Demo en Acción',
+    'services.chatbotsVideoLabel': 'Vídeo de demostración: un cliente pregunta por WhatsApp por una oficina, el agente de IA de Simplia responde en segundos y reserva la visita, la cita aparece en la agenda del equipo, el cliente recibe recordatorio y ubicación, y el panel muestra cómo avanza cada lead',
     'services.listenDemo': 'Escuchar Demo',
     'services.learnMore': 'Saber Más',
-    'services.demoAuto': 'Esta es una demostración automatizada',
     
     // FAQ Section
     'faq.badge': 'FAQ',
@@ -446,11 +444,9 @@ const translations: Record<Language, Record<string, string>> = {
     'services.agentsDesc': 'Never miss a call. Virtual agents that answer, record information, schedule appointments and transfer to human agents when necessary.',
     'services.popular': 'Popular',
     'services.beta': 'Beta',
-    'services.chatbotsVisualAlt': 'Phone in hand showing a WhatsApp conversation: a person asks about offices to rent in the Gran Vía area and the AI agent replies with the available options and offers to send the list or have an advisor call',
-    'services.watchDemo': 'Watch Demo',
+    'services.chatbotsVideoLabel': 'Demo video: a customer asks about an office on WhatsApp, the Simplia AI agent replies in seconds and books the visit, the appointment appears in the team calendar, the customer gets a reminder and the location, and the dashboard shows how each lead progresses',
     'services.listenDemo': 'Listen Demo',
     'services.learnMore': 'Learn More',
-    'services.demoAuto': 'This is an automated demonstration',
     
     // FAQ Section
     'faq.badge': 'FAQ',

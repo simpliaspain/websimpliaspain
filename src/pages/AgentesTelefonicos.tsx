@@ -21,6 +21,7 @@ import { FAQSection } from "@/components/sections/FAQSection";
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
@@ -48,6 +49,13 @@ const transcriptTimestamps = [0, 8, 17, 31, 35, 51, 59, 81, 95, 105, 114];
 export default function AgentesTelefonicos() {
   const { t } = useLanguage();
   const [demoOpen, setDemoOpen] = useState(false);
+  // The dialog is not opened through a Radix Trigger, so Radix cannot know
+  // where to send focus on close; hand it back to the button that opened it.
+  const demoTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const returnFocusToTrigger = (event: Event) => {
+    event.preventDefault();
+    demoTriggerRef.current?.focus();
+  };
   const [callTime, setCallTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTranscriptIndex, setCurrentTranscriptIndex] = useState(0);
@@ -229,6 +237,7 @@ export default function AgentesTelefonicos() {
                     size="lg" 
                     variant="outline" 
                     className="border-primary/30"
+                    ref={demoTriggerRef}
                     onClick={() => setDemoOpen(true)}
                   >
                     <Play className="w-5 h-5 mr-2" />
@@ -462,7 +471,8 @@ export default function AgentesTelefonicos() {
 
       {/* Phone Agent Demo Dialog with Real Audio */}
       <Dialog open={demoOpen} onOpenChange={setDemoOpen}>
-        <DialogContent className="sm:max-w-md p-0 overflow-hidden">
+        <DialogContent className="sm:max-w-md p-0 overflow-hidden" aria-describedby={undefined} onCloseAutoFocus={returnFocusToTrigger}>
+          <DialogTitle className="sr-only">{t('services.agentsTitle')} - {t('agents.listenDemo')}</DialogTitle>
           {/* Hidden audio element */}
           <audio 
             ref={audioRef} 

@@ -1,8 +1,16 @@
 /**
  * Service demo dialog.
  *
+ * Target: the phone agents demo on /agentes-telefonicos. The home page no
+ * longer has a demo dialog (the multichannel card's demo is now the inline
+ * video, guarded by demo-video.spec.ts) and its phone agents card is
+ * unlisted, so this page's dialog is the one a reader can reach. It is the
+ * same Radix dialog and the same shared scroll lock, and it carried the same
+ * two bugs until they were fixed here as well: no dialog title, and focus
+ * dropped to <body> on close instead of returning to the trigger.
+ *
  *   DEMO-1
- *     The "Ver Demo en Acción" button on the services card opened nothing.
+ *     The "Ver Demo en Acción" button on the home services card opened nothing.
  *     The click handler set the open state to the card's *translated title*
  *     while the dialog compared it against a fixed key: the moment the title
  *     was renamed (and in English from day one) the two never matched again.
@@ -39,13 +47,16 @@ const bodyLock = () => ({
   position: document.body.style.position || "(unset)",
 });
 
+const PAGE = "/agentes-telefonicos";
+const demoTrigger = (page: Page) => page.locator("main button", { hasText: /Escuchar Demo/ }).first();
+
 test.describe("service demo dialog", () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 
   test("DEMO-1: the demo trigger opens a dialog, Escape closes it and focus returns", async ({ page }) => {
     await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#servicios button", { hasText: /demo/i }).first();
+    await open(page, PAGE);
+    const trigger = demoTrigger(page);
     await trigger.scrollIntoViewIfNeeded();
     await trigger.click();
 
@@ -66,22 +77,21 @@ test.describe("service demo dialog", () => {
 
   test("JUMP-1: opening and closing the dialog does not move the page", async ({ page }) => {
     await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#servicios button", { hasText: /demo/i }).first();
+    await open(page, PAGE);
+    const trigger = demoTrigger(page);
     await trigger.scrollIntoViewIfNeeded();
     // A known offset, settled: scroll-behavior is smooth on the page.
     const start = await page.evaluate(() => { window.scrollTo({ top: window.scrollY + 120, behavior: "instant" as ScrollBehavior }); return window.scrollY; });
     await page.waitForFunction((y) => window.scrollY === y, start);
-    // The card animates in on scroll (whileInView y: 30 -> 0); measure only
-    // once its position has stopped changing, or the entrance animation
-    // itself would register as a jump.
-    await page.waitForFunction(() => {
-      const card = document.querySelector("#servicios button")?.closest("[style]") as HTMLElement | null;
-      const t = card ? getComputedStyle(card).transform : "none";
-      return t === "none" || t === "matrix(1, 0, 0, 1, 0, 0)";
-    });
-    await page.waitForTimeout(300);
-    const before = await trigger.evaluate((el) => Math.round(el.getBoundingClientRect().top));
+    // The hero animates in; measure only once the trigger has stopped
+    // moving, or the entrance animation itself would register as a jump.
+    let before = await trigger.evaluate((el) => Math.round(el.getBoundingClientRect().top));
+    for (let settled = 0; settled < 3; ) {
+      await page.waitForTimeout(150);
+      const now = await trigger.evaluate((el) => Math.round(el.getBoundingClientRect().top));
+      settled = now === before ? settled + 1 : 0;
+      before = now;
+    }
 
     await trigger.click();
     await expect(page.locator("[role='dialog']")).toBeVisible({ timeout: 2000 });
@@ -98,8 +108,8 @@ test.describe("service demo dialog", () => {
 
   test("DEMO-1: keyboard activation (Enter and Space) opens it too", async ({ page }) => {
     await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#servicios button", { hasText: /demo/i }).first();
+    await open(page, PAGE);
+    const trigger = demoTrigger(page);
     for (const key of ["Enter", "Space"]) {
       await trigger.focus();
       await page.keyboard.press(key);
