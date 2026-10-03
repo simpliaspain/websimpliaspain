@@ -55,8 +55,8 @@ export function MethodSection() {
           </h2>
         </motion.div>
 
-        {/* Steps Grid. Each card is a subgrid spanning five shared rows
-            (marker, title, description, icon, tags), so every section starts
+        {/* Steps Grid. Each card is a subgrid spanning four shared rows
+            (marker, title, description, tags), so every section starts
             at the same Y in every card whatever its copy runs to, in either
             locale and at any width - no fixed heights. The card's own gap-y-0
             keeps its internal spacing to the margins below. */}
@@ -68,13 +68,13 @@ export function MethodSection() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="group relative grid grid-rows-subgrid row-span-5 gap-y-0 bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
+              className="group relative grid grid-rows-subgrid row-span-4 gap-y-0 bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
             >
-              {/* Step indicator */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                  <step.icon className="w-6 h-6 text-primary" />
-                </div>
+              {/* Step indicator. No icon tile: a pastel rounded square with an
+                  icon above each heading is a stock AI-landing-page marker,
+                  so it was removed; the step marker now leads the row on its
+                  own, left-aligned where the eye starts each card. */}
+              <div className="flex items-center mb-6">
                 {/* Step marker: sequence, not an attribute, so it does not
                     share the tag pills' neutral treatment. The numeral leads,
                     in an outlined ring. Text is accent-foreground (4.57:1 on
@@ -94,18 +94,6 @@ export function MethodSection() {
               <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                 {step.description}
               </p>
-
-              {/* Platforms */}
-              <div className="flex items-center gap-2 mb-4">
-                {step.platforms.map((platform, i) => (
-                  <div 
-                    key={i}
-                    className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center"
-                  >
-                    <platform.icon className={`w-4 h-4 ${platform.color}`} />
-                  </div>
-                ))}
-              </div>
 
               {/* Badges */}
               <div className="flex flex-wrap gap-2">
