@@ -37,8 +37,12 @@ const Index = () => {
       <main>
         <HeroSection />
         <MethodSection />
-        <BenefitsSection />
+        {/* Services (with the demo video) before Benefits, so the video is
+            seen earlier. ServiceDemoVideo still fetches nothing on load:
+            the poster attaches within 800px of the viewport and the video
+            once a quarter of the block is on screen. */}
         <ServicesSection />
+        <BenefitsSection />
         <FAQSection hidePhoneAgents />
         {/* Press coverage and the tooling logos are a pair (the marquee's
             `tight` spacing belongs to the press section above it). They sit
