@@ -1,6 +1,6 @@
 {
-  "_client-BfRgwRna.js": {
-    "file": "assets/client-BfRgwRna.js",
+  "_client-B7cWjJf5.js": {
+    "file": "assets/client-B7cWjJf5.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,20 +8,20 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-DgxMrXoI.js",
+    "file": "assets/app-DEnvwAIm.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-BfRgwRna.js",
-      "_client-BfRgwRna.js"
+      "_client-B7cWjJf5.js",
+      "_client-B7cWjJf5.js"
     ],
     "css": [
-      "assets/app-MEZf8x0z.css"
+      "assets/app-CyB7GomE.css"
     ],
     "assets": [
-      "assets/simplia-demo-1024-DesuuYu1.mp4",
-      "assets/simplia-demo-poster-1024-Dmip3UZ6.webp",
+      "assets/simplia-demo-1024-BmgMIDe_.mp4",
+      "assets/simplia-demo-poster-1024-DH3EJkm8.webp",
       "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
       "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
       "assets/logo-mn24h-2x-M8oDfTNa.png"
@@ -40,11 +40,11 @@
     "src": "src/assets/press/ondacero-entrevista-720.jpg"
   },
   "src/assets/services/simplia-demo-1024.mp4": {
-    "file": "assets/simplia-demo-1024-DesuuYu1.mp4",
+    "file": "assets/simplia-demo-1024-BmgMIDe_.mp4",
     "src": "src/assets/services/simplia-demo-1024.mp4"
   },
   "src/assets/services/simplia-demo-poster-1024.webp": {
-    "file": "assets/simplia-demo-poster-1024-Dmip3UZ6.webp",
+    "file": "assets/simplia-demo-poster-1024-DH3EJkm8.webp",
     "src": "src/assets/services/simplia-demo-poster-1024.webp"
   }
 }
