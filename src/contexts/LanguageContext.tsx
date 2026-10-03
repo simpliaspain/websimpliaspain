@@ -190,6 +190,8 @@ const translations: Record<Language, Record<string, string>> = {
     'chat.open': 'Abrir chat',
     'chat.close': 'Cerrar chat',
     'chat.send': 'Enviar mensaje',
+    'chat.prompt': '¿En qué puedo ayudarte?',
+    'chat.promptDismiss': 'Cerrar este mensaje',
     'chat.placeholder': 'Escribe tu mensaje...',
     
     // Chatbot
@@ -494,6 +496,8 @@ const translations: Record<Language, Record<string, string>> = {
     'chat.open': 'Open chat',
     'chat.close': 'Close chat',
     'chat.send': 'Send message',
+    'chat.prompt': 'How can I help you?',
+    'chat.promptDismiss': 'Dismiss this message',
     'chat.placeholder': 'Type your message...',
     
     // Chatbot

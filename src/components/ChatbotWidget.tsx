@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ChatPrompt } from "@/components/ChatPrompt";
 
 interface Message {
   role: "user" | "assistant";
@@ -177,6 +178,9 @@ export function ChatbotWidget() {
 
   return (
     <>
+      {/* First-visit nudge; sits just before the button in the tab order. */}
+      <ChatPrompt chatOpen={isOpen} onOpenChat={() => setIsOpen(true)} />
+
       {/* Floating Button - DESKTOP: fixed bottom-right, MOBILE: same but will be hidden when open */}
       <AnimatePresence>
         {!isOpen && (

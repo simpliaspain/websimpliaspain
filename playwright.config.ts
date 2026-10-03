@@ -14,6 +14,13 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:4173",
     trace: "on-first-retry",
+    // The first-visit chat prompt (ChatPrompt) appears after 8s on a page.
+    // Every suite starts as a returning visitor so it never covers controls
+    // or adds DOM changes mid-test; chat-prompt.spec.ts clears this.
+    storageState: {
+      cookies: [],
+      origins: [{ origin: "http://localhost:4173", localStorage: [{ name: "chatPromptSeen", value: "1" }] }],
+    },
   },
   webServer: {
     command: "npm run build && npm run preview",
