@@ -253,10 +253,16 @@ export function ServicesSection() {
                     clear next step, never two co-equal filled buttons. A card
                     with a demo dialog (the unlisted phone card) keeps its
                     demo + "Saber Más" pair. Both 44px tall; one row from sm,
-                    stacked full width below. */}
+                    stacked full width below.
+
+                    Both grow 3% on hover and on keyboard focus. transform, not
+                    size: the card is height-matched to the video frame, and a
+                    transform never changes layout, so the frame cannot move.
+                    Only transform transitions (200ms ease-out); none under
+                    reduced motion. */}
                 <div className="flex flex-col sm:flex-row gap-3">
                   {service.contactText && (
-                    <Button asChild className="h-11 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground">
+                    <Button asChild className="h-11 w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground transition-transform duration-200 ease-out hover:scale-[1.03] focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none motion-reduce:hover:scale-100 motion-reduce:focus-visible:scale-100">
                       <Link to="/contacto">
                         {service.contactText}
                         <ArrowRight className="w-4 h-4 ml-2" />
@@ -277,7 +283,7 @@ export function ServicesSection() {
                     </Button>
                   )}
                   {service.contactText ? (
-                    <Button asChild variant="outline" className="h-11 w-full sm:w-auto border-primary/30 hover:bg-primary/10">
+                    <Button asChild variant="outline" className="h-11 w-full sm:w-auto border-primary/30 hover:bg-primary/10 transition-transform duration-200 ease-out hover:scale-[1.03] focus-visible:scale-[1.03] motion-reduce:transition-none motion-reduce:transform-none motion-reduce:hover:scale-100 motion-reduce:focus-visible:scale-100">
                       <Link to={service.link}>
                         {t('services.learnMore')}
                         <ArrowRight className="w-4 h-4 ml-2 text-primary" />
