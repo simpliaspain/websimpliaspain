@@ -1,6 +1,6 @@
 {
-  "_client-B7cWjJf5.js": {
-    "file": "assets/client-B7cWjJf5.js",
+  "_client-qvMrhmnc.js": {
+    "file": "assets/client-qvMrhmnc.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,16 +8,16 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-DEnvwAIm.js",
+    "file": "assets/app-C9bnO3YQ.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-B7cWjJf5.js",
-      "_client-B7cWjJf5.js"
+      "_client-qvMrhmnc.js",
+      "_client-qvMrhmnc.js"
     ],
     "css": [
-      "assets/app-CyB7GomE.css"
+      "assets/app-Dns3qvbQ.css"
     ],
     "assets": [
       "assets/simplia-demo-1024-BmgMIDe_.mp4",

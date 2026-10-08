@@ -14,7 +14,7 @@
     "/assets/logo-mn24h-2x-M8oDfTNa.png"
   ],
   "\u0000/home/runner/work/websimpliaspain/websimpliaspain/node_modules/react-dom/client.js?commonjs-exports": [
-    "/assets/client-B7cWjJf5.js"
+    "/assets/client-qvMrhmnc.js"
   ],
   "\u0000/home/runner/work/websimpliaspain/websimpliaspain/node_modules/react-dom/index.js?commonjs-module": [
     "/assets/simplia-demo-1024-BmgMIDe_.mp4",
@@ -2558,7 +2558,7 @@
     "/assets/logo-mn24h-2x-M8oDfTNa.png"
   ],
   "node_modules/react-dom/client.js": [
-    "/assets/client-B7cWjJf5.js"
+    "/assets/client-qvMrhmnc.js"
   ],
   "node_modules/react-dom/index.js": [
     "/assets/simplia-demo-1024-BmgMIDe_.mp4",
@@ -3331,6 +3331,13 @@
     "/assets/logo-mn24h-2x-M8oDfTNa.png"
   ],
   "src/lib/scroll-lock.ts": [
+    "/assets/simplia-demo-1024-BmgMIDe_.mp4",
+    "/assets/simplia-demo-poster-1024-DH3EJkm8.webp",
+    "/assets/ondacero-entrevista-720-CQSMlvkH.jpg",
+    "/assets/ondacero-entrevista-1440-nmKLPta1.jpg",
+    "/assets/logo-mn24h-2x-M8oDfTNa.png"
+  ],
+  "src/lib/scroll.ts": [
     "/assets/simplia-demo-1024-BmgMIDe_.mp4",
     "/assets/simplia-demo-poster-1024-DH3EJkm8.webp",
     "/assets/ondacero-entrevista-720-CQSMlvkH.jpg",
