@@ -70,23 +70,15 @@ export function MethodSection() {
               viewport={{ once: true }}
               className="group relative grid grid-rows-subgrid row-span-4 gap-y-0 bg-card border border-border rounded-2xl p-6 hover:border-primary/30 transition-all duration-200 overflow-hidden hover:scale-[1.02] hover:shadow-lg"
             >
-              {/* Step indicator. No icon tile: a pastel rounded square with an
-                  icon above each heading is a stock AI-landing-page marker,
-                  so it was removed; the step marker now leads the row on its
-                  own, left-aligned where the eye starts each card. */}
-              <div className="flex items-center mb-6">
-                {/* Step marker: sequence, not an attribute, so it does not
-                    share the tag pills' neutral treatment. The numeral leads,
-                    in an outlined ring. Text is accent-foreground (4.57:1 on
-                    the light card, 8.64:1 dark); the ring is primary, a
-                    graphic needing 3:1 (3.80 light, 5.70 dark). White on
-                    primary would be 3.80:1 and fail for this size. */}
-                <span className="flex items-center gap-2 text-accent-foreground">
-                  <span className="text-xs font-semibold uppercase tracking-wider">{t('method.stepLabel')}</span>
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary text-base font-bold tabular-nums">
-                    {index + 1}
-                  </span>
-                </span>
+              {/* Step numeral: editorial numbering, not a badge. Zero-padded
+                  so it reads as a series even on one card; no ring, no
+                  container, no "PASO" - the numeral and its position carry
+                  the sequence. 36px bold brand blue (text-4xl, the site's
+                  scale): large text, which needs 3:1, and --primary on the
+                  card is 3.80:1. Screen readers hear "Paso 1", not "01". */}
+              <div className="mb-3 text-4xl font-bold leading-none tabular-nums text-primary">
+                <span className="sr-only">{t('method.stepLabel')} {index + 1}</span>
+                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
               </div>
 
               {/* Content */}
