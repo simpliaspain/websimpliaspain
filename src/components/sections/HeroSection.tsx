@@ -10,6 +10,7 @@ import metaLogo from "@/assets/logos/meta.svg";
 import microsoftLogo from "@/assets/logos/microsoft.svg";
 import googleLogo from "@/assets/logos/google.svg";
 import { Section } from "@/components/Section";
+import { scrollToElement } from "@/lib/scroll";
 
 const heroLogos = [
   { name: "OpenAI", logo: openaiLogo },
@@ -23,11 +24,7 @@ export function HeroSection() {
 
   const scrollToPartners = () => {
     const partnersSection = document.getElementById('partners');
-    if (partnersSection) {
-      const navbarHeight = 80;
-      const elementPosition = partnersSection.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: elementPosition - navbarHeight, behavior: 'smooth' });
-    }
+    if (partnersSection) scrollToElement(partnersSection);
   };
 
   return (

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
+import { ArrowUp } from "lucide-react";
+import { scrollToElement } from "@/lib/scroll";
 
 // Import SVG logos
 import zapierLogo from "@/assets/logos/zapier.svg";
@@ -135,6 +137,28 @@ export function LogoMarquee() {
             );
           })}
         </div>
+      </div>
+
+      {/* The caption above labels the logos; this is a separate action
+          below them: from the tools to what is built with them. A real
+          in-page link (works without JS), styled with the caption's
+          restraint. It centres the demo video below the header via the
+          site's one jump helper (instant under reduced motion). Text is
+          foreground on background; the arrow (primary) is a graphic. */}
+      <div className="container mt-6 flex justify-center">
+        <a
+          href="#servicios"
+          onClick={(event) => {
+            const target = document.querySelector<HTMLElement>("#servicios figure") ?? document.getElementById("servicios");
+            if (!target) return;
+            event.preventDefault();
+            scrollToElement(target, "center");
+          }}
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
+        >
+          {t('partners.seeInAction')}
+          <ArrowUp className="h-3.5 w-3.5 shrink-0 text-primary" aria-hidden="true" />
+        </a>
       </div>
     </Section>
   );
