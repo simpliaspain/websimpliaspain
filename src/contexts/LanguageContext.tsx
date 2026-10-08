@@ -74,6 +74,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.collaborating': 'Con tecnología de las mejores empresas',
     'hero.poweredBy': 'Con tecnología de',
     'hero.poweredByAria': 'Ver las tecnologías que utilizamos',
+    'hero.seeInAction': 'Ver en acción',
     'hero.available': 'DISPONIBLE',
     'hero.strategyCall': 'Llamada de Estrategia (15 mins)',
 
@@ -381,6 +382,7 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.collaborating': 'Powered by the best technology',
     'hero.poweredBy': 'Powered by',
     'hero.poweredByAria': 'See the technologies we use',
+    'hero.seeInAction': 'See it in action',
     'hero.available': 'AVAILABLE',
     'hero.strategyCall': 'Strategy Call (15 mins)',
 

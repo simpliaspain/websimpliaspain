@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Play } from "lucide-react";
 import TrustBadge from "@/components/TrustBadge";
 import robertoProfile from "@/assets/roberto-profile-2026.jpg";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -75,13 +76,12 @@ export function HeroSection() {
             {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.h1>
 
-          {/* The conversion CTA and the supporting technology line. They are no
-              longer a matched pair, so no equal-height grid: the CTA keeps the
-              TrustBadge shell and the technology line is plain inline content.
-              DOM order is CTA first, which is the mobile order - the action
-              before the evidence. The bottom margin below sm keeps the block
-              clear of the floating chat widget, which occupies the lower-right
-              84px of the viewport (bottom-5 offset + h-16 button). */}
+          {/* Two siblings in one TrustBadge shell: watch the demo and book a
+              call. DOM order is the booking badge first, which is the mobile
+              order; from sm the watch link sits first (left). The bottom
+              margin below sm keeps the block clear of the floating chat
+              widget, which occupies the lower-right 84px of the viewport
+              (bottom-5 offset + h-16 button). */}
           <motion.div
             initial={false}
             animate={{ opacity: 1, y: 0 }}
@@ -110,32 +110,31 @@ export function HeroSection() {
               </a>
             </TrustBadge>
 
-            {/* Technology line - a caption, not a card. No shell, sits straight
-                on the hero gradient. py-3 buys the 44px hit area without adding
-                visible bulk. */}
-            <button
-              type="button"
-              onClick={scrollToPartners}
-              aria-label={t('hero.poweredByAria')}
-              className="group flex shrink-0 items-center justify-center gap-3 rounded-xl px-2 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:order-first"
-            >
-              <span className="text-xs font-medium text-muted-foreground sm:text-sm">
-                {t('hero.poweredBy')}
-              </span>
-              <span className="flex items-center gap-3">
-                {/* All four fit at 320px: measured 243px (es) / 208px (en)
-                    inside 272px of available width, no wrap, no overflow. */}
-                {heroLogos.map((item) => (
-                  <img
-                    key={item.name}
-                    src={item.logo}
-                    alt=""
-                    aria-hidden="true"
-                    className="h-5 w-auto object-contain grayscale brightness-0 opacity-60 transition-opacity duration-300 group-hover:opacity-90 dark:invert motion-reduce:transition-none"
-                  />
-                ))}
-              </span>
-            </button>
+            {/* Watch the demo: an in-page link to the services section that
+                centres the autoplaying video below the header (the site's one
+                jump helper; instant under reduced motion). Same TrustBadge
+                shell as the booking badge, content only - a play glyph where
+                the badge has its photograph. The wrapper, not the shell, takes
+                the ordering and width classes, so TrustBadge keeps its
+                no-className guarantee. */}
+            <div className="w-full sm:order-first sm:w-auto">
+              <TrustBadge asChild>
+                <a
+                  href="#servicios"
+                  onClick={(event) => {
+                    const target = document.querySelector<HTMLElement>("#servicios figure") ?? document.getElementById("servicios");
+                    if (!target) return;
+                    event.preventDefault();
+                    scrollToElement(target, "center");
+                  }}
+                >
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10" aria-hidden="true">
+                    <Play className="h-4 w-4 translate-x-px fill-primary text-primary" />
+                  </span>
+                  <span className="text-sm font-semibold">{t('hero.seeInAction')}</span>
+                </a>
+              </TrustBadge>
+            </div>
           </motion.div>
         </div>
       </div>

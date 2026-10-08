@@ -241,8 +241,11 @@ async function walk(page: Page, route: string, lang: string, scope: "page" | "me
     results.push({ ...item, route, lang, scope, ...r });
     if (REPORT) console.log(JSON.stringify({ route, lang, scope, region: item.region, tag: item.tag, name: item.name, href: item.href, target: item.target, effect: r.effect, detail: r.detail }));
     // Language toggle flips the locale; anything that navigated or opened
-    // something is reset with a fresh load.
-    dirty = STRONG.includes(r.effect) || r.effect === "none" || /language|idioma|english|español/i.test(item.name) || scope !== "page" || !(await clean(page, route));
+    // something is reset with a fresh load. So is a scroll: a jump can bring
+    // the demo video into view, it autoplays, and its control relabels
+    // itself ("Reproducir" -> "Pausar"), so it could no longer be found by
+    // the name it was inventoried under.
+    dirty = STRONG.includes(r.effect) || r.effect === "none" || r.effect === "scroll" || /language|idioma|english|español/i.test(item.name) || scope !== "page" || !(await clean(page, route));
   }
   return results;
 }
