@@ -222,7 +222,7 @@ export default function AgentesTelefonicos() {
                   {/* The link IS the button (asChild): one element, one tab stop. */}
                   <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     <a
-                      href="https://calendly.com/simpliaspain/15min"
+                      href="https://reservas.simpliaspain.com/simpliaspain/llamadaestrategia"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

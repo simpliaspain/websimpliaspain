@@ -88,10 +88,10 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mx-auto mb-24 flex w-full max-w-sm flex-col items-center gap-4 sm:mb-0 sm:max-w-2xl sm:flex-row sm:justify-center sm:gap-6"
           >
-            {/* Strategy call - opens Calendly. Unchanged. */}
+            {/* Strategy call - opens the 15-minute booking page (Cal.com). */}
             <TrustBadge asChild>
               <a
-                href="https://calendly.com/simpliaspain/15min"
+                href="https://reservas.simpliaspain.com/simpliaspain/llamadaestrategia"
                 target="_blank"
                 rel="noopener noreferrer"
               >
