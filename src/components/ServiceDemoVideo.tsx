@@ -42,13 +42,18 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
   const userPaused = useRef(false);
   const playWhenAttached = useRef(false);
 
+  // A rejected play() (autoplay blocked, or interrupted by a pause) means
+  // the element did not start; mirror what it actually is rather than
+  // assuming, so the control's label can never disagree with playback.
+  const syncFromElement = () => setPlaying(!(videoRef.current?.paused ?? true));
+
   const play = () => {
     if (!attached) {
       playWhenAttached.current = true;
       setAttached(true);
       return;
     }
-    videoRef.current?.play().catch(() => setPlaying(false));
+    videoRef.current?.play().catch(syncFromElement);
   };
 
   useEffect(() => {
@@ -62,9 +67,15 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
       setNear(true);
       return;
     }
+    // Observer callbacks can carry several entries for the same element when
+    // the main thread is busy (scrolled out and back before the callback
+    // ran). Only the last one is the current state; acting on the first
+    // paused a video that was back in view - right after the reader pressed
+    // play - which is what VIDEO-2 caught about 1 run in 10.
+    const latest = (entries: IntersectionObserverEntry[]) => entries[entries.length - 1];
     const nearObserver = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
+      (entries) => {
+        if (latest(entries).isIntersecting) {
           setNear(true);
           nearObserver.disconnect();
         }
@@ -72,11 +83,11 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
       { rootMargin: "800px 0px" },
     );
     const viewObserver = new IntersectionObserver(
-      ([entry]) => {
+      (entries) => {
         const video = videoRef.current;
-        if (entry.isIntersecting) {
+        if (latest(entries).isIntersecting) {
           if (allowed && !userPaused.current) {
-            if (video?.currentSrc) video.play().catch(() => setPlaying(false));
+            if (video?.currentSrc) video.play().catch(syncFromElement);
             else {
               playWhenAttached.current = true;
               setAttached(true);
@@ -103,11 +114,13 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
     if (!attached || !video || !playWhenAttached.current) return;
     playWhenAttached.current = false;
     video.muted = true;
-    video.play().catch(() => setPlaying(false));
+    video.play().catch(syncFromElement);
   }, [attached]);
 
+  // Decide from the element itself, not the React mirror, which only
+  // updates when the play/pause events arrive and can lag a fast press.
   const toggle = () => {
-    if (playing) {
+    if (videoRef.current && !videoRef.current.paused) {
       userPaused.current = true;
       videoRef.current?.pause();
     } else {
