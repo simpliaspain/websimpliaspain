@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, interactive-widget=resizes-content" />
+    
+    <!-- Site-wide meta. Title, description, robots, canonical, hreflang and the
+         per-page Open Graph / Twitter fields are set per route by
+         src/components/Seo.tsx and rendered into each prerendered page. -->
+    <meta name="author" content="Simplia Spain" />
+    <meta name="keywords" content="chatbot WhatsApp, chatbot IA, agente telefónico virtual, automatización atención cliente, chatbot Telegram, inteligencia artificial empresas, bot conversacional, chatbot web España" />
+    <meta name="language" content="es" />
+    <meta name="geo.region" content="ES" />
+    <meta name="geo.placename" content="España" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://www.simpliaspain.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Simplia Spain - Chatbots IA y Agentes Telefónicos" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Simplia Spain" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://www.simpliaspain.com/og-image.png" />
+    <meta name="twitter:creator" content="@simpliaspain" />
+
+    <!-- Icons: white S on brand blue, generated in public/. The SVG is what
+         modern browsers use; the ICO (16/32/48) is the fallback; iOS needs a
+         real PNG for the home-screen icon. icon-192/512.png exist for a web
+         manifest, which this site does not have yet. -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#0080FF" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#090A0C" media="(prefers-color-scheme: dark)" />
+    <meta name="msapplication-TileColor" content="#0080FF" />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- JSON-LD, site-wide. Service and FAQPage blocks are emitted per page
+         by src/components/JsonLd.tsx next to the content they describe. -->
+    <!-- JSON-LD Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.simpliaspain.com/#organization",
+      "name": "Simplia Spain",
+      "alternateName": "SimpliaSpain",
+      "description": "Chatbots inteligentes y agentes telefónicos IA para automatizar la atención al cliente en España",
+      "url": "https://www.simpliaspain.com",
+      "email": "info@simpliaspain.com",
+      "telephone": "+34608445993",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "ES"
+      },
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+34-608-445-993",
+          "contactType": "sales",
+          "areaServed": "ES",
+          "availableLanguage": ["Spanish", "English"]
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+34-601-755-607",
+          "contactType": "customer service",
+          "areaServed": "ES",
+          "availableLanguage": ["Spanish"]
+        }
+      ],
+      "sameAs": [],
+      "subjectOf": [
+        {
+          "@type": "VideoObject",
+          "name": "Simplia, el dispositivo basado en la IA que te ayuda a gestionar la empresa",
+          "url": "https://www.youtube.com/watch?v=wOunqxmnvKY",
+          "uploadDate": "2026-06-17",
+          "publisher": { "@type": "Organization", "name": "Onda Cero Madrid Norte" }
+        },
+        {
+          "@type": "NewsArticle",
+          "headline": "Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas",
+          "url": "https://www.madridnorte24horas.com/articulo/tendencias/simplia-startup-espanola-que-impulsa-agentes-telefonicos-inteligencia-artificial-empresas/20260621100037129472.html",
+          "datePublished": "2026-06-21",
+          "publisher": { "@type": "Organization", "name": "Madrid Norte 24 horas" }
+        },
+        {
+          "@type": "PodcastEpisode",
+          "name": "ES EMPRESAS CV - Roberto Zúñiga, cofundador de Simplia Spain",
+          "url": "https://open.spotify.com/episode/18D90WvJn5pAct1zdtcEHf",
+          "sameAs": "https://go.ivoox.com/rf/175866987",
+          "publisher": { "@type": "Organization", "name": "esRadio" }
+        }
+      ]
+    }
+    </script>
+    
+    <!-- JSON-LD LocalBusiness Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Simplia Spain",
+      "telephone": "+34608445993",
+      "email": "info@simpliaspain.com",
+      "url": "https://www.simpliaspain.com",
+      "priceRange": "€€",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "ES"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        "opens": "00:00",
+        "closes": "23:59"
+      }
+    }
+    </script>
+    <!-- Cookieless analytics (Umami Cloud). data-domains restricts tracking to
+         the production host, so staging (simpliaspain.github.io) and localhost
+         send nothing. The tracker writes no cookies or storage; it only reads
+         localStorage "umami.disabled" as an opt-out. Disclosed in the privacy
+         policy under "Analítica web". -->
+    <script defer src="https://cloud.umami.is/script.js" data-website-id="722465f2-89ac-4464-b8d0-afbeb7e7dce2" data-domains="www.simpliaspain.com"></script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
