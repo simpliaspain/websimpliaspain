@@ -20,13 +20,6 @@ const heroLogos = [
   { name: "Google", logo: googleLogo },
 ];
 
-// Both hero actions: plain text links at one weight. Affordance is the 2px
-// brand-blue underline (darkening on hover); py-2.5 gives the 44px hit area
-// without visible bulk, and the focus ring draws around that padded box.
-// Label foreground on the hero gradient; underline, glyph and dot are graphics.
-const heroActionClass =
-  "inline-flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none";
-
 export function HeroSection() {
   const { t } = useLanguage();
 
@@ -83,27 +76,33 @@ export function HeroSection() {
             {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.h1>
 
-          {/* The two hero actions as one quiet line under the headline, at
-              matching weight - the way "Con tecnologia de" used to sit: no
-              box, no shadow, no photograph. Both share heroActionClass; the
-              play glyph and the green availability dot are the only
-              differences. From sm they sit side by side, centred on the
-              hero's axis, 32px apart (56px between the labels once each
-              link's 12px side padding is added; 24 also read as a pair, only tighter; 40+ as
-              two unrelated things); below sm they stack with the booking
-              link first, under the thumb. DOM order is watch first, matching
-              the desktop reading and keyboard order. The bottom margin below
-              sm keeps the block clear of the floating chat widget (lower-right
-              84px of the viewport). */}
+          {/* From sm: the video link on the left, the booking card on the
+              right, vertically centred on each other (the link's centre line
+              on the card's), 32px apart - 44px from the link's text to the
+              card's edge once its 12px padding is counted; 24 crowded the
+              card, 40 began to separate them - and the group centred on the
+              hero's axis.
+              No divider: the card's border already separates them.
+              DOM order is link first, matching the desktop reading and
+              keyboard order; below sm the column is reversed so the booking
+              badge, the primary action, comes first on phones. The bottom
+              margin below sm keeps the block clear of the floating chat
+              widget (lower-right 84px of the viewport). */}
           <motion.div
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mb-24 flex w-full max-w-sm flex-col-reverse items-center gap-1 sm:mb-0 sm:max-w-2xl sm:flex-row sm:justify-center sm:gap-8"
+            className="mx-auto mb-24 flex w-full max-w-sm flex-col-reverse items-center gap-2 sm:mb-0 sm:max-w-2xl sm:flex-row sm:items-center sm:justify-center sm:gap-8"
           >
-            {/* Watch the demo: in-page jump that centres the autoplaying video
-                below the header (the site's one jump helper; instant under
-                reduced motion). */}
+            {/* Watch the demo: an in-page link to the services section that
+                centres the autoplaying video below the header (the site's one
+                jump helper; instant under reduced motion). A text link, no
+                container: its affordance is a 2px brand-blue underline, a
+                semibold label a step larger than the badge's, and a small play
+                glyph that says what happens. py-2.5 gives the 44px hit area
+                without visible bulk; the focus ring draws around that padded
+                box. Label foreground on the hero background; the glyph and the
+                underline are primary (graphics, 3:1). */}
             <a
               href="#servicios"
               onClick={(event) => {
@@ -112,26 +111,34 @@ export function HeroSection() {
                 event.preventDefault();
                 scrollToElement(target, "center");
               }}
-              className={heroActionClass}
+              className="inline-flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
             >
               <Play className="h-4 w-4 shrink-0 fill-primary text-primary" aria-hidden="true" />
               {t('hero.seeInAction')}
             </a>
 
-            {/* Strategy call - opens the 15-minute booking page (Cal.com). The
-                dot carries "available"; screen readers get the word and the
-                new-tab notice instead. */}
-            <a
-              href="https://reservas.simpliaspain.com/simpliaspain/llamadaestrategia"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={heroActionClass}
-            >
-              <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-green-500" aria-hidden="true" />
-              <span className="sr-only">{t('hero.available')}: </span>
-              {t('hero.strategyCall')}
-              <span className="sr-only"> {t('nav.opensNewTab')}</span>
-            </a>
+            {/* Strategy call - opens the 15-minute booking page (Cal.com). */}
+            <TrustBadge asChild>
+              <a
+                href="https://reservas.simpliaspain.com/simpliaspain/llamadaestrategia"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={robertoProfile}
+                  alt="Roberto"
+                  className="h-10 w-10 shrink-0 rounded-full border-2 border-primary/20 object-cover"
+                />
+                <span className="flex flex-col items-start text-left">
+                  <span className="flex items-center gap-1 text-[10px] font-medium text-green-500">
+                    <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                    {t('hero.available')}
+                  </span>
+                  <span className="text-sm font-semibold">{t('hero.strategyCall')}</span>
+                </span>
+                <span className="sr-only">{t('nav.opensNewTab')}</span>
+              </a>
+            </TrustBadge>
           </motion.div>
         </div>
       </div>
