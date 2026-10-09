@@ -76,19 +76,49 @@ export function HeroSection() {
             {t('hero.subtitle3')} <span className="font-semibold text-foreground">{t('hero.subtitle4')}</span>
           </motion.h1>
 
-          {/* Booking badge first, the video link stacked below it at every
-              width: the badge is the primary action and the link the quieter
-              alternative, and two things of different weight read as a
-              hierarchy when stacked, as a mistake when side by side. The
-              bottom margin below sm keeps the block clear of the floating
-              chat widget, which occupies the lower-right 84px of the viewport
-              (bottom-5 offset + h-16 button). */}
+          {/* From sm: the video link on the left, the booking badge on the
+              right, 24px apart, the group centred on the hero's axis. The link
+              is baseline-aligned with the badge's title, not centred: the
+              title's baseline is 20px above the card's bottom and the link's
+              16px above its own, so bottom-aligning them with sm:mb-1 (4px)
+              puts "Ver en accion" on the same baseline as "Llamada de
+              Estrategia", so the two read as one deliberate line rather than
+              a link floating beside a card. No divider: the card's border
+              already separates them.
+              DOM order is link first, matching the desktop reading and
+              keyboard order; below sm the column is reversed so the booking
+              badge, the primary action, comes first on phones. The bottom
+              margin below sm keeps the block clear of the floating chat
+              widget (lower-right 84px of the viewport). */}
           <motion.div
             initial={false}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mb-24 flex w-full max-w-sm flex-col items-center gap-2 sm:mb-0 sm:max-w-2xl"
+            className="mx-auto mb-24 flex w-full max-w-sm flex-col-reverse items-center gap-2 sm:mb-0 sm:max-w-2xl sm:flex-row sm:items-end sm:justify-center sm:gap-6"
           >
+            {/* Watch the demo: an in-page link to the services section that
+                centres the autoplaying video below the header (the site's one
+                jump helper; instant under reduced motion). A text link, no
+                container: its affordance is a 2px brand-blue underline, a
+                semibold label a step larger than the badge's, and a small play
+                glyph that says what happens. py-2.5 gives the 44px hit area
+                without visible bulk; the focus ring draws around that padded
+                box. Label foreground on the hero background; the glyph and the
+                underline are primary (graphics, 3:1). */}
+            <a
+              href="#servicios"
+              onClick={(event) => {
+                const target = document.querySelector<HTMLElement>("#servicios figure") ?? document.getElementById("servicios");
+                if (!target) return;
+                event.preventDefault();
+                scrollToElement(target, "center");
+              }}
+              className="inline-flex items-center gap-2 rounded-md px-3 py-2.5 sm:mb-1 text-base font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
+            >
+              <Play className="h-4 w-4 shrink-0 fill-primary text-primary" aria-hidden="true" />
+              {t('hero.seeInAction')}
+            </a>
+
             {/* Strategy call - opens the 15-minute booking page (Cal.com). */}
             <TrustBadge asChild>
               <a
@@ -110,29 +140,6 @@ export function HeroSection() {
                 </span>
               </a>
             </TrustBadge>
-
-            {/* Watch the demo: an in-page link to the services section that
-                centres the autoplaying video below the header (the site's one
-                jump helper; instant under reduced motion). A text link, no
-                container: its affordance is a 2px brand-blue underline, a
-                semibold label a step larger than the badge's, and a small play
-                glyph that says what happens. py-2.5 gives the 44px hit area
-                without visible bulk; the focus ring draws around that padded
-                box. Label foreground on the hero background; the glyph and the
-                underline are primary (graphics, 3:1). */}
-            <a
-              href="#servicios"
-              onClick={(event) => {
-                const target = document.querySelector<HTMLElement>("#servicios figure") ?? document.getElementById("servicios");
-                if (!target) return;
-                event.preventDefault();
-                scrollToElement(target, "center");
-              }}
-              className="inline-flex items-center gap-2 rounded-md px-3 py-2.5 text-base font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4 transition-colors hover:decoration-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none"
-            >
-              <Play className="h-4 w-4 shrink-0 fill-primary text-primary" aria-hidden="true" />
-              {t('hero.seeInAction')}
-            </a>
           </motion.div>
         </div>
       </div>
