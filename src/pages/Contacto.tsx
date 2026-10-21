@@ -11,6 +11,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
+import { FORM_LEAD_WEBHOOK_URL } from "@/lib/site";
 
 // Validation schema
 const contactSchema = z.object({
@@ -22,9 +23,6 @@ const contactSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
-
-// Webhook URL
-const FORM_LEAD_WEBHOOK = "https://simpliaspain-n8n.nlhico.easypanel.host/webhook/form-lead";
 
 /**
  * Client-side spam protection. No third-party challenge (cookies,
@@ -137,7 +135,7 @@ export default function Contacto() {
 
     try {
       // Send to webhook with JSON body
-      const response = await fetch(FORM_LEAD_WEBHOOK, {
+      const response = await fetch(FORM_LEAD_WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

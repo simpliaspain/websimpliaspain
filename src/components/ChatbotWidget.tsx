@@ -4,6 +4,7 @@ import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { CHAT_WEBHOOK_URL } from "@/lib/site";
 import { ChatPrompt } from "@/components/ChatPrompt";
 
 interface Message {
@@ -23,8 +24,6 @@ export function ChatbotWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-
-  const WEBHOOK_URL = "https://simpliaspain-n8n.nlhico.easypanel.host/webhook/e24ccda7-a864-44b8-ad5d-d182e1cd0af2/chat";
 
   // Detect mobile on mount and resize - using 768px breakpoint
   useEffect(() => {
@@ -137,7 +136,7 @@ export function ChatbotWidget() {
     setIsLoading(true);
 
     try {
-      const response = await fetch(WEBHOOK_URL, {
+      const response = await fetch(CHAT_WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
