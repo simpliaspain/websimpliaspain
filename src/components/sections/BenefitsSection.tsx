@@ -44,9 +44,6 @@ export function BenefitsSection() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="text-sm font-medium text-primary uppercase tracking-wider mb-4 block">
-            {t('benefits.badge')}
-          </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             {t('benefits.title')}
           </h2>
