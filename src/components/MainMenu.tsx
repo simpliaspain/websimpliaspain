@@ -2,10 +2,11 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, ChevronRight, X, type LucideIcon } from "lucide-react";
+import { ChevronRight, X, type LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LanguageToggle } from "./LanguageToggle";
 import ClientAccessButton from "@/components/ClientAccessButton";
+import { DemoLink } from "@/components/DemoLinks";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 import {
@@ -139,13 +140,8 @@ function MainMenuContent({ navLinks, services, onClose, bodyClassName }: Content
           <section className="order-3 flex flex-col gap-6 md:col-span-2 lg:col-span-1">
             <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 to-primary/10 p-6">
               <h3 className="mb-2 text-lg font-bold text-foreground">{t("nav.readyToStart")}</h3>
-              <p className="mb-5 text-sm text-muted-foreground">{t("nav.strategyCall")}</p>
-              <Button asChild className="h-12 w-full font-semibold">
-                <Link to="/contacto" onClick={onClose}>
-                  {t("cta.contact")}
-                  <ArrowRight aria-hidden="true" />
-                </Link>
-              </Button>
+              <p className="mb-5 text-sm text-muted-foreground">{t("nav.tryDemoDesc")}</p>
+              <DemoLink lugar="menu" label={t("nav.tryDemo")} size="default" className="h-12 w-full" />
             </div>
 
             <div>

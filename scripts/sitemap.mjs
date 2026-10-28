@@ -19,6 +19,7 @@ const SOURCES = {
   "/": ["src/pages/Index.tsx", "src/components/sections"],
   "/chatbots-multicanal": ["src/pages/ChatbotsMulticanal.tsx"],
   "/agentes-telefonicos": ["src/pages/AgentesTelefonicos.tsx"],
+  "/como-trabajamos": ["src/pages/ComoTrabajamos.tsx"],
   "/contacto": ["src/pages/Contacto.tsx"],
   "/politica-privacidad": ["src/pages/PoliticaPrivacidad.tsx"],
 };

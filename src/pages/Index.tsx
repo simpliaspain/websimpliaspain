@@ -1,33 +1,40 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { TrustSection } from "@/components/sections/TrustSection";
+import { ProblemSection } from "@/components/sections/ProblemSection";
 import { MethodSection } from "@/components/sections/MethodSection";
-import { BenefitsSection } from "@/components/sections/BenefitsSection";
 import { ServicesSection } from "@/components/sections/ServicesSection";
+import { ForWhoSection } from "@/components/sections/ForWhoSection";
+import { CaseSection } from "@/components/sections/CaseSection";
+import { PricingSection } from "@/components/sections/PricingSection";
 import { FAQSection } from "@/components/sections/FAQSection";
-import { CTASection } from "@/components/sections/CTASection";
-import { LogoMarquee } from "@/components/LogoMarquee";
 import { PressSection } from "@/components/sections/PressSection";
+import { CTASection } from "@/components/sections/CTASection";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 import { useLanguage } from "@/contexts/LanguageContext";
 
+/**
+ * Home, aimed at coworking operators (decided 26/10/2026). Section order
+ * follows plan-ventas/presencia-online/ENCARGO-WEB.md, A1: hero, trust,
+ * problem, how it works, what it does, who for, the Oficinas YA! case,
+ * tailored pricing, FAQ, then press and the closing demo band.
+ */
 const Index = () => {
   const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
       <Seo titleKey="seo.home.title" descriptionKey="seo.home.description" path="/" />
-      {/* Describes the one service the page lists (the services card), with
-          the card's own strings, so the structured data cannot drift from
-          the visible page. Phone agents have their own block on
-          /agentes-telefonicos. */}
+      {/* Describes the one service the page sells, with the hero's own
+          subtitle, so the structured data cannot drift from the page. */}
       <JsonLd
         data={{
           "@type": "Service",
-          name: t("services.chatbotsTitle"),
-          serviceType: "Automatización de Atención al Cliente",
-          description: t("services.chatbotsDesc"),
+          name: t("service.whatsapp"),
+          serviceType: "Agente de IA de WhatsApp para coworkings y centros de negocio",
+          description: t("hero.subtitle"),
           url: `${SITE_URL}/`,
           provider: { "@id": ORGANIZATION_ID },
           areaServed: { "@type": "Country", name: "España" },
@@ -36,19 +43,15 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <TrustSection />
+        <ProblemSection />
         <MethodSection />
-        {/* Services (with the demo video) before Benefits, so the video is
-            seen earlier. ServiceDemoVideo still fetches nothing on load:
-            the poster attaches within 800px of the viewport and the video
-            once a quarter of the block is on screen. */}
         <ServicesSection />
-        <BenefitsSection />
-        <FAQSection hidePhoneAgents />
-        {/* Press coverage and the tooling logos are a pair (the marquee's
-            `tight` spacing belongs to the press section above it). They sit
-            here as final reinforcement right before the closing CTA. */}
+        <ForWhoSection />
+        <CaseSection />
+        <PricingSection />
+        <FAQSection />
         <PressSection />
-        <LogoMarquee />
         <CTASection />
       </main>
       <Footer />

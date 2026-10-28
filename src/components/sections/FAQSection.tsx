@@ -5,49 +5,30 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { JsonLd } from "@/components/JsonLd";
 import { Section } from "@/components/Section";
 
+/** The shared questions, in order. Every page that shows an FAQ uses these. */
+const SHARED = Array.from({ length: 9 }, (_, i) => [`faq.q${i + 1}`, `faq.a${i + 1}`] as const);
+
+type FAQSectionProps = {
+  /** Put the phone-agent question first (only on /agentes-telefonicos). */
+  voice?: boolean;
+  /** Replace the shared list with a page's own [questionKey, answerKey] pairs. */
+  items?: ReadonlyArray<readonly [string, string]>;
+  titleKey?: string;
+};
+
 /**
- * `hidePhoneAgents` drops the phone-agent question (faq.q2) - and, because the
- * FAQPage JSON-LD is built from the same list, its schema entry - on pages
- * where that service is not offered. The phone agents page itself keeps it.
+ * Accordion of questions. The FAQPage JSON-LD is built from the same list, so
+ * the structured data cannot drift from the visible text.
  */
-export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: boolean } = {}) {
+export function FAQSection({ voice = false, items, titleKey = "faq.title" }: FAQSectionProps = {}) {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const { t } = useLanguage();
 
-  const faqs = [
-    {
-      question: t('faq.q1'),
-      answer: t('faq.a1'),
-    },
-    ...(hidePhoneAgents
-      ? []
-      : [
-          {
-            question: t('faq.q2'),
-            answer: t('faq.a2'),
-          },
-        ]),
-    {
-      question: t('faq.q3'),
-      answer: t('faq.a3'),
-    },
-    {
-      question: t('faq.q4'),
-      answer: t('faq.a4'),
-    },
-    {
-      question: t('faq.q5'),
-      answer: t('faq.a5'),
-    },
-    {
-      question: t('faq.q6'),
-      answer: t('faq.a6'),
-    },
-  ];
+  const keys = items ?? [...(voice ? [["faq.voiceQ", "faq.voiceA"] as const] : []), ...SHARED];
+  const faqs = keys.map(([q, a]) => ({ question: t(q), answer: t(a) }));
 
   return (
-    <Section variant="default" id="faq" className="relative bg-background">
-      {/* Same questions and answers as the accordion below, in JSON-LD. */}
+    <Section id="faq" className="relative scroll-mt-20 bg-background">
       <JsonLd
         data={{
           "@type": "FAQPage",
@@ -59,24 +40,20 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
         }}
       />
       <div className="container">
-        {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-            {t('faq.title')}
-          </h2>
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">{t(titleKey)}</h2>
         </motion.div>
 
-        {/* FAQ Accordion */}
-        <div className="max-w-3xl mx-auto space-y-3">
+        <div className="mx-auto max-w-3xl space-y-3">
           {faqs.map((faq, index) => (
             <motion.div
-              key={index}
+              key={faq.question}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: index * 0.05 }}
@@ -86,15 +63,14 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 aria-expanded={openIndex === index}
                 aria-controls={`faq-answer-${index}`}
-                className={`w-full flex items-center justify-between p-5 bg-card border rounded-xl transition-all text-left group ${
-                  openIndex === index 
-                    ? "border-primary/30 shadow-sm" 
-                    : "border-border hover:border-primary/20"
+                className={`group flex w-full items-center justify-between rounded-xl border bg-card p-5 text-left transition-all ${
+                  openIndex === index ? "border-primary/30 shadow-sm" : "border-border hover:border-primary/20"
                 }`}
               >
-                <span className="font-semibold text-foreground pr-4">{faq.question}</span>
-                <ChevronDown 
-                  className={`w-5 h-5 text-muted-foreground flex-shrink-0 transition-transform duration-200 ${
+                <span className="pr-4 font-semibold text-foreground">{faq.question}</span>
+                <ChevronDown
+                  aria-hidden="true"
+                  className={`h-5 w-5 flex-shrink-0 text-muted-foreground transition-transform duration-200 ${
                     openIndex === index ? "rotate-180 text-primary" : ""
                   }`}
                 />
@@ -106,18 +82,12 @@ export function FAQSection({ hidePhoneAgents = false }: { hidePhoneAgents?: bool
               <motion.div
                 id={`faq-answer-${index}`}
                 initial={false}
-                animate={
-                  openIndex === index
-                    ? { height: "auto", opacity: 1 }
-                    : { height: 0, opacity: 0 }
-                }
+                animate={openIndex === index ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
                 aria-hidden={openIndex !== index}
                 className="overflow-hidden"
               >
-                <div className="p-5 pt-3 text-muted-foreground text-sm leading-relaxed">
-                  {faq.answer}
-                </div>
+                <div className="p-5 pt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</div>
               </motion.div>
             </motion.div>
           ))}

@@ -6,23 +6,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, Phone, ArrowRight } from "lucide-react";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
-import { FORM_LEAD_WEBHOOK_URL } from "@/lib/site";
+import { FORM_LEAD_WEBHOOK_URL, PHONE_ALT, PHONE_MAIN, demoUrl } from "@/lib/site";
 
-// Validation schema
+// Validation schema. The phone is optional (fewer fields, more submissions);
+// if given it must look like a phone number.
 const contactSchema = z.object({
   nombre: z.string().trim().min(2, "El nombre es obligatorio").max(50, "Máximo 50 caracteres"),
   apellidos: z.string().trim().min(2, "Los apellidos son obligatorios").max(100, "Máximo 100 caracteres"),
   email: z.string().trim().email("Email no válido").max(255, "Máximo 255 caracteres"),
-  telefono: z.string().trim().min(9, "Teléfono no válido").max(20, "Máximo 20 caracteres"),
+  telefono: z
+    .string()
+    .trim()
+    .max(20, "Máximo 20 caracteres")
+    .refine((v) => v === "" || v.replace(/\D/g, "").length >= 9, "Teléfono no válido"),
+  sedes: z.string().optional(),
   informacion: z.string().trim().max(1000, "Máximo 1000 caracteres").optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
+
+const SITES_OPTIONS = ["contact.sites1", "contact.sites2", "contact.sites3", "contact.sites4"];
+
+/**
+ * The n8n "Formulario Web" flow stores exactly five fields (nombre,
+ * apellidos, correo, telefono, informacion_adicional), so the number of
+ * locations travels inside the message text instead of as a new field the
+ * flow would silently drop.
+ */
+function composeMessage(sedes: string | undefined, informacion: string | undefined): string {
+  const parts = [];
+  if (sedes) parts.push(`Sedes: ${sedes}`);
+  if (informacion) parts.push(informacion);
+  return parts.join("\n");
+}
 
 /**
  * Client-side spam protection. No third-party challenge (cookies,
@@ -67,6 +88,7 @@ export default function Contacto() {
     apellidos: "",
     email: "",
     telefono: "",
+    sedes: "",
     informacion: "",
   });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
@@ -80,6 +102,16 @@ export default function Contacto() {
   // is when the submit clock starts.
   useEffect(() => {
     readyAt.current = Date.now();
+  }, []);
+
+  // /contacto?interes=voz comes from the phone agent's waiting-list buttons:
+  // start the message for them. Read after hydration so the prerendered page
+  // and the first client render match.
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("interes") === "voz") {
+      setFormData((prev) => (prev.informacion ? prev : { ...prev, informacion: t("contact.voiceInterest") }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const looksAutomated = (): boolean => {
@@ -98,7 +130,7 @@ export default function Contacto() {
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error on change
@@ -145,7 +177,7 @@ export default function Contacto() {
           apellidos: formData.apellidos,
           correo: formData.email,
           telefono: formData.telefono,
-          informacion_adicional: formData.informacion || "",
+          informacion_adicional: composeMessage(formData.sedes, formData.informacion),
         }),
       });
 
@@ -190,9 +222,24 @@ export default function Contacto() {
               <p className="text-muted-foreground mb-8">
                 {t('contact.confirmation')}
               </p>
-              <Button onClick={() => window.location.href = "/"}>
-                {t('contact.backHome')}
-              </Button>
+              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Button asChild size="lg" className="group font-semibold">
+                  <a
+                    href={demoUrl("contacto")}
+                    target="_blank"
+                    rel="noopener"
+                    data-umami-event="demo"
+                    data-umami-event-lugar="contacto"
+                  >
+                    {t('cta.demo')}
+                    <ArrowRight aria-hidden="true" className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
+                    <span className="sr-only"> {t('nav.opensNewTab')}</span>
+                  </a>
+                </Button>
+                <Button variant="outline" size="lg" onClick={() => window.location.href = "/"}>
+                  {t('contact.backHome')}
+                </Button>
+              </div>
             </motion.div>
           </div>
         </main>
@@ -270,7 +317,20 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               {t('contact.title1')} <span className="text-italic-gradient">{t('contact.title2')}</span>
             </h1>
             <p className="text-muted-foreground">
-              {t('contact.subtitle')}
+              {t('contact.subtitle')}{' '}
+              {t('contact.subtitleDemo')}{' '}
+              <a
+                href={demoUrl("web")}
+                target="_blank"
+                rel="noopener"
+                className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+                data-umami-event="demo"
+                data-umami-event-lugar="contacto"
+              >
+                {t('contact.subtitleDemoLink')}
+                <span className="sr-only"> {t('nav.opensNewTab')}</span>
+              </a>
+              .
             </p>
           </motion.div>
 
@@ -330,7 +390,9 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="telefono">{t('contact.phone')} {t('contact.required')}</Label>
+              <Label htmlFor="telefono">
+                {t('contact.phone')} <span className="font-normal text-muted-foreground">{t('contact.optional')}</span>
+              </Label>
               <Input
                 id="telefono"
                 name="telefono"
@@ -343,6 +405,26 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               {errors.telefono && (
                 <p className="text-xs text-destructive">{errors.telefono}</p>
               )}
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="sedes">
+                {t('contact.sites')} <span className="font-normal text-muted-foreground">{t('contact.optional')}</span>
+              </Label>
+              {/* Native select: keyboard, screen readers and the phone's own
+                  picker for free. Styled to match <Input>. */}
+              <select
+                id="sedes"
+                name="sedes"
+                value={formData.sedes}
+                onChange={handleChange}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+              >
+                <option value="">{t('contact.sitesPlaceholder')}</option>
+                {SITES_OPTIONS.map((key) => (
+                  <option key={key} value={t(key)}>{t(key)}</option>
+                ))}
+              </select>
             </div>
 
             <div className="space-y-1.5">
@@ -378,7 +460,9 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             <Button
               type="submit"
               size="lg"
+              disabled={isSubmitting}
               className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+              data-umami-event="formulario"
             >
               <Send className="w-5 h-5 mr-2" />
               {t('contact.send')}
@@ -388,6 +472,22 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               {t('contact.privacyNote')} <a href="/politica-privacidad" className="text-primary hover:underline">{t('contact.privacyPolicy')}</a>.
             </p>
           </motion.form>
+
+          {/* Phones: the only page that shows both, on two levels. */}
+          <div className="mt-8 text-center">
+            <p className="text-sm font-semibold text-foreground">{t('contact.callTitle')}</p>
+            <a
+              href={PHONE_MAIN.href}
+              className="mt-2 inline-flex items-center gap-2 text-xl font-bold text-foreground transition-colors hover:text-primary"
+            >
+              <Phone aria-hidden="true" className="h-5 w-5 text-primary" />
+              {PHONE_MAIN.display}
+            </a>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {t('footer.altPhone')}:{' '}
+              <a href={PHONE_ALT.href} className="hover:text-foreground">{PHONE_ALT.display}</a>
+            </p>
+          </div>
         </div>
       </main>
       <Footer />

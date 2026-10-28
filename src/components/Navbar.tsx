@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, ChevronDown, MessageSquare, Phone } from "lucide-react";
+import { Menu, ChevronDown, MessageSquare, Route } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
 import { MainMenu, type MainMenuService } from "./MainMenu";
@@ -8,6 +8,7 @@ import { useMainMenuController } from "@/hooks/use-main-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 import ClientAccessButton from "@/components/ClientAccessButton";
+import { DemoLink } from "@/components/DemoLinks";
 
 export function Navbar() {
   const menu = useMainMenuController();
@@ -16,26 +17,31 @@ export function Navbar() {
   const { t } = useLanguage();
 
   const navLinks = [
-    { label: t('nav.home'), href: "/" },
-    { label: t('nav.method'), href: "/#metodo" },
-    { label: t('nav.services'), href: "/#servicios" },
+    { label: t('nav.howItWorks'), href: "/#como-funciona" },
+    { label: t('nav.howWeWork'), href: "/como-trabajamos" },
     { label: t('nav.faq'), href: "/#faq" },
     { label: t('nav.contact'), href: "/contacto" },
   ];
 
+  // The phone agent is in beta and left out of the menu on purpose; it is
+  // linked from the footer as "Agente telefónico (beta)".
   const services: MainMenuService[] = [
     {
       icon: MessageSquare,
-      title: t('service.chatbots'),
-      description: t('service.chatbotsDesc'),
+      title: t('service.whatsapp'),
+      description: t('service.whatsappDesc'),
       href: "/chatbots-multicanal",
       color: "text-service-chatbots",
       bgColor: "bg-service-chatbots/10",
     },
-    // Phone agents are not on sale yet: entry removed from the menu; the page
-    // and route stay live. Restore by re-adding:
-    //   { icon: Phone, title: t('service.agents'), description: t('service.agentsDesc'),
-    //     href: "/agentes-telefonicos", color: "text-service-agents", bgColor: "bg-service-agents/10" }
+    {
+      icon: Route,
+      title: t('service.howWeWork'),
+      description: t('service.howWeWorkDesc'),
+      href: "/como-trabajamos",
+      color: "text-primary",
+      bgColor: "bg-primary/10",
+    },
   ];
 
   // The header floats over the page at the top of the document and only
@@ -118,10 +124,13 @@ export function Navbar() {
               })}
             </div>
 
-            {/* Actions cluster: language + client access + menu */}
+            {/* Actions cluster: language + client access + demo + menu. Client
+                access only from xl: at lg the row has no room for it, and it
+                stays one tap away inside the menu. */}
             <div className="hidden lg:flex items-center gap-3 xl:justify-self-end">
               <LanguageToggle />
-              <ClientAccessButton className="hidden lg:inline-flex" />
+              <ClientAccessButton className="hidden xl:inline-flex" />
+              <DemoLink lugar="menu" label={t('nav.tryDemo')} size="default" className="h-10 rounded-full px-4" />
               <Button
                 {...menu.triggerProps}
                 className="bg-card hover:bg-secondary text-foreground font-medium px-4 h-10 rounded-full border border-border shadow-sm"

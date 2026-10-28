@@ -3,6 +3,7 @@ import { RootLayout } from "./RootLayout";
 import Index from "./pages/Index";
 import ChatbotsMulticanal from "./pages/ChatbotsMulticanal";
 import AgentesTelefonicos from "./pages/AgentesTelefonicos";
+import ComoTrabajamos from "./pages/ComoTrabajamos";
 import Contacto from "./pages/Contacto";
 import PoliticaPrivacidad from "./pages/PoliticaPrivacidad";
 import NotFound from "./pages/NotFound";
@@ -28,6 +29,7 @@ export const routes: RouteRecord[] = [
       { index: true, element: <Index /> },
       { path: "chatbots-multicanal", element: <ChatbotsMulticanal /> },
       { path: "agentes-telefonicos", element: <AgentesTelefonicos /> },
+      { path: "como-trabajamos", element: <ComoTrabajamos /> },
       { path: "contacto", element: <Contacto /> },
       { path: "politica-privacidad", element: <PoliticaPrivacidad /> },
       { path: "404", element: <NotFound /> },

@@ -1,0 +1,28 @@
+# Simplia Spain
+
+> Agentes de IA de WhatsApp para coworkings, centros de negocio y oficinas flexibles en España. Contestan en segundos a cualquier hora, dan precios y despachos libres, recogen el contacto del interesado y reservan la visita en la agenda del centro.
+
+## Qué hace el agente de IA
+- Contesta por WhatsApp 24 horas, 7 días, en el idioma del cliente.
+- Da los precios y servicios del centro (despachos, puestos, domiciliación, salas).
+- Enseña los despachos libres según el número de personas y manda fotos.
+- Recoge nombre y correo, reserva la visita en la agenda del centro y la recuerda.
+- Avisa al equipo del centro con el resumen de la conversación.
+- El operador lo ve todo en un panel, con un informe semanal.
+
+## Para quién
+Operadores de espacios flexibles de 1 a 15 sedes en España.
+
+## Precio
+A medida para cada centro, según sus sedes y lo que necesite. Se prepara una propuesta después de una llamada de 15 minutos.
+
+## Cliente
+- Oficinas YA! (Madrid): su agente de IA de WhatsApp se llama Laura.
+
+## Enlaces
+- [Portada](https://www.simpliaspain.com/)
+- [Cómo funciona](https://www.simpliaspain.com/chatbots-multicanal)
+- [Cómo trabajamos](https://www.simpliaspain.com/como-trabajamos)
+- [Prueba gratis con tu web](https://demo.simpliaspain.com/?o=web)
+- [Contacto](https://www.simpliaspain.com/contacto)
+- [Entrevista en Madrid Norte 24 horas](https://www.madridnorte24horas.com/articulo/tendencias/simplia-startup-espanola-que-impulsa-agentes-telefonicos-inteligencia-artificial-empresas/20260621100037129472.html)

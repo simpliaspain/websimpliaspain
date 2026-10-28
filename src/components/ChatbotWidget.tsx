@@ -66,7 +66,7 @@ export function ChatbotWidget() {
       setMessages([
         {
           role: "assistant",
-          content: "¡Hola! 👋 Soy el asistente virtual de Simplia Spain.\n¿En qué puedo ayudarte hoy?",
+          content: "¡Hola! Soy el agente de IA de Simplia Spain.\n¿En qué puedo ayudarte hoy?",
         },
       ]);
     }
