@@ -71,7 +71,7 @@ test.describe("contact form spam protection", () => {
     });
     await page.waitForTimeout(3500);
     await page.click("button[type='submit']");
-    await expect(page.locator("h1"), "SPAM-1: normal success state shown").toContainText(/gracias|thank/i, { timeout: 5000 });
+    await expect(page.locator("h1"), "SPAM-1: normal success state shown").toContainText(/recibido|received/i, { timeout: 5000 });
     expect(posts.length, "SPAM-1: nothing posted to the webhook").toBe(0);
   });
 
@@ -82,7 +82,7 @@ test.describe("contact form spam protection", () => {
     await page.waitForSelector("html[data-hydrated]");
     await fillForm(page);
     await page.click("button[type='submit']");
-    await expect(page.locator("h1"), "SPAM-2: normal success state shown").toContainText(/gracias|thank/i, { timeout: 5000 });
+    await expect(page.locator("h1"), "SPAM-2: normal success state shown").toContainText(/recibido|received/i, { timeout: 5000 });
     expect(posts.length, "SPAM-2: nothing posted to the webhook").toBe(0);
   });
 
@@ -94,7 +94,7 @@ test.describe("contact form spam protection", () => {
     await fillForm(page);
     await page.waitForTimeout(3500);
     await page.click("button[type='submit']");
-    await expect(page.locator("h1")).toContainText(/gracias|thank/i, { timeout: 5000 });
+    await expect(page.locator("h1")).toContainText(/recibido|received/i, { timeout: 5000 });
     expect(posts.length, "SPAM-3: exactly one post").toBe(1);
     expect(JSON.parse(posts[0]), "SPAM-3: payload shape unchanged").toEqual({
       nombre: "Ana",
@@ -117,6 +117,6 @@ test.describe("contact form spam protection", () => {
       visited.push(await page.evaluate(() => (document.activeElement as HTMLElement)?.getAttribute("name") || (document.activeElement as HTMLElement)?.tagName));
     }
     expect(visited, "SPAM-4: tabbing never lands on the trap").not.toContain("website");
-    expect(visited.slice(0, 4), "SPAM-4: order of the real fields intact").toEqual(["apellidos", "email", "telefono", "informacion"]);
+    expect(visited.slice(0, 5), "SPAM-4: order of the real fields intact").toEqual(["apellidos", "email", "telefono", "sedes", "informacion"]);
   });
 });
