@@ -59,7 +59,7 @@ export default function PoliticaPrivacidad() {
                 <p>Utilizamos tus datos personales para:</p>
                 <ul className="list-disc pl-6 space-y-2">
                   <li>Responder a tus consultas y solicitudes de información</li>
-                  <li>Proporcionarte información sobre nuestros servicios de chatbots y agentes telefónicos IA</li>
+                  <li>Proporcionarte información sobre nuestros servicios de agentes de IA (de WhatsApp y telefónicos)</li>
                   <li>Gestionar la relación comercial</li>
                   <li>Enviarte comunicaciones comerciales si nos has dado tu consentimiento</li>
                   <li>Mejorar nuestros servicios y la experiencia de usuario</li>

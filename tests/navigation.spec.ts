@@ -23,7 +23,7 @@ import { join } from "node:path";
 // Routes reachable through a visible in-app link. /agentes-telefonicos is
 // live but deliberately unlinked while the service is not on sale, so it is
 // not navigated here; add it back when its entry points return.
-const ROUTES = ["/contacto", "/chatbots-multicanal", "/politica-privacidad", "/"];
+const ROUTES = ["/contacto", "/chatbots-multicanal", "/como-trabajamos", "/politica-privacidad", "/"];
 
 async function isolate(page: Page) {
   await page.route("**://*/**", (route) =>

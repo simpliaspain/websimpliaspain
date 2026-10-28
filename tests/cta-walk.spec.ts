@@ -28,7 +28,7 @@
  */
 import { test, expect, type Page, type BrowserContext } from "@playwright/test";
 
-const ROUTES = ["/", "/chatbots-multicanal", "/agentes-telefonicos", "/contacto", "/politica-privacidad", "/ruta-que-no-existe"];
+const ROUTES = ["/", "/chatbots-multicanal", "/agentes-telefonicos", "/como-trabajamos", "/contacto", "/politica-privacidad", "/ruta-que-no-existe"];
 const LOCALES = ["es", "en"] as const;
 const SEL = 'a[href], button, [role="button"], summary, input[type="submit"]';
 const REPORT = !!process.env.WALK_REPORT;
@@ -280,71 +280,95 @@ for (const lang of LOCALES) {
 }
 
 /**
- *   DEMO-REQ  "Solicitar Demo Gratis" on both service pages, both locales:
- *             mouse, Enter, Space and touch all reach /contacto by client-side
- *             navigation (no reload), with zero console errors.
+ *   WAITLIST  The phone agent is in beta: its "join the waiting list" buttons
+ *             reach /contacto?interes=voz by client-side navigation (mouse,
+ *             Enter, touch), in both locales, and the form opens with the
+ *             message already started.
  */
 for (const lang of LOCALES) {
-  for (const route of ["/chatbots-multicanal", "/agentes-telefonicos"]) {
-    for (const how of ["mouse", "Enter", "Space", "touch"] as const) {
-      test(`DEMO-REQ: "${lang === "es" ? "Solicitar Demo Gratis" : "Request Free Demo"}" on ${route} (${lang}) works by ${how}`, async ({ browser }) => {
-        const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, hasTouch: how === "touch", isMobile: false });
-        await setup(context, lang);
-        const page = await context.newPage();
-        const errors: string[] = [];
-        page.on("console", (m) => {
-          if (m.type() !== "error") return;
-          // setup() aborts every request that leaves localhost; those aborts
-          // are the test's doing, not the page's.
-          const external = m.location().url && !m.location().url.startsWith("http://localhost:4173");
-          if (external && m.text().startsWith("Failed to load resource")) return;
-          errors.push(m.text());
-        });
-        page.on("pageerror", (e) => errors.push(String(e)));
-        await load(page, route);
-        await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
-        const cta = page.getByRole("link", { name: lang === "es" ? "Solicitar Demo Gratis" : "Request Free Demo", exact: true });
-        await cta.scrollIntoViewIfNeeded();
-        if (how === "mouse") await cta.click();
-        if (how === "touch") await cta.tap();
-        if (how === "Enter" || how === "Space") { await cta.focus(); await page.keyboard.press(how); }
-        await page.waitForURL("**/contacto");
-        expect(await page.evaluate(() => (window as unknown as { __noReload?: boolean }).__noReload), "client-side navigation, no reload").toBe(true);
-        expect(errors, "no console errors").toEqual([]);
-        await context.close();
+  for (const how of ["mouse", "Enter", "touch"] as const) {
+    test(`WAITLIST: the phone agent's waiting-list button (${lang}) works by ${how}`, async ({ browser }) => {
+      const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, hasTouch: how === "touch", isMobile: false });
+      await setup(context, lang);
+      const page = await context.newPage();
+      const errors: string[] = [];
+      page.on("console", (m) => {
+        if (m.type() !== "error") return;
+        // setup() aborts every request that leaves localhost; those aborts
+        // are the test's doing, not the page's.
+        const external = m.location().url && !m.location().url.startsWith("http://localhost:4173");
+        if (external && m.text().startsWith("Failed to load resource")) return;
+        errors.push(m.text());
       });
-    }
+      page.on("pageerror", (e) => errors.push(String(e)));
+      await load(page, "/agentes-telefonicos");
+      await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
+      const cta = page.locator("main").getByRole("link", { name: lang === "es" ? "Apúntate a la lista de espera" : "Join the waiting list", exact: true }).first();
+      if (how === "mouse") await cta.click();
+      if (how === "touch") await cta.tap();
+      if (how === "Enter") { await cta.focus(); await page.keyboard.press("Enter"); }
+      await page.waitForURL("**/contacto?interes=voz");
+      expect(await page.evaluate(() => (window as unknown as { __noReload?: boolean }).__noReload), "client-side navigation, no reload").toBe(true);
+      await expect(page.locator("#informacion")).toHaveValue(lang === "es" ? "Me interesa el agente telefónico." : "I'm interested in the phone agent.");
+      expect(errors, "no console errors").toEqual([]);
+      await context.close();
+    });
   }
 }
 
 /**
- *   CARD-CTA  The multichannel card has two actions with a clear hierarchy:
- *             the contact CTA (filled, primary) and "Saber Más" (outline,
- *             secondary). Both are 44px tall and navigate client-side to the
- *             right place in both locales.
+ *   DEMO-LINKS  Every link to the instant demo, on every route, carries the
+ *               channel the team tracks (?o=web) and the Umami "demo" event
+ *               with where it sits; it opens in a new tab. The call links
+ *               carry the "llamada" event. Nothing may point at the demo
+ *               without a channel.
+ */
+test("DEMO-LINKS: every demo link is tracked as ?o=web with its Umami event", async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  await setup(context, "es");
+  const page = await context.newPage();
+  for (const route of ROUTES) {
+    await load(page, route);
+    const links = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLAnchorElement>('a[href*="demo.simpliaspain.com"], a[href*="reservas.simpliaspain.com"]')).map((a) => ({
+        href: a.getAttribute("href"),
+        event: a.dataset.umamiEvent ?? null,
+        lugar: a.dataset.umamiEventLugar ?? null,
+        target: a.target,
+      })),
+    );
+    for (const l of links) {
+      if (l.href!.includes("demo.simpliaspain.com")) {
+        expect(l.href, `${route}: demo link channel`).toBe("https://demo.simpliaspain.com/?o=web");
+        expect(l.event, `${route}: ${l.href} event`).toBe("demo");
+      } else {
+        expect(l.event, `${route}: ${l.href} event`).toBe("llamada");
+      }
+      expect(l.lugar, `${route}: ${l.href} lugar`).toBeTruthy();
+      expect(l.target, `${route}: ${l.href} opens a new tab`).toBe("_blank");
+    }
+    if (route !== "/ruta-que-no-existe") expect(links.length, `${route}: has demo/call links`).toBeGreaterThan(0);
+  }
+  await context.close();
+});
+
+/**
+ *   PRICING-CTA  "Así trabajamos" on the home pricing block reaches
+ *                /como-trabajamos client-side, with a 44px hit area.
  */
 for (const lang of LOCALES) {
-  test(`CARD-CTA: the service card's contact and learn-more actions (${lang})`, async ({ browser }) => {
+  test(`PRICING-CTA: the pricing block links to /como-trabajamos (${lang})`, async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     await setup(context, lang);
     const page = await context.newPage();
-    const names = lang === "es" ? { contact: "Hablemos de tu caso", more: "Saber Más" } : { contact: "Let's talk about your case", more: "Learn More" };
-    for (const [name, path] of [[names.contact, "/contacto"], [names.more, "/chatbots-multicanal"]] as const) {
-      await load(page, "/");
-      await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
-      const link = page.locator("#servicios").getByRole("link", { name, exact: true });
-      await link.scrollIntoViewIfNeeded();
-      const box = await link.boundingBox();
-      expect(box?.height, `${name}: 44px hit area`).toBeGreaterThanOrEqual(44);
-      await link.click();
-      await page.waitForURL(`**${path}`);
-      expect(await page.evaluate(() => (window as unknown as { __noReload?: boolean }).__noReload), `${name}: client-side`).toBe(true);
-    }
     await load(page, "/");
-    const bg = (name: string) => page.locator("#servicios").getByRole("link", { name, exact: true }).evaluate((el) => getComputedStyle(el).backgroundColor);
-    const primary = await page.evaluate(() => { const d = document.createElement("div"); d.className = "bg-primary"; document.body.append(d); const c = getComputedStyle(d).backgroundColor; d.remove(); return c; });
-    expect(await bg(names.contact), "contact CTA is the filled primary").toBe(primary);
-    expect(await bg(names.more), "learn more is not filled primary").not.toBe(primary);
+    await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
+    const link = page.locator("#empezar").getByRole("link", { name: lang === "es" ? "Así trabajamos" : "How we work", exact: true });
+    await link.scrollIntoViewIfNeeded();
+    expect((await link.boundingBox())?.height, "44px hit area").toBeGreaterThanOrEqual(44);
+    await link.click();
+    await page.waitForURL("**/como-trabajamos");
+    expect(await page.evaluate(() => (window as unknown as { __noReload?: boolean }).__noReload), "client-side").toBe(true);
     await context.close();
   });
 }

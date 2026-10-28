@@ -79,6 +79,8 @@ export function ImpactCounter() {
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      // A background tab asks for nothing; it catches up on the next tick.
+      if (document.hidden) return;
       try {
         const res = await fetch(STATS_WEBHOOK_URL, { headers: { Accept: "application/json" } });
         if (!res.ok) return;
