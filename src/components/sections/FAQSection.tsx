@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { JsonLd } from "@/components/JsonLd";
-import { Section } from "@/components/Section";
 
 /** The shared questions, in order. Every page that shows an FAQ uses these. */
 const SHARED = Array.from({ length: 9 }, (_, i) => [`faq.q${i + 1}`, `faq.a${i + 1}`] as const);
@@ -14,21 +11,35 @@ type FAQSectionProps = {
   /** Replace the shared list with a page's own [questionKey, answerKey] pairs. */
   items?: ReadonlyArray<readonly [string, string]>;
   titleKey?: string;
+  /** Rendered under the list, on its own rule (the home's press line). */
+  footer?: ReactNode;
 };
 
 /**
- * Accordion of questions. The FAQPage JSON-LD is built from the same list, so
- * the structured data cannot drift from the visible text.
+ * Questions on hairlines, with the heading held to the left of them
+ * (redesign, 05/11/2026).
+ *
+ * Opening is pure CSS - a grid row animating between 0fr and 1fr - so the
+ * answers are in the prerendered HTML at their real length, crawlers read
+ * them, and hydration has no state to disagree about. The first one is open,
+ * both in the static markup and on the client.
+ *
+ * The FAQPage JSON-LD is built from the same list, so the structured data
+ * cannot drift from the visible text.
  */
-export function FAQSection({ voice = false, items, titleKey = "faq.title" }: FAQSectionProps = {}) {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+export function FAQSection({ voice = false, items, titleKey = "faq.title", footer }: FAQSectionProps = {}) {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { t } = useLanguage();
 
   const keys = items ?? [...(voice ? [["faq.voiceQ", "faq.voiceA"] as const] : []), ...SHARED];
   const faqs = keys.map(([q, a]) => ({ question: t(q), answer: t(a) }));
 
   return (
-    <Section id="faq" className="relative scroll-mt-20 bg-background">
+    <section
+      id="faq"
+      aria-labelledby="h-faq"
+      className="scroll-mt-[68px] border-t border-border py-[clamp(56px,8vw,120px)]"
+    >
       <JsonLd
         data={{
           "@type": "FAQPage",
@@ -39,60 +50,60 @@ export function FAQSection({ voice = false, items, titleKey = "faq.title" }: FAQ
           })),
         }}
       />
-      <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-16 text-center"
+      <div className="wrap flex flex-wrap items-start gap-[clamp(20px,4vw,72px)]">
+        <h2
+          id="h-faq"
+          className="m-0 min-w-0 flex-[1_1_300px] text-[clamp(28px,3.1vw,42px)] font-extrabold leading-[1.1] text-foreground"
         >
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">{t(titleKey)}</h2>
-        </motion.div>
+          {t(titleKey)}
+        </h2>
 
-        <div className="mx-auto max-w-3xl space-y-3">
-          {faqs.map((faq, index) => (
-            <motion.div
-              key={faq.question}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.05 }}
-              viewport={{ once: true }}
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                aria-expanded={openIndex === index}
-                aria-controls={`faq-answer-${index}`}
-                className={`group flex w-full items-center justify-between rounded-xl border bg-card p-5 text-left transition-all ${
-                  openIndex === index ? "border-primary/30 shadow-sm" : "border-border hover:border-primary/20"
-                }`}
-              >
-                <span className="pr-4 font-semibold text-foreground">{faq.question}</span>
-                <ChevronDown
-                  aria-hidden="true"
-                  className={`h-5 w-5 flex-shrink-0 text-muted-foreground transition-transform duration-200 ${
-                    openIndex === index ? "rotate-180 text-primary" : ""
-                  }`}
-                />
-              </button>
-              {/* The answer stays in the DOM while collapsed, so it is part of
-                  the prerendered HTML that crawlers read; only its height is
-                  animated. initial={false} makes the first render match the
-                  static markup: collapsed, no layout shift on hydration. */}
-              <motion.div
-                id={`faq-answer-${index}`}
-                initial={false}
-                animate={openIndex === index ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                aria-hidden={openIndex !== index}
-                className="overflow-hidden"
-              >
-                <div className="p-5 pt-3 text-sm leading-relaxed text-muted-foreground">{faq.answer}</div>
-              </motion.div>
-            </motion.div>
-          ))}
+        <div className="min-w-0 flex-[2_1_520px]">
+          {faqs.map((faq, index) => {
+            const open = openIndex === index;
+            return (
+              <div key={faq.question} className="border-t border-border">
+                <h3 className="m-0 text-[clamp(18px,1.6vw,21px)] font-bold leading-[1.3]">
+                  <button
+                    type="button"
+                    id={`faq-b-${index}`}
+                    aria-expanded={open}
+                    aria-controls={`faq-p-${index}`}
+                    onClick={() => setOpenIndex(open ? null : index)}
+                    className="flex min-h-[64px] w-full items-center justify-between gap-5 py-[18px] text-left text-foreground transition-colors hover:text-link motion-reduce:transition-none"
+                  >
+                    <span>{faq.question}</span>
+                    <span
+                      aria-hidden="true"
+                      className="relative block h-5 w-5 flex-none transition-transform duration-200 motion-reduce:transition-none"
+                      style={{ transform: open ? "rotate(45deg)" : undefined }}
+                    >
+                      <span className="absolute left-0 top-[9px] h-0.5 w-5 rounded-sm bg-current" />
+                      <span className="absolute left-[9px] top-0 h-5 w-0.5 rounded-sm bg-current" />
+                    </span>
+                  </button>
+                </h3>
+                <div
+                  id={`faq-p-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-b-${index}`}
+                  className="grid transition-[grid-template-rows,visibility] duration-200 motion-reduce:transition-none"
+                  style={{
+                    gridTemplateRows: open ? "1fr" : "0fr",
+                    visibility: open ? "visible" : "hidden",
+                  }}
+                >
+                  <div className="min-h-0 overflow-hidden">
+                    <p className="m-0 max-w-[760px] text-pretty pb-[22px] pr-10 text-muted-foreground">{faq.answer}</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {footer && <div className="border-t border-border pt-5 text-base text-muted-foreground">{footer}</div>}
         </div>
       </div>
-    </Section>
+    </section>
   );
 }

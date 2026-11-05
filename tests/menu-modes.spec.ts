@@ -1,10 +1,16 @@
 /**
  * Main menu regression suite.
  *
- * Most of this is ordinary behavioural cover for the two menu modes. Three
- * guards are different: they encode bugs that shipped once and that are
- * invisible to code inspection, so they are spelled out here rather than left
- * for the next reader to rediscover.
+ * There is one menu now: a full-screen panel, at every width. The hover-intent
+ * dropdown that used to open on fine pointers at lg and up went with the
+ * redesign (05/11/2026), along with its intent delay, close grace and
+ * click-toggle guard, so the tests that covered it are gone too. The first
+ * test here asserts the behaviour that replaced it, hover included.
+ *
+ * Most of the rest is ordinary behavioural cover. Three guards are different:
+ * they encode bugs that shipped once and that are invisible to code
+ * inspection, so they are spelled out here rather than left for the next
+ * reader to rediscover.
  *
  *   PORTAL-1 / PORTAL-2
  *     The modal is a portal wrapped in framer-motion's AnimatePresence. If the
@@ -33,9 +39,6 @@
  *     someone weakens the guards, this test fails first.
  */
 import { test, expect, type Page } from "@playwright/test";
-
-/** Mirrors HOVER_CLOSE_GRACE in src/hooks/use-main-menu.ts. */
-const HOVER_CLOSE_GRACE_MS = 250;
 
 /**
  * The page sets `scroll-behavior: smooth`, so scrollTo animates and any lock
@@ -93,108 +96,54 @@ const clickVisibleTrigger = () => {
   trigger?.click();
 };
 
-/* ─────────────────── Mode A: dropdown (fine pointer, lg+) ─────────────────── */
+/* ─────────────────── the menu, at a fine pointer ─────────────────── */
 
-test.describe("dropdown mode", () => {
+test.describe("menu at 1440px", () => {
   test.use({ viewport: { width: 1440, height: 900 } });
 
-  test("opens on hover intent and stays non-modal", async ({ page }) => {
-    await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#main-menu-trigger");
-
-    await trigger.hover();
-    await page.waitForTimeout(60);
-    await expect(page.locator("#main-menu"), "must not open before the 120ms intent delay").toHaveCount(0);
-
-    await expect(page.locator("#main-menu")).toBeVisible({ timeout: 2000 });
-
-    // Hover-open is only safe because it never seizes the page.
-    const state = await page.evaluate(overlayState);
-    expect(state.dialogCount, "dropdown is not a dialog").toBe(0);
-    expect(state.rootInert, "dropdown must not inert the page").toBe(false);
-    expect(state.bodyOverflow, "dropdown must not lock scroll").toBe("(unset)");
-  });
-
-  test("closes after the grace period, and Escape restores focus", async ({ page }) => {
-    await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#main-menu-trigger");
-
-    await trigger.hover();
-    await expect(page.locator("#main-menu")).toBeVisible();
-    await page.mouse.move(10, 400);
-    await page.waitForTimeout(120);
-    await expect(page.locator("#main-menu"), "still open inside the 250ms grace").toBeVisible();
-    await expect(page.locator("#main-menu")).toHaveCount(0, { timeout: 2000 });
-
-    // A deliberate click must not be dismissed by the pointer wandering off.
-    await trigger.click();
-    await page.mouse.move(10, 600);
-    await page.waitForTimeout(500);
-    await expect(page.locator("#main-menu"), "click-opened menu survives pointerleave").toBeVisible();
-
-    await page.keyboard.press("Escape");
-    await expect(page.locator("#main-menu")).toHaveCount(0);
-    expect(await page.evaluate(() => document.activeElement?.id)).toBe("main-menu-trigger");
-  });
-
-  /**
-   * CLICK-ON-HOVER-OPEN
-   *   Approaching the trigger opens the panel on hover intent, so by the time
-   *   the user's click lands the menu is already open. Treating that click as
-   *   "close" - which `if (isOpen) close()` does - shuts the menu in the face of
-   *   someone who walked over specifically to click it. The click must instead
-   *   confirm the intent and anchor the panel, so it no longer closes when the
-   *   pointer leaves. Only a second, deliberate click closes it.
-   */
-  test("a click on a hover-opened menu confirms it instead of closing it", async ({ page }) => {
+  test("click opens and closes it, and Escape restores focus", async ({ page }) => {
     await isolate(page);
     await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
     const panel = page.locator("#main-menu");
 
+    // Hovering is not an interaction any more: the hover-intent dropdown was
+    // removed with the redesign, so approaching the trigger must do nothing.
     await trigger.hover();
-    await expect(panel, "hover intent opens the panel").toBeVisible();
-
-    await trigger.click();
-    await expect(panel, "the click must not close a hover-opened panel").toBeVisible();
-
-    // The click promoted it to click-opened, so pointerleave no longer applies.
-    await page.mouse.move(10, 700);
-    await page.waitForTimeout(HOVER_CLOSE_GRACE_MS + 300);
-    await expect(panel, "confirmed panel survives the pointerleave grace").toBeVisible();
-
-    await trigger.click();
-    await expect(panel, "a second deliberate click closes it").toHaveCount(0);
-  });
-
-  /**
-   * CLICK-TOGGLE
-   *   The fix above must not cost plain click-to-toggle for anyone who never
-   *   triggers hover intent - keyboard users, and pointers that arrive and
-   *   click inside the 120ms delay.
-   */
-  test("plain click-to-open still toggles closed on the next click", async ({ page }) => {
-    await isolate(page);
-    await open(page, "/");
-    const trigger = page.locator("#main-menu-trigger");
-    const panel = page.locator("#main-menu");
+    await page.waitForTimeout(400);
+    await expect(panel, "hover must not open the menu").toHaveCount(0);
 
     await trigger.click();
     await expect(panel, "click opens from closed").toBeVisible();
 
-    // Past CLICK_TOGGLE_GUARD, so this counts as a fresh intent rather than
-    // part of the gesture that opened the panel.
     await page.waitForTimeout(300);
-    await trigger.click();
+    await page.evaluate(clickVisibleTrigger);
     await expect(panel, "click closes what a click opened").toHaveCount(0);
+
+    await trigger.click();
+    await expect(panel).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(panel).toHaveCount(0);
+    expect(await page.evaluate(() => document.activeElement?.id)).toBe("main-menu-trigger");
+  });
+
+  test("it is modal here too: one dialog, inert page, locked scroll", async ({ page }) => {
+    await isolate(page);
+    await open(page, "/");
+    await scrollTo(page, 500);
+    await page.evaluate(clickVisibleTrigger);
+    await expect(page.locator("#main-menu")).toBeVisible();
+
+    const s = await page.evaluate(overlayState);
+    expect(s.dialogCount, "exactly one dialog").toBe(1);
+    expect(s.rootInert, "the page behind it is inert").toBe(true);
+    expect(s.bodyOverflow, "scroll is locked").toBe("hidden");
   });
 });
 
 /* ─────────────────── Mode B: modal (coarse pointer) ─────────────────── */
 
-test.describe("modal mode", () => {
+test.describe("menu at 390px", () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
   test("PORTAL-1 / PORTAL-2: an open menu always has a visible dialog", async ({ page }) => {

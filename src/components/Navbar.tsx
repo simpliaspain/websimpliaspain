@@ -1,54 +1,33 @@
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Menu, ChevronDown, Route } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
-import { LanguageToggle } from "./LanguageToggle";
-import { MainMenu, type MainMenuService } from "./MainMenu";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { MainMenu, type MainMenuLink } from "./MainMenu";
 import { useMainMenuController } from "@/hooks/use-main-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { cn } from "@/lib/utils";
-import ClientAccessButton from "@/components/ClientAccessButton";
-import { DemoLink } from "@/components/DemoLinks";
 
+/**
+ * The header is the logo and one control (redesign, 05/11/2026). Everything
+ * else - navigation, client access, the phone, the email, the language -
+ * lives in the full-screen menu, so the first screen is the headline and the
+ * conversation rather than a row of links competing with them.
+ *
+ * Two pages stay deliberately unlisted here and in the footer: the phone
+ * agent, while the service is not on sale, and /chatbots-multicanal
+ * (decided 05/11/2026). Both keep their route and their sitemap entry.
+ */
 export function Navbar() {
   const menu = useMainMenuController();
-  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const { t } = useLanguage();
 
-  const navLinks = [
-    { label: t('nav.howItWorks'), href: "/#como-funciona" },
-    { label: t('nav.howWeWork'), href: "/como-trabajamos" },
-    { label: t('nav.faq'), href: "/#faq" },
-    { label: t('nav.contact'), href: "/contacto" },
+  const navLinks: MainMenuLink[] = [
+    { label: t("nav.home"), href: "/" },
+    { label: t("nav.howWeWork"), href: "/como-trabajamos" },
+    { label: t("nav.case"), href: "/#caso" },
+    { label: t("nav.contact"), href: "/contacto" },
   ];
 
-  // Two pages are deliberately unlisted, not removed: the phone agent, which
-  // is still in beta, and /chatbots-multicanal, the detailed WhatsApp page
-  // (decided 05/11/2026). Both keep their route and their sitemap entry, so
-  // anyone who arrives from search still gets the full page; neither is
-  // promoted from the site itself.
-  const services: MainMenuService[] = [
-    {
-      icon: Route,
-      title: t('service.howWeWork'),
-      description: t('service.howWeWorkDesc'),
-      href: "/como-trabajamos",
-      color: "text-primary",
-      bgColor: "bg-primary/10",
-    },
-  ];
-
-  // The header floats over the page at the top of the document and only
-  // grows a surface once content scrolls under it.
-  useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Close menu when route changes
+  // Close when the route changes.
   useEffect(() => {
     menu.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -56,101 +35,36 @@ export function Navbar() {
 
   return (
     <>
-      <nav
-        className={cn(
-          "fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 motion-reduce:transition-none",
-          isScrolled || menu.isOpen
-            ? "bg-background/80 backdrop-blur-md border-border/40"
-            : "bg-transparent border-transparent",
-        )}
-      >
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between h-16 lg:h-20 xl:grid xl:grid-cols-[1fr_auto_1fr]">
-            {/* Logo */}
-            <Link
-              to="/"
-              className="flex items-center gap-0.5 text-xl font-bold xl:justify-self-start"
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-            >
-              <span className="text-foreground">Simplia</span>
-              <span className="text-primary">Spain</span>
-              <span className="text-primary text-xs align-super">®</span>
-            </Link>
+      <header className="sticky top-0 z-50 border-b border-border bg-background pt-[env(safe-area-inset-top)]">
+        <div className="mx-auto flex min-h-[68px] w-full max-w-[1240px] items-center justify-between gap-4 px-5 py-[10px] sm:px-8 lg:px-12">
+          <Link
+            to="/"
+            aria-label={t("nav.homeAria")}
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex min-h-[44px] items-center text-[clamp(19px,5vw,22px)] font-extrabold tracking-[-0.02em] text-foreground"
+          >
+            Simplia<span className="text-brand">Spain</span>
+            <span aria-hidden="true" className="mt-[9px] self-start text-[11px] font-semibold text-brand">
+              ®
+            </span>
+          </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-1 xl:justify-self-center">
-            {navLinks.map((link) => {
-                const isExternal = link.href.startsWith("/#");
-                const isHome = link.href === "/";
-                if (isHome) {
-                  return (
-                    <Link
-                      key={link.label}
-                      to={link.href}
-                      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
-                    >
-                      {link.label}
-                    </Link>
-                  );
-                }
-                if (isExternal) {
-                  return (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
-                    >
-                      {link.label}
-                    </a>
-                  );
-                }
-                return (
-                  <Link
-                    key={link.label}
-                    to={link.href}
-                    className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </div>
-
-            {/* Actions cluster: language + client access + demo + menu. Client
-                access only from xl: at lg the row has no room for it, and it
-                stays one tap away inside the menu. */}
-            <div className="hidden lg:flex items-center gap-3 xl:justify-self-end">
-              <LanguageToggle />
-              <ClientAccessButton className="hidden xl:inline-flex" />
-              <DemoLink lugar="menu" label={t('nav.tryDemo')} size="default" className="h-10 rounded-full px-4" />
-              <Button
-                {...menu.triggerProps}
-                className="bg-card hover:bg-secondary text-foreground font-medium px-4 h-10 rounded-full border border-border shadow-sm"
-              >
-                {t('nav.menu')}
-                <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-300 motion-reduce:transition-none ${menu.isOpen ? 'rotate-180' : ''}`} />
-              </Button>
-            </div>
-
-            {/* Below lg: language + menu button only, menu opens as a modal */}
-            <div className="flex lg:hidden items-center gap-2">
-              <LanguageToggle />
-              <button
-                {...menu.mobileTriggerProps}
-                className="flex h-11 w-11 items-center justify-center rounded-full text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                aria-label={t('nav.menu')}
-              >
-                <Menu size={24} />
-              </button>
-            </div>
-          </div>
+          <button
+            type="button"
+            {...menu.triggerProps}
+            aria-label={menu.isOpen ? t("nav.closeMenu") : t("nav.openMenu")}
+            className="-mr-3 flex h-12 w-12 items-center justify-center rounded-md text-foreground transition-transform active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100"
+          >
+            <span aria-hidden="true" className="grid w-6 gap-[5px]">
+              <span className="h-0.5 rounded-sm bg-current" />
+              <span className="h-0.5 rounded-sm bg-current" />
+              <span className="h-0.5 rounded-sm bg-current" />
+            </span>
+          </button>
         </div>
-      </nav>
+      </header>
 
-      <MainMenu controller={menu} navLinks={navLinks} services={services} />
+      <MainMenu controller={menu} navLinks={navLinks} />
     </>
   );
 }

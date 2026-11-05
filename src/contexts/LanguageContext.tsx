@@ -47,8 +47,11 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.readyToStart': '¿Cómo contestaría tu centro?',
     'nav.tryDemoDesc': 'Pon la web de tu coworking y habla con tu agente de IA en un minuto. Gratis.',
     'nav.tryDemo': 'Pruébalo con tu web',
+    'nav.case': 'Caso real',
     'nav.mainMenu': 'Menú principal',
-    'nav.closeMenu': 'Cerrar menú',
+    'nav.openMenu': 'Abrir el menú',
+    'nav.closeMenu': 'Cerrar el menú',
+    'nav.homeAria': 'Simplia Spain, inicio',
     'nav.alreadyClient': '¿Ya eres cliente?',
     'nav.clientAccess': 'Acceso clientes',
     'nav.opensNewTab': '(abre en una nueva pestaña)',
@@ -63,6 +66,10 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Prensa (src/components/sections/PressSection.tsx)
     'press.heading': 'Nos han entrevistado en',
+    // La portada reduce la prensa a una frase; los nombres de los medios no
+    // se traducen y los pone PressLine.
+    'press.line': 'Nos han entrevistado en',
+    'press.and': 'y el',
     'press.photoAlt': 'Entrevista en el estudio de radio',
     'press.caption': 'Onda Cero Madrid Norte · junio 2026',
     // Titular literal de Madrid Norte 24 horas: es una cita, no copy nuestro, así que va en español en los dos idiomas.
@@ -77,37 +84,55 @@ const translations: Record<Language, Record<string, string>> = {
     'press.action.listenSpotify': 'Escuchar en Spotify',
     'press.action.listenIvoox': 'Escuchar en iVoox',
 
-    // Portada · hero
-    'hero.time': '23:47',
-    'hero.title': 'Te preguntan por un despacho. Tu centro abre mañana.',
-    'hero.subtitle': 'Para entonces habrán escrito a otros tres centros. Tu agente de IA contesta esta noche por WhatsApp: da tus precios, enseña los despachos libres con fotos y reserva la visita en la agenda de tu centro.',
+    // Portada · hero. El titular es la hora y la escena; la coma y el punto
+    // entre la hora y el resto los pone el componente, no la traducción.
+    'hero.time': '20:53',
+    'hero.title': 'Marta pregunta por un despacho para 8. Tu centro abre mañana a las 9:00.',
+    'hero.subtitle': 'Para entonces habrá escrito a otros tres centros. Simplia le contesta esta noche por tu WhatsApp y le agenda la visita.',
     'hero.demoCta': 'Pruébalo con tu web',
     'hero.demoNote': 'Gratis, 1 minuto',
     'hero.trustLine': 'Para coworkings, centros de negocio y oficinas flexibles de 1 a 15 sedes · Precio a medida para tu centro',
     'hero.available': 'DISPONIBLE',
     'hero.strategyCall': 'Hablar 15 minutos con nosotros',
 
-    // Chat de ejemplo (centro ficticio)
-    'example.center': 'Casa Abeto Coworking',
-    'example.when': 'dom 23:47',
-    'example.agent': 'Agente de IA',
-    'example.m1': 'Hola, buscamos despacho para 3 personas desde enero. ¿Qué tenéis y a qué precio?',
-    'example.m2': '¡Hola! Tengo dos libres para 3: uno de 690 €/mes con ventana y otro de 590 €/mes. Te mando fotos. ¿Te va bien verlos el martes a las 10:00?',
-    'example.m3': 'Perfecto, el martes a las 10.',
-    'example.m4': 'Hecho. Te he reservado la visita y te llegará un recordatorio el lunes. ¿Me dices tu nombre y tu correo?',
-    'example.photos': '2 fotos',
-    'example.footnote': 'Ejemplo con un centro ficticio.',
-    'example.aria': 'Ejemplo de conversación por WhatsApp un domingo a las 23:47 entre un cliente y el agente de IA de un coworking ficticio',
-    // Variante «sin contestar» del hero: el mismo mensaje, antes de que exista
-    // el agente. La sección siguiente lo repite ya contestado.
-    'example.noAgent': 'Nadie en línea',
+    // Chat de ejemplo. Una sola conversación contada dos veces: en el hero
+    // llega y nadie la coge; en «La misma pregunta» se contesta entera.
+    'example.who': 'Marta · WhatsApp',
+    'example.wrote': 'Escribió a tu centro',
+    'example.answers': 'Le contesta Simplia',
+    'example.m1': 'Hola, ¿tenéis despacho para 8 personas? Lo necesito esta semana.',
+    'example.m2': 'Hola. Sí, tenemos un despacho libre para 8 desde el lunes. Te mando la ficha.',
+    'example.m3': '¿Quieres verlo? Te puedo reservar visita el jueves a las 10:00 o a las 17:30.',
+    'example.m4': 'El jueves a las 10, perfecto.',
+    'example.m5': 'Reservado. Antes de la visita te mando un recordatorio con la ubicación.',
+    'example.cardTitle': 'Despacho para 8 personas',
+    'example.cardSub': 'Fotos, m², puestos y precio',
     'example.noAnswer': 'Sin respuesta',
-    'example.ariaUnanswered': 'Ejemplo: un cliente escribe a un coworking ficticio un domingo a las 23:47 y no recibe respuesta',
+    'example.typing': 'El agente está escribiendo',
+    'example.replay': 'Volver a reproducir',
+    'example.footnote': 'Conversación de ejemplo.',
 
     // La misma pregunta, contestada
-    'answer.title': 'La misma pregunta, con tu',
-    'answer.titleEmph': 'agente de IA',
-    'answer.text': 'Contesta en segundos a cualquier hora, enseña lo que está libre y deja la visita en la agenda de tu centro.',
+    'answer.title': 'La misma pregunta, con Simplia.',
+    'answer.videoCaption': 'Una consulta de noche: el agente contesta en segundos, la visita entra en la agenda del equipo y llega el recordatorio con la ubicación.',
+    'answer.tryIt': 'Pruébalo tú: escribe al agente como si fueras un cliente.',
+
+    // Qué hace el agente
+    'steps.title': 'Qué hace el agente, de la pregunta a la visita.',
+    'steps.s1Title': 'Contesta en cuanto llega el mensaje',
+    'steps.s1Text': 'De día, de noche y en fin de semana, en el WhatsApp de tu centro.',
+    'steps.s2Title': 'Ofrece solo lo que está libre',
+    'steps.s2Text': 'Lee la disponibilidad y los precios de cada sede en tu hoja, y manda la ficha del despacho.',
+    'steps.s3Title': 'Agenda y recuerda la visita',
+    'steps.s3Text': 'En el calendario del centro, con recordatorio y ubicación.',
+    'steps.s4Title': 'Te pasa el contacto',
+    'steps.s4Text': 'Qué busca, para cuántas personas y con qué presupuesto. Y cada semana, un informe en tu panel.',
+    'steps.note': 'Lo ponemos en marcha nosotros, desde 7 días hábiles.',
+    'steps.noteLink': 'Ver cómo trabajamos',
+
+    // Cierre
+    'closing.title': 'Esta noche alguien como Marta va a preguntar por un despacho. Que le conteste tu centro.',
+    'closing.orCall': 'o llama al',
 
     // Barra de confianza y contador en tiempo real
     'trust.worksAt': 'Funciona en',
@@ -179,14 +204,17 @@ const translations: Record<Language, Record<string, string>> = {
     // siguen creciendo, y un número vivo en la web acabaría contradiciendo al
     // panel. Si se actualizan, hay que cambiar también case.statsNote.
     'case.statValue': '37 %',
-    'case.statText': 'de las consultas que recibió Oficinas YA! en octubre llegaron fuera de horario. Les contestó el agente.',
+    'case.statText': 'de las consultas que recibió Oficinas YA! en octubre llegaron fuera del horario de oficina. Les contestó el agente.',
     'case.stat1Value': '65',
     'case.stat1Label': 'conversaciones atendidas en el mes',
     'case.stat2Value': '64',
-    'case.stat2Label': 'de las 65, contestadas por el agente',
-    'case.stat3Value': '27',
-    'case.stat3Label': 'personas dejaron sus datos de contacto',
-    'case.statsNote': 'Octubre de 2026, su primer mes completo con el agente. «Fuera de horario» es fuera de lunes a viernes, de 9:00 a 19:00.',
+    'case.stat2Label': 'contestadas por el agente',
+    'case.stat3Value': '53',
+    'case.stat3Label': 'con interés de alquiler',
+    'case.stat4Value': '27',
+    'case.stat4Label': 'personas dejaron sus datos de contacto',
+    'case.who': 'Operador de espacios flexibles con varias sedes en Madrid. Octubre de 2026, su primer mes completo con el agente.',
+    'case.statsNote': '«Fuera del horario de oficina» es fuera de lunes a viernes, de 9:00 a 19:00. Las cifras salen de su propio panel.',
     'case.quote': '«La automatización de los procesos nos está haciendo mucho más productivos»',
     'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
 
@@ -201,10 +229,16 @@ const translations: Record<Language, Record<string, string>> = {
     'cta.titleEmph': '23:47',
     'cta.text': 'Pon la web de tu coworking y habla con tu agente de IA en un minuto. Gratis y sin llamadas.',
     'cta.demo': 'Pruébalo con tu web',
+    'cta.watch': 'Ver en acción · 0:40',
     'cta.call': 'Hablar 15 minutos',
 
     // Preguntas frecuentes (las mismas en todas las páginas)
     'faq.title': 'Preguntas frecuentes',
+    // Las cuatro de la portada: la de la hoja es nueva, las otras tres salen
+    // de esta misma lista (ver OPERATOR_FAQ en src/pages/Index.tsx).
+    'faq.operatorTitle': 'Preguntas de operador',
+    'faq.sheetQ': '¿Lee mi hoja de disponibilidad?',
+    'faq.sheetA': 'Sí. Lee la disponibilidad y los precios de cada sede en tu hoja y solo ofrece lo que está libre.',
     'faq.q1': '¿Qué pasa si le preguntan algo que no sabe?',
     'faq.a1': 'Lo dice con naturalidad y pasa la conversación a tu equipo con un resumen. No se inventa respuestas.',
     'faq.q2': '¿Se puede equivocar con los precios?',
@@ -228,6 +262,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Pie
     'footer.description': 'Agentes de IA de WhatsApp para coworkings, centros de negocio y oficinas flexibles en España.',
+    'footer.euHosted': 'Datos y conversaciones alojados en la Unión Europea.',
     'footer.tagline': 'Más clientes, menos esfuerzo.',
     'footer.product': 'Producto',
     // Era el enlace a /chatbots-multicanal en el pie; se conserva por lo
@@ -444,8 +479,11 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.readyToStart': 'How would your centre answer?',
     'nav.tryDemoDesc': 'Enter your coworking\'s website and talk to your AI agent in a minute. Free.',
     'nav.tryDemo': 'Try it with your website',
+    'nav.case': 'Real case',
     'nav.mainMenu': 'Main menu',
-    'nav.closeMenu': 'Close menu',
+    'nav.openMenu': 'Open the menu',
+    'nav.closeMenu': 'Close the menu',
+    'nav.homeAria': 'Simplia Spain, home',
     'nav.alreadyClient': 'Already a client?',
     'nav.clientAccess': 'Client login',
     'nav.opensNewTab': '(opens in a new tab)',
@@ -456,6 +494,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Press
     'press.heading': 'Featured in',
+    'press.line': 'We have been interviewed on',
+    'press.and': 'and at the',
     'press.photoAlt': 'Interview in the radio studio',
     'press.caption': 'Onda Cero Madrid Norte · June 2026',
     'press.quote': 'Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas',
@@ -470,34 +510,52 @@ const translations: Record<Language, Record<string, string>> = {
     'press.action.listenIvoox': 'Listen on iVoox',
 
     // Home · hero
-    'hero.time': '23:47',
-    'hero.title': 'Someone asks about an office. Your centre opens tomorrow.',
-    'hero.subtitle': 'By then they will have written to three other centres. Your AI agent answers tonight on WhatsApp: it gives your prices, shows the available offices with photos and books the visit in your centre\'s calendar.',
+    'hero.time': '20:53',
+    'hero.title': 'Marta asks about an office for 8. Your centre opens tomorrow at 9:00.',
+    'hero.subtitle': 'By then she will have written to three other centres. Simplia answers her tonight on your WhatsApp and books the visit.',
     'hero.demoCta': 'Try it with your website',
     'hero.demoNote': 'Free, 1 minute',
     'hero.trustLine': 'For coworkings, business centres and flexible offices with 1 to 15 locations · Pricing tailored to your centre',
     'hero.available': 'AVAILABLE',
     'hero.strategyCall': 'Talk to us for 15 minutes',
 
-    // Example chat (fictional centre)
-    'example.center': 'Casa Abeto Coworking',
-    'example.when': 'Sun 23:47',
-    'example.agent': 'AI agent',
-    'example.m1': 'Hi, we\'re looking for an office for 3 people from January. What do you have and how much?',
-    'example.m2': 'Hi! I have two free for 3: one at €690/month with a window and another at €590/month. Sending photos. Does Tuesday at 10:00 work to see them?',
-    'example.m3': 'Perfect, Tuesday at 10.',
-    'example.m4': 'Done. Your visit is booked and you\'ll get a reminder on Monday. Can I have your name and email?',
-    'example.photos': '2 photos',
-    'example.footnote': 'Example with a fictional centre.',
-    'example.aria': 'Example WhatsApp conversation on a Sunday at 23:47 between a customer and the AI agent of a fictional coworking',
-    'example.noAgent': 'Nobody online',
+    // Example chat
+    'example.who': 'Marta · WhatsApp',
+    'example.wrote': 'Wrote to your centre',
+    'example.answers': 'Simplia is answering',
+    'example.m1': 'Hi, do you have an office for 8 people? I need it this week.',
+    'example.m2': 'Hi. Yes, we have one free for 8 from Monday. Sending you the details.',
+    'example.m3': 'Would you like to see it? I can book a visit on Thursday at 10:00 or 17:30.',
+    'example.m4': 'Thursday at 10, perfect.',
+    'example.m5': 'Booked. Before the visit I\'ll send you a reminder with the location.',
+    'example.cardTitle': 'Office for 8 people',
+    'example.cardSub': 'Photos, m², desks and price',
     'example.noAnswer': 'No reply',
-    'example.ariaUnanswered': 'Example: a customer writes to a fictional coworking on a Sunday at 23:47 and gets no reply',
+    'example.typing': 'The agent is typing',
+    'example.replay': 'Play again',
+    'example.footnote': 'Example conversation.',
 
     // The same question, answered
-    'answer.title': 'The same question, with your',
-    'answer.titleEmph': 'AI agent',
-    'answer.text': 'It answers in seconds at any hour, shows what is free and leaves the visit in your centre\'s calendar.',
+    'answer.title': 'The same question, with Simplia.',
+    'answer.videoCaption': 'An enquiry at night: the agent answers in seconds, the visit goes into the team\'s calendar and the reminder arrives with the location.',
+    'answer.tryIt': 'Try it yourself: write to the agent as if you were a customer.',
+
+    // What the agent does
+    'steps.title': 'What the agent does, from the question to the visit.',
+    'steps.s1Title': 'Answers the moment the message arrives',
+    'steps.s1Text': 'Day, night and at the weekend, on your centre\'s WhatsApp.',
+    'steps.s2Title': 'Offers only what is free',
+    'steps.s2Text': 'Reads each location\'s availability and prices from your sheet, and sends the office details.',
+    'steps.s3Title': 'Books the visit and reminds them',
+    'steps.s3Text': 'In the centre\'s calendar, with a reminder and the location.',
+    'steps.s4Title': 'Hands you the contact',
+    'steps.s4Text': 'What they need, for how many people and on what budget. And every week, a report in your dashboard.',
+    'steps.note': 'We set it up for you, from 7 working days.',
+    'steps.noteLink': 'See how we work',
+
+    // Closing
+    'closing.title': 'Tonight someone like Marta is going to ask about an office. Let your centre answer.',
+    'closing.orCall': 'or call',
 
     // Trust bar and live counter
     'trust.worksAt': 'Live at',
@@ -569,10 +627,13 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat1Value': '65',
     'case.stat1Label': 'conversations handled that month',
     'case.stat2Value': '64',
-    'case.stat2Label': 'of the 65, answered by the agent',
-    'case.stat3Value': '27',
-    'case.stat3Label': 'people left their contact details',
-    'case.statsNote': 'October 2026, their first full month with the agent. "Outside office hours" means outside Monday to Friday, 9:00 to 19:00.',
+    'case.stat2Label': 'answered by the agent',
+    'case.stat3Value': '53',
+    'case.stat3Label': 'with real renting intent',
+    'case.stat4Value': '27',
+    'case.stat4Label': 'people left their contact details',
+    'case.who': 'A flexible-space operator with several locations in Madrid. October 2026, their first full month with the agent.',
+    'case.statsNote': '"Outside office hours" means outside Monday to Friday, 9:00 to 19:00. The figures come from their own dashboard.',
     'case.quote': '"Automating the processes is making us much more productive"',
     'case.quoteSource': 'Roberto, founder of Oficinas YA!',
 
@@ -587,10 +648,14 @@ const translations: Record<Language, Record<string, string>> = {
     'cta.titleEmph': '23:47',
     'cta.text': 'Enter your coworking\'s website and talk to your AI agent in a minute. Free, no calls.',
     'cta.demo': 'Try it with your website',
+    'cta.watch': 'See it in action · 0:40',
     'cta.call': 'Talk for 15 minutes',
 
     // FAQ (the same on every page)
     'faq.title': 'Frequently asked questions',
+    'faq.operatorTitle': 'Operator questions',
+    'faq.sheetQ': 'Does it read my availability sheet?',
+    'faq.sheetA': 'Yes. It reads each location\'s availability and prices from your sheet and only offers what is free.',
     'faq.q1': 'What if it is asked something it doesn\'t know?',
     'faq.a1': 'It says so naturally and hands the conversation to your team with a summary. It doesn\'t make answers up.',
     'faq.q2': 'Can it get prices wrong?',
@@ -614,6 +679,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Footer
     'footer.description': 'WhatsApp AI agents for coworkings, business centres and flexible offices in Spain.',
+    'footer.euHosted': 'Data and conversations hosted in the European Union.',
     'footer.tagline': 'More clients, less effort.',
     'footer.product': 'Product',
     'footer.whatsappAgent': 'WhatsApp AI agent',

@@ -1,5 +1,7 @@
 /**
- * Service demo video (ServiceDemoVideo).
+ * The demo video (ServiceDemoVideo). It lives in #accion on the home, inside
+ * the figure with id="video" that the hero's "Ver en acción" link jumps to
+ * (it was in #servicios until the redesign of 05/11/2026).
  *
  *   VIDEO-1  nothing of the video is fetched on page load (1440 and 390):
  *            no poster, no media request until the reader scrolls near it.
@@ -30,10 +32,10 @@ function track(page: Page) {
 }
 
 async function scrollToVideo(page: Page) {
-  await page.locator("#servicios video").evaluate((v) => v.scrollIntoView({ block: "center" }));
+  await page.locator("#video video").evaluate((v) => v.scrollIntoView({ block: "center" }));
 }
 
-const control = (page: Page) => page.locator("#servicios figure button");
+const control = (page: Page) => page.locator("#video button");
 
 for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
   test.describe(`demo video at ${viewport.width}px`, () => {
@@ -50,7 +52,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     test("VIDEO-2: autoplays in view; the control pauses and resumes it", async ({ page }) => {
       await open(page);
       await scrollToVideo(page);
-      const video = page.locator("#servicios video");
+      const video = page.locator("#video video");
       await expect.poll(() => video.evaluate((v: HTMLVideoElement) => v.currentTime), { timeout: 8000 }).toBeGreaterThan(0.5);
       expect(await video.evaluate((v: HTMLVideoElement) => v.muted), "VIDEO-2: muted").toBe(true);
       await expect(control(page)).toBeVisible();
@@ -88,7 +90,7 @@ test.describe("demo video conditions", () => {
     const urls = track(page);
     await open(page);
     await scrollToVideo(page);
-    const video = page.locator("#servicios video");
+    const video = page.locator("#video video");
     await expect(video).toHaveAttribute("poster", POSTER);
     await page.waitForTimeout(1500);
     expect(urls.filter((u) => MEDIA.test(u)), "VIDEO-3: no video request").toEqual([]);
@@ -104,7 +106,7 @@ test.describe("demo video conditions", () => {
     const urls = track(page);
     await open(page);
     await scrollToVideo(page);
-    await expect(page.locator("#servicios video")).toHaveAttribute("poster", POSTER);
+    await expect(page.locator("#video video")).toHaveAttribute("poster", POSTER);
     await page.waitForTimeout(1500);
     expect(urls.filter((u) => MEDIA.test(u)), "VIDEO-4: no video request").toEqual([]);
     await expect(control(page)).toHaveAttribute("aria-label", "Reproducir la demo");
@@ -124,7 +126,7 @@ test.describe("demo video conditions", () => {
     });
     await open(page);
     await scrollToVideo(page);
-    const video = page.locator("#servicios video");
+    const video = page.locator("#video video");
     await expect(video).toHaveAttribute("poster", POSTER);
     await page.waitForTimeout(1500);
     expect(await video.evaluate((v: HTMLVideoElement) => v.paused)).toBe(true);
@@ -135,7 +137,7 @@ test.describe("demo video conditions", () => {
 
   test("VIDEO-6: the box is 4:3 before and after the video loads", async ({ page }) => {
     await open(page);
-    const video = page.locator("#servicios video");
+    const video = page.locator("#video video");
     const before = await video.evaluate((v) => v.getBoundingClientRect().height);
     const width = await video.evaluate((v) => v.getBoundingClientRect().width);
     expect(Math.abs(before - (width * 3) / 4)).toBeLessThan(1);

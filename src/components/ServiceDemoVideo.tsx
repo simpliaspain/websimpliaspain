@@ -67,43 +67,73 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
       setNear(true);
       return;
     }
+
     // Observer callbacks can carry several entries for the same element when
     // the main thread is busy (scrolled out and back before the callback
     // ran). Only the last one is the current state; acting on the first
     // paused a video that was back in view - right after the reader pressed
     // play - which is what VIDEO-2 caught about 1 run in 10.
     const latest = (entries: IntersectionObserverEntry[]) => entries[entries.length - 1];
-    const nearObserver = new IntersectionObserver(
-      (entries) => {
-        if (latest(entries).isIntersecting) {
-          setNear(true);
-          nearObserver.disconnect();
-        }
-      },
-      { rootMargin: "800px 0px" },
-    );
-    const viewObserver = new IntersectionObserver(
-      (entries) => {
-        const video = videoRef.current;
-        if (latest(entries).isIntersecting) {
-          if (allowed && !userPaused.current) {
-            if (video?.currentSrc) video.play().catch(syncFromElement);
-            else {
-              playWhenAttached.current = true;
-              setAttached(true);
-            }
+
+    let nearObserver: IntersectionObserver | null = null;
+    let viewObserver: IntersectionObserver | null = null;
+
+    const arm = () => {
+      if (nearObserver) return;
+      nearObserver = new IntersectionObserver(
+        (entries) => {
+          if (latest(entries).isIntersecting) {
+            setNear(true);
+            nearObserver?.disconnect();
           }
-        } else if (video && !video.paused) {
-          video.pause();
-        }
-      },
-      { threshold: 0.25 },
-    );
-    nearObserver.observe(figure);
-    viewObserver.observe(figure);
+        },
+        { rootMargin: "800px 0px" },
+      );
+      viewObserver = new IntersectionObserver(
+        (entries) => {
+          const video = videoRef.current;
+          if (latest(entries).isIntersecting) {
+            if (allowed && !userPaused.current) {
+              if (video?.currentSrc) video.play().catch(syncFromElement);
+              else {
+                playWhenAttached.current = true;
+                setAttached(true);
+              }
+            }
+          } else if (video && !video.paused) {
+            video.pause();
+          }
+        },
+        { threshold: 0.25 },
+      );
+      nearObserver.observe(figure);
+      viewObserver.observe(figure);
+    };
+
+    // Nothing is observed until the reader moves. Since the redesign the
+    // video sits in the second band, inside the 800px prefetch margin at
+    // common window heights, so arming on mount would fetch a megabyte on
+    // page load for a reader who never scrolls - the thing VIDEO-1 exists to
+    // prevent. Someone already looking at it (a deep link to #video, a very
+    // tall window) is the exception and arms it at once.
+    // "Already looking at it" means a real part of it, not the sliver that
+    // peeks over the fold at 1440x900 - that sliver is the common case and
+    // would fetch the poster on every page load.
+    const box = figure.getBoundingClientRect();
+    const visibleHeight = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0);
+    const alreadyInView = visibleHeight > 120;
+    const moves = ["scroll", "wheel", "touchstart", "keydown", "pointerdown"] as const;
+    const onFirstMove = () => {
+      moves.forEach((name) => window.removeEventListener(name, onFirstMove, true));
+      arm();
+    };
+    if (alreadyInView) arm();
+    else moves.forEach((name) => window.addEventListener(name, onFirstMove, { passive: true, capture: true }));
+
     return () => {
-      nearObserver.disconnect();
-      viewObserver.disconnect();
+      moves.forEach((name) => window.removeEventListener(name, onFirstMove, true));
+      nearObserver?.disconnect();
+      viewObserver?.disconnect();
     };
   }, []);
 
@@ -130,14 +160,10 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
   };
 
   return (
-    // The frame is the service card's sibling: same surface, border, radius
-    // and padding (16px below lg so phones keep most of the video). When the
-    // row stretches it taller than the video, the 4:3 video stays whole and
-    // centred - the padding absorbs the difference, nothing is cropped.
-    <figure
-      ref={figureRef}
-      className={cn("m-0 flex items-center justify-center rounded-3xl border-2 border-border bg-card p-4 lg:p-8", className)}
-    >
+    // Redesign (05/11/2026): no card around it any more. The video is its own
+    // object - a plain 18px-cornered box, edge to edge, on the page's own
+    // white - matching the chat card beside it.
+    <figure ref={figureRef} className={cn("m-0 overflow-hidden rounded-[18px] bg-[hsl(216_13%_92%)]", className)}>
       <div className="relative w-full">
         {/* React sets `muted` as a property, never as the attribute, so it is
             also forced in the effect above before any play(). */}
@@ -154,7 +180,7 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
           aria-label={t(labelKey)}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
-          className="block h-auto w-full rounded-xl bg-secondary object-contain"
+          className="block h-auto w-full bg-[hsl(216_13%_92%)] object-contain"
           style={{ aspectRatio: `${width} / ${height}` }}
         >
           {attached && <source src={src} type="video/mp4" />}

@@ -118,10 +118,15 @@ async function activate(page: Page, item: Item): Promise<{ effect: string; detai
   const handle = (await locate(page, item.key)).asElement();
   if (!handle) return { effect: "none", detail: "element not found after reload" };
 
-  // Fixed controls (header, chat button) do not move with the page; start
-  // them from mid-page so a scroll-to-top is observable.
+  // Pinned controls (the header, the chat button) stay on screen as the page
+  // moves, so a scroll-to-top is only observable if we start from mid-page.
+  // Sticky counts as well as fixed: the header became sticky in the redesign
+  // of 05/11/2026 and its logo stopped registering any effect.
   const fixed = await handle.evaluate((el) => {
-    for (let n: Element | null = el; n; n = n.parentElement) if (getComputedStyle(n).position === "fixed") return true;
+    for (let n: Element | null = el; n; n = n.parentElement) {
+      const position = getComputedStyle(n).position;
+      if (position === "fixed" || position === "sticky") return true;
+    }
     return false;
   });
   if (fixed) await page.evaluate(() => window.scrollTo({ top: 600, behavior: "instant" as ScrollBehavior }));
@@ -353,17 +358,22 @@ test("DEMO-LINKS: every demo link is tracked as ?o=web with its Umami event", as
 });
 
 /**
- *   PRICING-CTA  "Así trabajamos" on the home pricing block reaches
- *                /como-trabajamos client-side, with a 44px hit area.
+ *   ONWARD-CTA  The home's one link to /como-trabajamos reaches it
+ *               client-side, with a 44px hit area. It used to sit in the
+ *               pricing block; the redesign of 05/11/2026 dropped that
+ *               section - a pricing section with no prices subtracts - and
+ *               the link now closes the four steps in #como-funciona.
  */
 for (const lang of LOCALES) {
-  test(`PRICING-CTA: the pricing block links to /como-trabajamos (${lang})`, async ({ browser }) => {
+  test(`ONWARD-CTA: the home links on to /como-trabajamos (${lang})`, async ({ browser }) => {
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     await setup(context, lang);
     const page = await context.newPage();
     await load(page, "/");
     await page.evaluate(() => ((window as unknown as { __noReload: boolean }).__noReload = true));
-    const link = page.locator("#empezar").getByRole("link", { name: lang === "es" ? "Así trabajamos" : "How we work", exact: true });
+    const link = page
+      .locator("#como-funciona")
+      .getByRole("link", { name: lang === "es" ? "Ver cómo trabajamos" : "See how we work", exact: true });
     await link.scrollIntoViewIfNeeded();
     expect((await link.boundingBox())?.height, "44px hit area").toBeGreaterThanOrEqual(44);
     await link.click();
