@@ -52,6 +52,10 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.alreadyClient': '¿Ya eres cliente?',
     'nav.clientAccess': 'Acceso clientes',
     'nav.opensNewTab': '(abre en una nueva pestaña)',
+    // service.whatsapp nombra el servicio en los datos estructurados de la
+    // home. whatsappDesc era la descripción de /chatbots-multicanal en el
+    // menú; la página sigue publicada pero ya no se enlaza (05/11/2026), así
+    // que la etiqueta se conserva para cuando vuelva a listarse.
     'service.whatsapp': 'Agente de IA de WhatsApp',
     'service.whatsappDesc': 'Contesta, enseña despachos y reserva visitas',
     'service.howWeWork': 'Cómo trabajamos',
@@ -226,6 +230,8 @@ const translations: Record<Language, Record<string, string>> = {
     'footer.description': 'Agentes de IA de WhatsApp para coworkings, centros de negocio y oficinas flexibles en España.',
     'footer.tagline': 'Más clientes, menos esfuerzo.',
     'footer.product': 'Producto',
+    // Era el enlace a /chatbots-multicanal en el pie; se conserva por lo
+    // mismo que service.whatsappDesc.
     'footer.whatsappAgent': 'Agente de IA de WhatsApp',
     'footer.howWeWork': 'Cómo trabajamos',
     'footer.phoneAgent': 'Agente telefónico (beta)',

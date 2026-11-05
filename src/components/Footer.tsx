@@ -50,7 +50,9 @@ export function Footer() {
           <div>
             <h2 className="mb-4 font-semibold text-foreground">{t('footer.product')}</h2>
             <ul className="space-y-2 text-sm text-muted-foreground">
-              <li><Link to="/chatbots-multicanal" className={linkClass}>{t('footer.whatsappAgent')}</Link></li>
+              {/* /chatbots-multicanal is deliberately unlisted (05/11/2026):
+                  the route and its sitemap entry stay, so search still finds
+                  it, but the site no longer points at it. */}
               <li><Link to="/como-trabajamos" className={linkClass}>{t('footer.howWeWork')}</Link></li>
               <li><Link to="/agentes-telefonicos" className={linkClass}>{t('footer.phoneAgent')}</Link></li>
               <li>

@@ -20,10 +20,16 @@ import { test, expect, type Page } from "@playwright/test";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
-// Routes reachable through a visible in-app link. /agentes-telefonicos is
-// live but deliberately unlinked while the service is not on sale, so it is
-// not navigated here; add it back when its entry points return.
-const ROUTES = ["/contacto", "/chatbots-multicanal", "/como-trabajamos", "/politica-privacidad", "/"];
+// Routes reachable through a visible in-app link, walked one after another.
+const ROUTES = ["/contacto", "/como-trabajamos", "/politica-privacidad", "/"];
+
+// Live but deliberately unlisted, so nothing on the site links to them and
+// they cannot be walked into: the phone agent, while the service is not on
+// sale, and /chatbots-multicanal since 05/11/2026. A visitor arrives from
+// search instead, so they are covered the other way round - a cold load, then
+// the first client-side navigation away - which is the condition STALE-1 and
+// STALE-2 are about. Move one back into ROUTES when its entry points return.
+const UNLISTED = ["/chatbots-multicanal", "/agentes-telefonicos"];
 
 async function isolate(page: Page) {
   await page.route("**://*/**", (route) =>
@@ -64,6 +70,11 @@ test.describe("client-side navigation survives a deploy", () => {
       await navigateTo(page, href);
       await expect(page.locator("h1")).toHaveCount(1);
     }
+    for (const href of UNLISTED) {
+      await open(page, href);
+      await navigateTo(page, "/");
+      await expect(page.locator("h1")).toHaveCount(1);
+    }
     expect(dataRequests, "STALE-1: loader-data fetched on navigation").toEqual([]);
   });
 
@@ -83,6 +94,13 @@ test.describe("client-side navigation survives a deploy", () => {
       await navigateTo(page, href);
       await expect(page.getByText("Unexpected Application Error"), `STALE-2: error boundary on ${href}`).toHaveCount(0);
       await expect(page.locator("h1"), `STALE-2: ${href} rendered`).toHaveCount(1);
+    }
+    for (const href of UNLISTED) {
+      await open(page, href);
+      await expect(page.locator("h1"), `STALE-2: ${href} rendered on a cold load`).toHaveCount(1);
+      await navigateTo(page, "/");
+      await expect(page.getByText("Unexpected Application Error"), `STALE-2: error boundary leaving ${href}`).toHaveCount(0);
+      await expect(page.locator("h1"), `STALE-2: home rendered from ${href}`).toHaveCount(1);
     }
   });
 

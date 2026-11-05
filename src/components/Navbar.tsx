@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, ChevronDown, MessageSquare, Route } from "lucide-react";
+import { Menu, ChevronDown, Route } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
 import { MainMenu, type MainMenuService } from "./MainMenu";
@@ -23,17 +23,12 @@ export function Navbar() {
     { label: t('nav.contact'), href: "/contacto" },
   ];
 
-  // The phone agent is in beta and left out of the menu on purpose; it is
-  // linked from the footer as "Agente telefónico (beta)".
+  // Two pages are deliberately unlisted, not removed: the phone agent, which
+  // is still in beta, and /chatbots-multicanal, the detailed WhatsApp page
+  // (decided 05/11/2026). Both keep their route and their sitemap entry, so
+  // anyone who arrives from search still gets the full page; neither is
+  // promoted from the site itself.
   const services: MainMenuService[] = [
-    {
-      icon: MessageSquare,
-      title: t('service.whatsapp'),
-      description: t('service.whatsappDesc'),
-      href: "/chatbots-multicanal",
-      color: "text-service-chatbots",
-      bgColor: "bg-service-chatbots/10",
-    },
     {
       icon: Route,
       title: t('service.howWeWork'),
