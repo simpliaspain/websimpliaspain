@@ -74,9 +74,9 @@ const translations: Record<Language, Record<string, string>> = {
     'press.action.listenIvoox': 'Escuchar en iVoox',
 
     // Portada · hero
-    'hero.title': 'Ningún mensaje de tu coworking se queda',
-    'hero.titleEmph': 'sin respuesta',
-    'hero.subtitle': 'Un agente de IA que contesta por WhatsApp en segundos, de día y de noche: da tus precios, enseña los despachos libres con fotos, recoge el contacto y reserva la visita en la agenda de tu centro. Ya funciona en Oficinas YA!, en Madrid.',
+    'hero.time': '23:47',
+    'hero.title': 'Te preguntan por un despacho. Tu centro abre mañana.',
+    'hero.subtitle': 'Para entonces habrán escrito a otros tres centros. Tu agente de IA contesta esta noche por WhatsApp: da tus precios, enseña los despachos libres con fotos y reserva la visita en la agenda de tu centro.',
     'hero.demoCta': 'Pruébalo con tu web',
     'hero.demoNote': 'Gratis, 1 minuto',
     'hero.trustLine': 'Para coworkings, centros de negocio y oficinas flexibles de 1 a 15 sedes · Precio a medida para tu centro',
@@ -94,6 +94,16 @@ const translations: Record<Language, Record<string, string>> = {
     'example.photos': '2 fotos',
     'example.footnote': 'Ejemplo con un centro ficticio.',
     'example.aria': 'Ejemplo de conversación por WhatsApp un domingo a las 23:47 entre un cliente y el agente de IA de un coworking ficticio',
+    // Variante «sin contestar» del hero: el mismo mensaje, antes de que exista
+    // el agente. La sección siguiente lo repite ya contestado.
+    'example.noAgent': 'Nadie en línea',
+    'example.noAnswer': 'Sin respuesta',
+    'example.ariaUnanswered': 'Ejemplo: un cliente escribe a un coworking ficticio un domingo a las 23:47 y no recibe respuesta',
+
+    // La misma pregunta, contestada
+    'answer.title': 'La misma pregunta, con tu',
+    'answer.titleEmph': 'agente de IA',
+    'answer.text': 'Contesta en segundos a cualquier hora, enseña lo que está libre y deja la visita en la agenda de tu centro.',
 
     // Barra de confianza y contador en tiempo real
     'trust.worksAt': 'Funciona en',
@@ -439,9 +449,9 @@ const translations: Record<Language, Record<string, string>> = {
     'press.action.listenIvoox': 'Listen on iVoox',
 
     // Home · hero
-    'hero.title': 'No message to your coworking goes',
-    'hero.titleEmph': 'unanswered',
-    'hero.subtitle': 'An AI agent that answers on WhatsApp in seconds, day and night: it gives your prices, shows the available offices with photos, takes the contact details and books the visit in your centre\'s calendar. Already live at Oficinas YA! in Madrid.',
+    'hero.time': '23:47',
+    'hero.title': 'Someone asks about an office. Your centre opens tomorrow.',
+    'hero.subtitle': 'By then they will have written to three other centres. Your AI agent answers tonight on WhatsApp: it gives your prices, shows the available offices with photos and books the visit in your centre\'s calendar.',
     'hero.demoCta': 'Try it with your website',
     'hero.demoNote': 'Free, 1 minute',
     'hero.trustLine': 'For coworkings, business centres and flexible offices with 1 to 15 locations · Pricing tailored to your centre',
@@ -459,6 +469,14 @@ const translations: Record<Language, Record<string, string>> = {
     'example.photos': '2 photos',
     'example.footnote': 'Example with a fictional centre.',
     'example.aria': 'Example WhatsApp conversation on a Sunday at 23:47 between a customer and the AI agent of a fictional coworking',
+    'example.noAgent': 'Nobody online',
+    'example.noAnswer': 'No reply',
+    'example.ariaUnanswered': 'Example: a customer writes to a fictional coworking on a Sunday at 23:47 and gets no reply',
+
+    // The same question, answered
+    'answer.title': 'The same question, with your',
+    'answer.titleEmph': 'AI agent',
+    'answer.text': 'It answers in seconds at any hour, shows what is free and leaves the visit in your centre\'s calendar.',
 
     // Trust bar and live counter
     'trust.worksAt': 'Live at',

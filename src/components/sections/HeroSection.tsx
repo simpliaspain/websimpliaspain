@@ -27,8 +27,11 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-col items-center text-center lg:items-start lg:text-left"
           >
+            {/* The hour leads, because the whole argument of the page is when
+                the question arrives, not what it asks. Kept inside the h1 so
+                the heading a crawler reads is the complete sentence. */}
             <h1 className="text-balance text-4xl font-bold leading-tight text-foreground md:text-5xl xl:text-6xl">
-              {t("hero.title")} <span className="text-italic-gradient pr-1">{t("hero.titleEmph")}</span>
+              <span className="text-italic-gradient pr-1 tabular-nums">{t("hero.time")}</span> {t("hero.title")}
             </h1>
 
             <p className="mt-6 max-w-2xl text-pretty text-lg text-muted-foreground md:text-xl">
@@ -74,7 +77,9 @@ export function HeroSection() {
             <p className="mt-6 max-w-xl text-sm text-muted-foreground">{t("hero.trustLine")}</p>
           </motion.div>
 
-          <ExampleChat className="mx-auto lg:mr-0" />
+          {/* The question with nobody to answer it. The section below repeats
+              it, answered, so problem and solution share one conversation. */}
+          <ExampleChat variant="unanswered" className="mx-auto lg:mr-0" />
         </div>
       </div>
 

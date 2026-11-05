@@ -161,9 +161,14 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
     await page.clock.runFor(9000);
     await expect(prompt(page)).toBeAttached();
     expect(await overlapsInteractive(page), "PROMPT-8: at load").toEqual([]);
-    // Scroll through the whole page while it is up (hover pauses its timer,
-    // the scroll listener re-checks the overlap on every frame).
-    await prompt(page).hover();
+    // Hovering pauses its auto-dismiss timer, but it can only be hovered
+    // while it is actually visible, and at a given scroll position it may
+    // have hidden itself - which is the guarantee under test, not a failure.
+    // At 390px the hero's booking card sits under it at scroll 0. The timer
+    // only counts visible time anyway and the walk advances the clock by far
+    // less than the 12s it needs, so an unhovered walk cannot outlast it;
+    // the assertion after the loop is what proves it was never dismissed.
+    if (await prompt(page).isVisible()) await prompt(page).hover();
     const height = await page.evaluate(() => document.documentElement.scrollHeight);
     for (let y = 0; y < height; y += 150) {
       await page.evaluate((y) => window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior }), y);
@@ -171,5 +176,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
       // if it would overlap; give it two frames.
       await expect.poll(async () => { await page.clock.runFor(34); return overlapsInteractive(page); }, { message: `PROMPT-8: at scrollY ${y}` }).toEqual([]);
     }
+    // A prompt dismissed mid-walk would have made every check above vacuous.
+    await expect(prompt(page), "PROMPT-8: still up after the walk").toBeAttached();
   });
 }

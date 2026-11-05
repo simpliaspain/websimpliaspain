@@ -1,4 +1,4 @@
-import { Image as ImageIcon, CheckCheck } from "lucide-react";
+import { Image as ImageIcon, CheckCheck, Clock3 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -12,27 +12,49 @@ const MESSAGES: Message[] = [
 ];
 
 /**
- * The hero's example conversation, with the time on show: the point is that
- * it happens on a Sunday night. Static markup, so it is in the prerendered
- * HTML and readable without JavaScript. Deliberately no WhatsApp branding -
- * the chat look is enough. The centre is fictional and says so.
+ * The example conversation, with the time on show: the point is that it
+ * happens on a Sunday night. Static markup, so it is in the prerendered HTML
+ * and readable without JavaScript. Deliberately no WhatsApp branding - the
+ * chat look is enough. The centre is fictional and says so.
+ *
+ * Two variants of the same message, which is the whole argument of the page:
+ * `unanswered` is the hero - the question arrives and nobody replies;
+ * `full` is the section right below it - the same question, answered. Keeping
+ * one component means the two can never drift apart.
  */
-export function ExampleChat({ className }: { className?: string }) {
+export function ExampleChat({
+  className,
+  variant = "full",
+}: {
+  className?: string;
+  variant?: "full" | "unanswered";
+}) {
   const { t } = useLanguage();
+  const unanswered = variant === "unanswered";
+  const shown = unanswered ? MESSAGES.slice(0, 1) : MESSAGES;
+
   return (
     <figure className={cn("w-full max-w-md", className)}>
       <div
         role="img"
-        aria-label={t("example.aria")}
+        aria-label={t(unanswered ? "example.ariaUnanswered" : "example.aria")}
         className="overflow-hidden rounded-3xl border border-border bg-card shadow-[0_20px_60px_-15px_hsl(var(--primary)/0.25)]"
       >
         <div className="flex items-center gap-3 border-b border-border bg-secondary/60 px-5 py-3">
-          <span aria-hidden="true" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold",
+              unanswered ? "bg-muted text-muted-foreground" : "bg-primary text-primary-foreground",
+            )}
+          >
             CA
           </span>
           <span className="min-w-0 flex-1 text-left">
             <span className="block truncate text-sm font-semibold text-foreground">{t("example.center")}</span>
-            <span className="block text-xs text-muted-foreground">{t("example.agent")}</span>
+            <span className="block text-xs text-muted-foreground">
+              {t(unanswered ? "example.noAgent" : "example.agent")}
+            </span>
           </span>
           <span className="rounded-full bg-background px-2.5 py-1 text-xs font-semibold tabular-nums text-foreground">
             {t("example.when")}
@@ -40,7 +62,7 @@ export function ExampleChat({ className }: { className?: string }) {
         </div>
 
         <div aria-hidden="true" className="space-y-3 bg-background/60 px-4 py-5 text-left">
-          {MESSAGES.map((m) => (
+          {shown.map((m) => (
             <div key={m.key} className={cn("flex", m.from === "client" ? "justify-end" : "justify-start")}>
               <div
                 className={cn(
@@ -73,6 +95,16 @@ export function ExampleChat({ className }: { className?: string }) {
               </div>
             </div>
           ))}
+
+          {/* The point of the hero: the message sits there, unanswered, until
+              the centre opens. A dashed outline rather than a bubble, so it
+              reads as an absence and not as another message. */}
+          {unanswered && (
+            <p className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border px-3.5 py-3 text-xs font-medium text-muted-foreground">
+              <Clock3 className="h-4 w-4" />
+              {t("example.noAnswer")}
+            </p>
+          )}
         </div>
       </div>
       <figcaption className="mt-3 text-center text-xs text-muted-foreground">{t("example.footnote")}</figcaption>

@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/sections/HeroSection";
+import { AnswerSection } from "@/components/sections/AnswerSection";
 import { TrustSection } from "@/components/sections/TrustSection";
 import { ProblemSection } from "@/components/sections/ProblemSection";
 import { MethodSection } from "@/components/sections/MethodSection";
@@ -21,20 +22,28 @@ import { useLanguage } from "@/contexts/LanguageContext";
  * follows plan-ventas/presencia-online/ENCARGO-WEB.md, A1: hero, trust,
  * problem, how it works, what it does, who for, the Oficinas YA! case,
  * tailored pricing, FAQ, then press and the closing demo band.
+ *
+ * One addition since (05/11/2026): the hero now shows the question arriving
+ * unanswered, and AnswerSection repeats that same conversation answered.
+ * Problem and solution share one message instead of being two separate
+ * examples the reader has to connect. The demo video stays in
+ * ServicesSection; see AnswerSection for why it is not up here.
  */
 const Index = () => {
   const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
       <Seo titleKey="seo.home.title" descriptionKey="seo.home.description" path="/" />
-      {/* Describes the one service the page sells, with the hero's own
-          subtitle, so the structured data cannot drift from the page. */}
+      {/* Describes the one service the page sells. It reuses the page's own
+          meta description rather than the hero subtitle: since 05/11/2026
+          that subtitle opens mid-scene («Para entonces habrán escrito…»), which
+          needs the headline to make sense and does not stand alone here. */}
       <JsonLd
         data={{
           "@type": "Service",
           name: t("service.whatsapp"),
           serviceType: "Agente de IA de WhatsApp para coworkings y centros de negocio",
-          description: t("hero.subtitle"),
+          description: t("seo.home.description"),
           url: `${SITE_URL}/`,
           provider: { "@id": ORGANIZATION_ID },
           areaServed: { "@type": "Country", name: "España" },
@@ -43,6 +52,7 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
+        <AnswerSection />
         <TrustSection />
         <ProblemSection />
         <MethodSection />
