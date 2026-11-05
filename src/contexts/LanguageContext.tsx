@@ -170,6 +170,21 @@ const translations: Record<Language, Record<string, string>> = {
     'case.point2': 'Precios de cada centro, siempre con «+ IVA»',
     'case.point3': 'Visitas en la agenda de cada centro de Madrid',
     'case.point4': 'Aviso al equipo con el resumen de cada contacto',
+    // Cifras de octubre de 2026, medidas sobre mt_conversaciones del tenant
+    // «oficinasya» en Europe/Madrid. Ventana cerrada a propósito: los datos
+    // siguen creciendo, y un número vivo en la web acabaría contradiciendo al
+    // panel. Si se actualizan, hay que cambiar también case.statsNote.
+    'case.statValue': '37 %',
+    'case.statText': 'de las consultas que recibió Oficinas YA! en octubre llegaron fuera de horario. Les contestó el agente.',
+    'case.stat1Value': '65',
+    'case.stat1Label': 'conversaciones atendidas en el mes',
+    'case.stat2Value': '64',
+    'case.stat2Label': 'de las 65, contestadas por el agente',
+    'case.stat3Value': '27',
+    'case.stat3Label': 'personas dejaron sus datos de contacto',
+    'case.statsNote': 'Octubre de 2026, su primer mes completo con el agente. «Fuera de horario» es fuera de lunes a viernes, de 9:00 a 19:00.',
+    'case.quote': '«La automatización de los procesos nos está haciendo mucho más productivos»',
+    'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
 
     // Cómo empezar (sin precios)
     'pricing.title': 'Un precio a medida para tu',
@@ -543,6 +558,17 @@ const translations: Record<Language, Record<string, string>> = {
     'case.point2': 'Each centre\'s prices, always "+ VAT"',
     'case.point3': 'Visits in the calendar of each Madrid centre',
     'case.point4': 'Alerts the team with a summary of each contact',
+    'case.statValue': '37%',
+    'case.statText': 'of the enquiries Oficinas YA! received in October arrived outside office hours. The agent answered them.',
+    'case.stat1Value': '65',
+    'case.stat1Label': 'conversations handled that month',
+    'case.stat2Value': '64',
+    'case.stat2Label': 'of the 65, answered by the agent',
+    'case.stat3Value': '27',
+    'case.stat3Label': 'people left their contact details',
+    'case.statsNote': 'October 2026, their first full month with the agent. "Outside office hours" means outside Monday to Friday, 9:00 to 19:00.',
+    'case.quote': '"Automating the processes is making us much more productive"',
+    'case.quoteSource': 'Roberto, founder of Oficinas YA!',
 
     // Getting started (no prices)
     'pricing.title': 'Pricing tailored to your',
