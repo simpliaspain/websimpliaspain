@@ -58,7 +58,7 @@ export default function ChatbotsMulticanal() {
                   the LCP element and must be visible in the prerendered HTML. */}
               <motion.div initial={false} animate={{ opacity: 1, y: 0 }}>
                 <h1 className="mb-6 text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-                  {t("chatbots.heroTitle1")} <span className="text-italic-gradient">{t("chatbots.heroTitle2")}</span>
+                  {t("chatbots.heroTitle1")} <span className="text-brand">{t("chatbots.heroTitle2")}</span>
                 </h1>
                 <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("chatbots.heroDesc")}</p>
                 <div className="flex flex-col gap-4 sm:flex-row">
@@ -83,7 +83,7 @@ export default function ChatbotsMulticanal() {
               className="mb-12 text-center"
             >
               <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-                {t("chatbots.featuresTitle1")} <span className="text-italic-gradient">{t("chatbots.featuresTitle2")}</span>
+                {t("chatbots.featuresTitle1")} <span className="text-brand">{t("chatbots.featuresTitle2")}</span>
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{t("chatbots.featuresSubtitle")}</p>
             </motion.div>
@@ -127,7 +127,7 @@ export default function ChatbotsMulticanal() {
                 viewport={{ once: true }}
               >
                 <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl">
-                  {t("chatbots.benefitsTitle1")} <span className="text-italic-gradient">{t("chatbots.benefitsTitle2")}</span>
+                  {t("chatbots.benefitsTitle1")} <span className="text-brand">{t("chatbots.benefitsTitle2")}</span>
                 </h2>
                 <p className="mb-8 text-muted-foreground">{t("chatbots.benefitsDesc")}</p>
                 <ul className="grid gap-4 sm:grid-cols-2">

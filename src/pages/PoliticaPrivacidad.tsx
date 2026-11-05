@@ -24,7 +24,7 @@ export default function PoliticaPrivacidad() {
             transition={{ duration: 0.5 }}
           >
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
-              Política de <span className="text-italic-gradient">Privacidad</span>
+              Política de <span className="text-brand">Privacidad</span>
             </h1>
 
             <div className="prose prose-neutral dark:prose-invert max-w-none space-y-6 text-muted-foreground">

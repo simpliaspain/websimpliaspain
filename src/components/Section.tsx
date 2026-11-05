@@ -9,17 +9,21 @@ import { cn } from "@/lib/utils";
  * and nothing else: a className that tries to set vertical padding is
  * rejected in development, so a section cannot quietly desynchronise.
  *
- *   default  py-24 md:py-32  - the rhythm most sections already used
- *                              (gap between two default sections: 192px
- *                              mobile / 256px md+)
- *   tight    py-16           - strip-like companion sections that belong to
- *                              the section before them (the logo marquee)
- *   hero     pt-20, no bottom padding - the hero is min-h-screen and sits
- *                              under the fixed header; its height is the
- *                              viewport, not the rhythm
+ * The scale is fluid (redesign, 05/11/2026): the same clamp() the design
+ * uses, so the rhythm tracks the viewport instead of stepping at md.
+ *
+ *   default  56 → 120px  - the ordinary band
+ *   wide     64 → 136px  - the two bands that carry a single large idea,
+ *                          the case figure and the closing line
+ *   snug     48 → 104px  - a band that belongs with the one above it
+ *   tight    py-16       - strip-like companion sections (the logo marquee)
+ *   hero     pt-20, no bottom padding - for the pages whose hero is still
+ *                          min-h-screen; the home hero sets its own
  */
 const VARIANTS = {
-  default: "py-24 md:py-32",
+  default: "py-[clamp(56px,8vw,120px)]",
+  wide: "py-[clamp(64px,9vw,136px)]",
+  snug: "py-[clamp(48px,7vw,104px)]",
   tight: "py-16",
   hero: "pt-20",
 } as const;

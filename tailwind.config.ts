@@ -26,6 +26,10 @@ export default {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
+        // Display blue: only legible at 24px+ (3.8:1), so headline figures,
+        // the logo and graphics. Small blue text uses primary or link.
+        brand: "hsl(var(--brand))",
+        link: "hsl(var(--link))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

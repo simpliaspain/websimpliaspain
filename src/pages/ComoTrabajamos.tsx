@@ -53,7 +53,7 @@ export default function ComoTrabajamos() {
             {/* No entrance fade: this block is the page's LCP text. */}
             <motion.div initial={false} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl text-center">
               <h1 className="text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-                {t("howWeWork.title")} <span className="text-italic-gradient">{t("howWeWork.titleEmph")}</span>
+                {t("howWeWork.title")} <span className="text-brand">{t("howWeWork.titleEmph")}</span>
               </h1>
               <p className="mt-6 text-lg text-muted-foreground md:text-xl">{t("howWeWork.subtitle")}</p>
             </motion.div>

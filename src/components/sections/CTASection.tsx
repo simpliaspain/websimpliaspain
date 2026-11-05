@@ -22,7 +22,7 @@ export function CTASection() {
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-            {t("cta.title")} <span className="text-italic-gradient tabular-nums">{t("cta.titleEmph")}</span>?
+            {t("cta.title")} <span className="text-brand tabular-nums">{t("cta.titleEmph")}</span>?
           </h2>
           <p className="mb-10 text-lg text-muted-foreground">{t("cta.text")}</p>
 

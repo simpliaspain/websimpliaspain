@@ -87,7 +87,7 @@ export default function AgentesTelefonicos() {
                   {t("agents.beta")}
                 </p>
                 <h1 className="mb-6 text-4xl font-bold text-foreground md:text-5xl lg:text-6xl">
-                  {t("agents.heroTitle1")} <span className="text-italic-gradient">{t("agents.heroTitle2")}</span> {t("agents.heroTitle3")}
+                  {t("agents.heroTitle1")} <span className="text-brand">{t("agents.heroTitle2")}</span> {t("agents.heroTitle3")}
                 </h1>
                 <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("agents.heroDesc")}</p>
                 {waitlistButton("h-12 bg-primary text-primary-foreground hover:bg-primary/90")}
@@ -144,7 +144,7 @@ export default function AgentesTelefonicos() {
               className="mb-16 text-center"
             >
               <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-                {t("agents.featuresTitle1")} <span className="text-italic-gradient">{t("agents.featuresTitle2")}</span>
+                {t("agents.featuresTitle1")} <span className="text-brand">{t("agents.featuresTitle2")}</span>
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{t("agents.featuresSubtitle")}</p>
             </motion.div>
@@ -181,7 +181,7 @@ export default function AgentesTelefonicos() {
               className="mb-16 text-center"
             >
               <h2 className="mb-4 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-                <span className="text-italic-gradient">{t("agents.useCasesTitle")}</span>
+                <span className="text-brand">{t("agents.useCasesTitle")}</span>
               </h2>
               <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{t("agents.useCasesSubtitle")}</p>
             </motion.div>
@@ -218,7 +218,7 @@ export default function AgentesTelefonicos() {
                 viewport={{ once: true }}
               >
                 <h2 className="mb-6 text-3xl font-bold text-foreground md:text-4xl lg:text-5xl">
-                  {t("agents.benefitsSectionTitle")} <span className="text-italic-gradient">{t("agents.benefitsSectionTitle2")}</span>
+                  {t("agents.benefitsSectionTitle")} <span className="text-brand">{t("agents.benefitsSectionTitle2")}</span>
                 </h2>
                 <p className="mb-8 text-lg text-muted-foreground">{t("agents.benefitsSectionDesc")}</p>
                 <ul className="grid gap-4 sm:grid-cols-2">

@@ -314,7 +314,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             className="text-center mb-8"
           >
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              {t('contact.title1')} <span className="text-italic-gradient">{t('contact.title2')}</span>
+              {t('contact.title1')} <span className="text-brand">{t('contact.title2')}</span>
             </h1>
             <p className="text-muted-foreground">
               {t('contact.subtitle')}{' '}
