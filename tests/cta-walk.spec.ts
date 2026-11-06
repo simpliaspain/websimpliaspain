@@ -33,7 +33,7 @@ const LOCALES = ["es", "en"] as const;
 const SEL = 'a[href], button, [role="button"], summary, input[type="submit"]';
 const REPORT = !!process.env.WALK_REPORT;
 
-type Item = { key: string; region: string; tag: string; name: string; href: string | null; target: string | null; hidden: boolean };
+type Item = { key: string; region: string; tag: string; name: string; href: string | null; target: string | null; hidden: boolean; current: boolean };
 type Result = Item & { route: string; lang: string; scope: string; effect: string; detail: string };
 
 async function setup(context: BrowserContext, lang: string) {
@@ -71,7 +71,11 @@ async function inventory(page: Page): Promise<Item[]> {
       const n = (seen.get(base) ?? 0) + 1;
       seen.set(base, n);
       const key = `${base}#${n}`;
-      items.push({ key, region, tag: el.tagName.toLowerCase(), name, href, target: el.getAttribute("target"), hidden });
+      // The selected segment of a segmented control (the language pair)
+      // is the one element whose job is to do nothing when pressed: it is
+      // where you already are. Recorded so the no-op check can allow it.
+      const current = el.getAttribute("aria-current") === "true";
+      items.push({ key, region, tag: el.tagName.toLowerCase(), name, href, target: el.getAttribute("target"), hidden, current });
     }
     return items;
   }, SEL);
@@ -265,7 +269,7 @@ for (const lang of LOCALES) {
         await setup(context, lang);
         const results = await walk(page, route, lang, "page");
         expect(results.length, "found interactive elements").toBeGreaterThan(0);
-        const dead = results.filter((r) => r.effect === "none").map((r) => `${r.region} <${r.tag}> "${r.name}" ${r.href ?? ""} ${r.detail}`);
+        const dead = results.filter((r) => r.effect === "none" && !r.current).map((r) => `${r.region} <${r.tag}> "${r.name}" ${r.href ?? ""} ${r.detail}`);
         expect(dead, `silent no-ops on ${route} (${lang})`).toEqual([]);
       });
 
@@ -275,7 +279,7 @@ for (const lang of LOCALES) {
             await setup(context, lang);
             const results = await walk(page, route, lang, scope);
             expect(results.length, `found ${scope} elements`).toBeGreaterThan(0);
-            const dead = results.filter((r) => r.effect === "none").map((r) => `${r.region} <${r.tag}> "${r.name}" ${r.href ?? ""} ${r.detail}`);
+            const dead = results.filter((r) => r.effect === "none" && !r.current).map((r) => `${r.region} <${r.tag}> "${r.name}" ${r.href ?? ""} ${r.detail}`);
             expect(dead, `silent no-ops in the ${scope} (${lang})`).toEqual([]);
           });
         }

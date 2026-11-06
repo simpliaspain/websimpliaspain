@@ -318,9 +318,9 @@ export function MainMenu({
           <Link to="/politica-privacidad" onClick={close} className={`${smallLink} font-medium text-muted-foreground`}>
             {t("footer.privacyPolicy")}
           </Link>
-          <div className="[&>button]:min-h-[44px]">
-            <LanguageToggle />
-          </div>
+          {/* -mx-3 so the buttons' own padding does not push the pair out of
+              line with the text links beside them. */}
+          <LanguageToggle className="-mx-3" />
         </div>
       </div>
     </div>,
