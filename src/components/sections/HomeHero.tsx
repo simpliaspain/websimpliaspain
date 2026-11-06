@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ExampleChat } from "@/components/ExampleChat";
-import { DemoButton, WatchButton } from "@/components/HomeButtons";
+import { DemoLink } from "@/components/DemoLinks";
+import { WatchButton } from "@/components/HomeButtons";
 
 /**
  * The first screen is the moment, not the promise: 20:53, a question about
@@ -24,7 +25,7 @@ export function HomeHero() {
         <div className="grid min-w-0 flex-[1.25_1_520px] gap-[clamp(18px,2vw,26px)]">
           <h1
             id="h-inicio"
-            className="m-0 text-[clamp(32px,4.2vw,56px)] font-extrabold leading-[1.05] text-foreground"
+            className="m-0 text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] text-foreground"
           >
             {/* The hour is the hook, so it leads and it is the only blue on
                 the page at this size. The full stop after it stays black. */}
@@ -34,7 +35,7 @@ export function HomeHero() {
             {t("hero.subtitle")}
           </p>
           <div className="flex flex-wrap gap-3">
-            <DemoButton lugar="hero" />
+            <DemoLink lugar="hero" />
             <WatchButton />
           </div>
         </div>

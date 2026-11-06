@@ -25,8 +25,8 @@ export default function ComoTrabajamos() {
     title: t(`howWeWork.step${n}Title`),
     description: t(`howWeWork.step${n}Desc`),
     action:
-      n === 1 ? <DemoLink lugar="como-trabajamos" label={t("howWeWork.step1Cta")} size="default" className="mt-4" />
-      : n === 2 ? <CallLink lugar="como-trabajamos" label={t("howWeWork.step2Cta")} size="default" className="mt-4" />
+      n === 1 ? <DemoLink lugar="como-trabajamos" label={t("howWeWork.step1Cta")} className="mt-4" />
+      : n === 2 ? <CallLink lugar="como-trabajamos" label={t("howWeWork.step2Cta")} className="mt-4" />
       : null,
   }));
   const depends = [1, 2, 3, 4].map((n) => t(`howWeWork.depends${n}`));

@@ -23,7 +23,7 @@ export function HomeSteps() {
       <div className="wrap">
         <h2
           id="h-como"
-          className="m-0 mb-[clamp(28px,4vw,56px)] max-w-[760px] text-[clamp(28px,3.1vw,42px)] font-extrabold leading-[1.1] text-foreground"
+          className="m-0 mb-[clamp(28px,4vw,56px)] max-w-[760px] text-[clamp(28px,3.1vw,42px)] font-bold leading-[1.1] text-foreground"
         >
           {t("steps.title")}
         </h2>
@@ -31,10 +31,10 @@ export function HomeSteps() {
         <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-x-[clamp(20px,3vw,40px)] p-0">
           {steps.map((s) => (
             <li key={s.n} className="grid content-start gap-2 border-t-2 border-foreground pb-7 pt-4">
-              <span className="text-[clamp(28px,2.6vw,38px)] font-extrabold leading-none tracking-[-0.03em] text-foreground tabular-nums">
+              <span className="text-[clamp(28px,2.6vw,38px)] font-bold leading-none tracking-[-0.03em] text-foreground tabular-nums">
                 {s.n}
               </span>
-              <span className="text-[19px] font-bold leading-[1.3] text-foreground">{s.title}</span>
+              <span className="text-[19px] font-semibold leading-[1.3] text-foreground">{s.title}</span>
               <span className="text-muted-foreground">{s.text}</span>
             </li>
           ))}

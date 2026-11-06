@@ -1,6 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PHONE_MAIN } from "@/lib/site";
-import { DemoButton } from "@/components/HomeButtons";
+import { DemoLink } from "@/components/DemoLinks";
 
 /**
  * The last thing on the page is the first thing again: tonight, someone like
@@ -19,12 +19,12 @@ export function HomeClosing() {
       <div className="wrap grid gap-7">
         <h2
           id="h-final"
-          className="m-0 max-w-[900px] text-[clamp(32px,4.2vw,56px)] font-extrabold leading-[1.05] tracking-[-0.035em] text-foreground"
+          className="m-0 max-w-[900px] text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] tracking-[-0.035em] text-foreground"
         >
           {t("closing.title")}
         </h2>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-          <DemoButton lugar="banda-final" />
+          <DemoLink lugar="banda-final" />
           <span className="flex min-h-[44px] flex-wrap items-center gap-x-[0.3em] text-[17px] font-semibold text-foreground">
             {t("closing.orCall")}
             <a href={PHONE_MAIN.href} className="flex min-h-[44px] items-center underline underline-offset-4">

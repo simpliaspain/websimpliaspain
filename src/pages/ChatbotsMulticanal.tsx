@@ -152,7 +152,7 @@ export default function ChatbotsMulticanal() {
                 </div>
                 <h3 className="mb-2 text-2xl font-bold text-foreground">{t("chatbots.readyCard")}</h3>
                 <p className="mb-6 text-muted-foreground">{t("chatbots.readyCardDesc")}</p>
-                <DemoLink lugar="agente-whatsapp" size="default" className="h-11 w-full" />
+                <DemoLink lugar="agente-whatsapp" className="w-full" />
               </motion.div>
             </div>
           </div>

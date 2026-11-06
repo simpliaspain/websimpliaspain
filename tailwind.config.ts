@@ -98,6 +98,12 @@ export default {
           from: { opacity: "0", transform: "scale(0.95)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
+        // The three dots in the example chat's typing bubble. Referenced by
+        // name from ExampleChat so the delay can be set per dot.
+        "typing-dot": {
+          "0%, 60%, 100%": { opacity: "0.35", transform: "translateY(0)" },
+          "30%": { opacity: "1", transform: "translateY(-3px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -105,6 +111,7 @@ export default {
         "fade-in": "fade-in 0.6s ease-out forwards",
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.4s ease-out forwards",
+        "typing-dot": "typing-dot 1.1s ease-in-out infinite",
       },
     },
   },

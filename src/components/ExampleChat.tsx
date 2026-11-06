@@ -53,6 +53,7 @@ export function ExampleChat({
   const [shown, setShown] = useState(messages.length);
   const [typing, setTyping] = useState(false);
   const [played, setPlayed] = useState(false);
+  const [animatable, setAnimatable] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
 
@@ -79,6 +80,17 @@ export function ExampleChat({
     if (!("IntersectionObserver" in window)) return;
     setShown(0);
   }, [unanswered]);
+
+  // The bubbles carry no transition until the frame after that hide. They
+  // start visible - that is what the prerendered HTML says, and what a visit
+  // without JavaScript keeps - so transitioning the hide meant the whole
+  // conversation appeared on load and then faded away again before playing.
+  // Starting at false also matches what the server rendered, so hydration
+  // has nothing to disagree about.
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setAnimatable(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   useEffect(() => {
     if (unanswered || played) return;
@@ -109,12 +121,12 @@ export function ExampleChat({
         <div className="flex items-center gap-3 border-b border-border px-[18px] py-3.5">
           <span
             aria-hidden="true"
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[hsl(216_10%_90%)] text-[15px] font-extrabold text-foreground"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[hsl(216_10%_90%)] text-[15px] font-bold text-foreground"
           >
             M
           </span>
           <div className="min-w-0 flex-1">
-            <p className="text-base font-bold leading-tight text-foreground">{t("example.who")}</p>
+            <p className="text-base font-semibold leading-tight text-foreground">{t("example.who")}</p>
             <p
               className={cn(
                 "text-sm leading-tight",
@@ -132,41 +144,71 @@ export function ExampleChat({
             unanswered ? "min-h-[260px] content-end gap-4 px-[18px] pb-6 pt-7" : "content-end gap-2.5 px-[18px] py-5",
           )}
         >
-          {/* Everything is in the DOM at all times and only its opacity
-              changes, so playback never reflows the card or the page. */}
+          {/* Every message holds its own slot from the first paint and only
+              fades in, so playback never reflows the card. The typing bubble
+              is absolutely placed inside the slot of the message it is
+              announcing, for the same reason: as its own grid child it
+              pushed the whole bottom-aligned list up and down twice per
+              message, which is what made playback feel like a series of
+              jolts. */}
           {messages.map((m, i) => {
             const visible = i < shown;
             const client = m.from === "client";
             return (
               <div
                 key={m.key}
-                aria-hidden={!visible}
-                style={{ opacity: visible ? 1 : 0 }}
-                className={cn(
-                  "max-w-[88%] px-3.5 pb-1.5 pt-2.5 transition-opacity duration-200 motion-reduce:transition-none",
-                  client
-                    ? "justify-self-start rounded-[16px_16px_16px_4px] bg-[hsl(220_13%_96%)]"
-                    : "grid justify-self-end gap-2 rounded-[16px_16px_4px_16px] bg-accent",
-                )}
+                className={cn("relative max-w-[88%]", client ? "justify-self-start" : "justify-self-end")}
               >
-                <p className="m-0">{t(m.key)}</p>
-                {m.card && (
-                  <span className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2">
-                    <span className="row-span-2 flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-md bg-secondary text-muted-foreground">
-                      <ImageIcon aria-hidden="true" className="h-5 w-5" />
-                    </span>
-                    <span className="self-end font-bold text-foreground">{t("example.cardTitle")}</span>
-                    <span className="self-start text-sm text-muted-foreground">{t("example.cardSub")}</span>
-                  </span>
-                )}
-                <p
+                <div
+                  aria-hidden={!visible}
+                  style={{ opacity: visible ? 1 : 0, transform: visible ? "none" : "translateY(7px)" }}
                   className={cn(
-                    "m-0 text-right text-xs tabular-nums",
-                    client ? "text-muted-foreground" : "text-[hsl(214_15%_32%)]",
+                    "px-3.5 pb-1.5 pt-2.5",
+                    animatable &&
+                      "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.22,0.61,0.36,1)] motion-reduce:transform-none motion-reduce:transition-none",
+                    client
+                      ? "rounded-[16px_16px_16px_4px] bg-[hsl(220_13%_96%)]"
+                      : "grid gap-2 rounded-[16px_16px_4px_16px] bg-accent",
                   )}
                 >
-                  {m.time}
-                </p>
+                  <p className="m-0">{t(m.key)}</p>
+                  {m.card && (
+                    <span className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2">
+                      <span className="row-span-2 flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-md bg-secondary text-muted-foreground">
+                        <ImageIcon aria-hidden="true" className="h-5 w-5" />
+                      </span>
+                      <span className="self-end font-semibold text-foreground">{t("example.cardTitle")}</span>
+                      <span className="self-start text-sm text-muted-foreground">{t("example.cardSub")}</span>
+                    </span>
+                  )}
+                  <p
+                    className={cn(
+                      "m-0 text-right text-xs tabular-nums",
+                      client ? "text-muted-foreground" : "text-[hsl(214_15%_32%)]",
+                    )}
+                  >
+                    {m.time}
+                  </p>
+                </div>
+
+                <div
+                  aria-hidden={!(typing && i === shown)}
+                  style={{ opacity: typing && i === shown ? 1 : 0 }}
+                  className={cn(
+                    "pointer-events-none absolute top-0 flex items-center gap-1.5 rounded-[16px_16px_4px_16px] bg-accent px-4 py-3.5 transition-opacity duration-200 motion-reduce:transition-none",
+                    client ? "left-0" : "right-0",
+                  )}
+                >
+                  {typing && i === shown && <span className="sr-only">{t("example.typing")}</span>}
+                  {[0, 180, 360].map((delay) => (
+                    <span
+                      key={delay}
+                      aria-hidden="true"
+                      className="h-[7px] w-[7px] rounded-full bg-link motion-safe:animate-typing-dot"
+                      style={{ animationDelay: `${delay}ms` }}
+                    />
+                  ))}
+                </div>
               </div>
             );
           })}
@@ -174,20 +216,6 @@ export function ExampleChat({
           {unanswered && (
             /* The point of the hero: the message just sits there. */
             <p className="m-0 justify-self-center text-sm text-muted-foreground">{t("example.noAnswer")}</p>
-          )}
-
-          {typing && (
-            <div className="flex items-center gap-1.5 justify-self-end rounded-[16px_16px_4px_16px] bg-accent px-4 py-3.5">
-              <span className="sr-only">{t("example.typing")}</span>
-              {[0, 150, 300].map((delay) => (
-                <span
-                  key={delay}
-                  aria-hidden="true"
-                  className="h-[7px] w-[7px] animate-pulse rounded-full bg-link"
-                  style={{ animationDelay: `${delay}ms` }}
-                />
-              ))}
-            </div>
           )}
           </div>
         </div>

@@ -53,7 +53,7 @@ export function FAQSection({ voice = false, items, titleKey = "faq.title", foote
       <div className="wrap flex flex-wrap items-start gap-[clamp(20px,4vw,72px)]">
         <h2
           id="h-faq"
-          className="m-0 min-w-0 flex-[1_1_300px] text-[clamp(28px,3.1vw,42px)] font-extrabold leading-[1.1] text-foreground"
+          className="m-0 min-w-0 flex-[1_1_300px] text-[clamp(28px,3.1vw,42px)] font-bold leading-[1.1] text-foreground"
         >
           {t(titleKey)}
         </h2>
@@ -63,7 +63,7 @@ export function FAQSection({ voice = false, items, titleKey = "faq.title", foote
             const open = openIndex === index;
             return (
               <div key={faq.question} className="border-t border-border">
-                <h3 className="m-0 text-[clamp(18px,1.6vw,21px)] font-bold leading-[1.3]">
+                <h3 className="m-0 text-[clamp(18px,1.6vw,21px)] font-semibold leading-[1.3]">
                   <button
                     type="button"
                     id={`faq-b-${index}`}

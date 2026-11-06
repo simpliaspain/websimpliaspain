@@ -30,13 +30,13 @@ export function HomeCase() {
         <div className="flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2">
           <p
             aria-hidden="true"
-            className="m-0 flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] font-extrabold leading-[0.86] tracking-[-0.055em] text-brand tabular-nums"
+            className="m-0 flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] font-bold leading-[0.86] tracking-[-0.055em] text-brand tabular-nums"
           >
             {t("case.statValue")}
           </p>
           <h2
             id="h-caso"
-            className="m-0 mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-[clamp(24px,2.8vw,38px)] font-extrabold leading-[1.12] text-foreground"
+            className="m-0 mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
           >
             <span className="sr-only">{t("case.statValue")} </span>
             {t("case.statText")}
@@ -49,7 +49,7 @@ export function HomeCase() {
           {stats.map((s) => (
             <div key={s.label} className="flex flex-col-reverse border-b border-border pb-6 pr-5 pt-5">
               <dt className="mt-2.5 max-w-[240px] text-muted-foreground">{s.label}</dt>
-              <dd className="m-0 whitespace-nowrap text-[clamp(36px,3.4vw,52px)] font-extrabold leading-none tracking-[-0.04em] text-foreground tabular-nums">
+              <dd className="m-0 whitespace-nowrap text-[clamp(36px,3.4vw,52px)] font-bold leading-none tracking-[-0.04em] text-foreground tabular-nums">
                 {s.value}
               </dd>
             </div>

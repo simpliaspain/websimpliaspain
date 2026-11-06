@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
-import { MainMenu, type MainMenuLink } from "./MainMenu";
+import { MainMenu, MenuGlyph, type MainMenuLink } from "./MainMenu";
 import { useMainMenuController } from "@/hooks/use-main-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -41,7 +41,7 @@ export function Navbar() {
             to="/"
             aria-label={t("nav.homeAria")}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex min-h-[44px] items-center text-[clamp(19px,5vw,22px)] font-extrabold tracking-[-0.02em] text-foreground"
+            className="flex min-h-[44px] items-center text-[clamp(19px,5vw,22px)] font-bold tracking-[-0.02em] text-foreground"
           >
             Simplia<span className="text-brand">Spain</span>
             <span aria-hidden="true" className="mt-[9px] self-start text-[11px] font-semibold text-brand">
@@ -55,11 +55,9 @@ export function Navbar() {
             aria-label={menu.isOpen ? t("nav.closeMenu") : t("nav.openMenu")}
             className="-mr-3 flex h-12 w-12 items-center justify-center rounded-md text-foreground transition-transform active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100"
           >
-            <span aria-hidden="true" className="grid w-6 gap-[5px]">
-              <span className="h-0.5 rounded-sm bg-current" />
-              <span className="h-0.5 rounded-sm bg-current" />
-              <span className="h-0.5 rounded-sm bg-current" />
-            </span>
+            {/* Always the closed shape: by the time the menu is open the
+                panel covers this, and its own glyph animates into the cross. */}
+            <MenuGlyph open={false} />
           </button>
         </div>
       </header>

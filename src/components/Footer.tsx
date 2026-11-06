@@ -21,7 +21,7 @@ export function Footer() {
           <Link
             to="/"
             aria-label={t("nav.homeAria")}
-            className="flex min-h-[44px] items-center text-xl font-extrabold tracking-[-0.02em] text-foreground"
+            className="flex min-h-[44px] items-center text-xl font-bold tracking-[-0.02em] text-foreground"
           >
             Simplia<span className="text-brand">Spain</span>
             <span aria-hidden="true" className="mt-[7px] self-start text-[11px] font-semibold text-brand">
