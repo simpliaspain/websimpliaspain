@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { MainMenu, MenuGlyph, type MainMenuLink } from "./MainMenu";
 import { useMainMenuController } from "@/hooks/use-main-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -27,8 +27,16 @@ export function Navbar() {
     { label: t("nav.contact"), href: "/contacto" },
   ];
 
-  // Close when the route changes.
+  // Close when the route changes - but not on the first run, which is mount.
+  // Closing an already-closed menu is not free: it starts the grace period
+  // that stops hover reopening it, so the menu could not be opened by hover
+  // for the first half second after every page load.
+  const firstRender = useRef(true);
   useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
     menu.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);

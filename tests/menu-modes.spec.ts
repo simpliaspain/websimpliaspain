@@ -1,11 +1,11 @@
 /**
  * Main menu regression suite.
  *
- * There is one menu now: a full-screen panel, at every width. The hover-intent
+ * There is one menu: a full-screen panel, at every width. The hover-intent
  * dropdown that used to open on fine pointers at lg and up went with the
- * redesign (05/11/2026), along with its intent delay, close grace and
- * click-toggle guard, so the tests that covered it are gone too. The first
- * test here asserts the behaviour that replaced it, hover included.
+ * redesign (05/11/2026); hover came back on 06/11/2026, but opening this
+ * panel rather than a second one, so there is still one thing to reason
+ * about. HOVER-1 and HOVER-2 below cover it.
  *
  * Most of the rest is ordinary behavioural cover. Three guards are different:
  * they encode bugs that shipped once and that are invisible to code
@@ -107,12 +107,6 @@ test.describe("menu at 1440px", () => {
     const trigger = page.locator("#main-menu-trigger");
     const panel = page.locator("#main-menu");
 
-    // Hovering is not an interaction any more: the hover-intent dropdown was
-    // removed with the redesign, so approaching the trigger must do nothing.
-    await trigger.hover();
-    await page.waitForTimeout(400);
-    await expect(panel, "hover must not open the menu").toHaveCount(0);
-
     await trigger.click();
     await expect(panel, "click opens from closed").toBeVisible();
 
@@ -125,6 +119,34 @@ test.describe("menu at 1440px", () => {
     await page.keyboard.press("Escape");
     await expect(panel).toHaveCount(0);
     expect(await page.evaluate(() => document.activeElement?.id)).toBe("main-menu-trigger");
+  });
+
+  /**
+   *   HOVER-1  Resting the pointer on the trigger opens the menu, after the
+   *            intent delay and not before it.
+   *   HOVER-2  Closing it does not let hover reopen it under the cursor: the
+   *            panel's close button sits exactly over the trigger, so without
+   *            a grace period the menu springs straight back open and cannot
+   *            be dismissed with the mouse at all.
+   */
+  test("HOVER: the pointer opens it, and closing it does not reopen it", async ({ page }) => {
+    await isolate(page);
+    await open(page, "/");
+    const trigger = page.locator("#main-menu-trigger");
+    const panel = page.locator("#main-menu");
+
+    await trigger.hover();
+    await page.waitForTimeout(60);
+    expect(await panel.count(), "HOVER-1: not before the intent delay").toBe(0);
+    await expect(panel, "HOVER-1: opens on hover").toBeVisible({ timeout: 2000 });
+
+    // Close with the panel's own button, which is drawn over the trigger, and
+    // leave the pointer there.
+    // The close control is the panel's first button, above the links.
+    await page.locator("#main-menu button").first().click();
+    await expect(panel, "HOVER-2: it closes").toHaveCount(0);
+    await page.waitForTimeout(600);
+    expect(await panel.count(), "HOVER-2: it stays closed under the cursor").toBe(0);
   });
 
   test("it is modal here too: one dialog, inert page, locked scroll", async ({ page }) => {
