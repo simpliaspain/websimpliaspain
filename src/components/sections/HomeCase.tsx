@@ -11,8 +11,17 @@ import { ClientMark } from "@/components/ClientMark";
  * hours" means are printed under the numbers, because a percentage nobody
  * can define is a percentage nobody has to believe.
  *
- * The quote sits with the numbers as their attribution. On its own it is
- * generic; next to them it is a client confirming what they show.
+ * The 37% is part of the heading rather than a decorative figure beside it.
+ * The export set it as an aria-hidden paragraph with the same number
+ * repeated in a visually-hidden span, which reads correctly to a screen
+ * reader but prints the figure twice in anything that extracts text - a
+ * reader mode, a crawler, a copy-paste. One run of text, laid out with
+ * flex, says it once to everyone.
+ *
+ * The numbers are a plain list for the same reason: as a <dl> the label had
+ * to come first in the markup and the number was flipped above it with
+ * flex-col-reverse, so the page read "conversaciones atendidas en el mes 65"
+ * instead of "65 conversaciones atendidas en el mes".
  */
 export function HomeCase() {
   const { t } = useLanguage();
@@ -28,42 +37,35 @@ export function HomeCase() {
       className="scroll-mt-[68px] border-t border-border py-[clamp(64px,9vw,136px)]"
     >
       <div className="wrap">
-        <div className="flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2">
-          <p
-            aria-hidden="true"
-            className="m-0 flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] font-bold leading-[0.86] tracking-[-0.055em] text-brand tabular-nums"
-          >
+        <h2
+          id="h-caso"
+          className="m-0 flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
+        >
+          <span className="flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] leading-[0.86] tracking-[-0.055em] text-brand tabular-nums">
             {t("case.statValue")}
-          </p>
-          <h2
-            id="h-caso"
-            className="m-0 mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
-          >
-            <span className="sr-only">{t("case.statValue")} </span>
+          </span>
+          <span className="mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-balance">
             {t("case.statText")}
-          </h2>
-        </div>
+          </span>
+        </h2>
 
-        <dl className="mt-[clamp(40px,6vw,72px)] grid grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] border-t border-foreground">
-          {/* Term then value in the markup, so each figure is read once and
-              with its label; flex-col-reverse puts the number on top. */}
+        <ul className="m-0 mt-[clamp(40px,6vw,72px)] grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] border-t border-foreground p-0">
           {stats.map((s) => (
-            <div key={s.label} className="flex flex-col-reverse border-b border-border pb-6 pr-5 pt-5">
-              <dt className="mt-2.5 max-w-[240px] text-muted-foreground">{s.label}</dt>
-              <dd className="m-0 whitespace-nowrap text-[clamp(36px,3.4vw,52px)] font-bold leading-none tracking-[-0.04em] text-foreground tabular-nums">
+            <li key={s.label} className="border-b border-border pb-6 pr-5 pt-5">
+              <span className="block whitespace-nowrap text-[clamp(36px,3.4vw,52px)] font-bold leading-none tracking-[-0.04em] text-foreground tabular-nums">
                 {s.value}
-              </dd>
-            </div>
+              </span>
+              <span className="mt-2.5 block max-w-[240px] text-muted-foreground">{s.label}</span>
+            </li>
           ))}
-        </dl>
+        </ul>
 
         <div className="mt-[clamp(24px,3vw,36px)] flex flex-wrap items-start gap-x-[clamp(24px,4vw,64px)] gap-y-5">
-          {/* Whose month this is: their mark first, then the sentence that
-              places them, then the quote. The mark belongs here rather than
-              up by the figure - it attributes the numbers, it is not a
-              customer badge. */}
-          <div className="grid min-w-0 flex-[1_1_300px] content-start gap-3">
-            <ClientMark slug="oficinasya" name="Oficinas YA!" className="m-0" />
+          {/* Whose month this is: their mark beside the sentence that places
+              them. It attributes the numbers, so it belongs here and not up
+              by the percentage. */}
+          <div className="flex min-w-0 flex-[1_1_300px] items-start gap-4">
+            <ClientMark slug="oficinasya" name="Oficinas YA!" className="m-0 flex-none" />
             <p className="m-0 text-[15px] text-muted-foreground">{t("case.who")}</p>
           </div>
           <figure className="m-0 grid min-w-0 flex-[1.4_1_420px] gap-1.5">

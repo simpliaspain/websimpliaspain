@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 /**
  * A client's own mark, used to attribute a case study to them.
  *
@@ -29,18 +31,27 @@ export function ClientMark({ slug, name, className }: { slug: string; name: stri
   const src = findLogo(slug);
 
   if (!src) {
+    // Not an empty frame: the client's name, set as a label. It occupies the
+    // same place the mark will and reads as attribution on its own.
     return (
-      <p className={className}>
-        <span className="text-[15px] font-semibold uppercase tracking-[0.08em] text-foreground">{name}</span>
+      <p className={cn("m-0 text-[15px] font-semibold uppercase leading-[1.3] tracking-[0.08em] text-foreground", className)}>
+        {name}
       </p>
     );
   }
 
   return (
-    <p className={className}>
-      {/* Height-constrained and never cropped, so whatever shape the client's
-          file is, it sits on the same baseline as every other mark. */}
-      <img src={src} alt={name} loading="lazy" decoding="async" className="h-7 w-auto max-w-[220px] object-contain" />
+    <p className={cn("m-0", className)}>
+      {/* The export's slot: 132 x 44, contained and never cropped, so whatever
+          shape the client's file is it sits on the same baseline as the text
+          beside it. */}
+      <img
+        src={src}
+        alt={name}
+        loading="lazy"
+        decoding="async"
+        className="h-11 w-[132px] object-contain object-left"
+      />
     </p>
   );
 }
