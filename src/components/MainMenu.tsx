@@ -85,7 +85,7 @@ export function MainMenu({
   controller: MainMenuController;
   navLinks: MainMenuLink[];
 }) {
-  const { isOpen, close, triggerRef } = controller;
+  const { isOpen, close, dismiss, triggerRef } = controller;
   const { t } = useLanguage();
   const panelRef = useRef<HTMLDivElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -252,9 +252,14 @@ export function MainMenu({
               ®
             </span>
           </Link>
+          {/* `dismiss`, not `close`: this button is drawn exactly over the
+              trigger, so it catches the press of someone who reached for the
+              trigger while hover was already opening the panel for them.
+              Within that half second the press means open, and is swallowed.
+              Escape and every link still close outright. */}
           <button
             type="button"
-            onClick={close}
+            onClick={dismiss}
             aria-label={t("nav.closeMenu")}
             className="-mr-3 flex h-12 w-12 items-center justify-center rounded-md text-foreground"
           >

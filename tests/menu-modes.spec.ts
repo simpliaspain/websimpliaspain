@@ -128,22 +128,34 @@ test.describe("menu at 1440px", () => {
    *            panel's close button sits exactly over the trigger, so without
    *            a grace period the menu springs straight back open and cannot
    *            be dismissed with the mouse at all.
+   *   HOVER-3  The press of someone who reached for the trigger while hover
+   *            was already opening the panel for them does not shut it again.
+   *            That press lands on the close button, drawn in the same place,
+   *            and before the grace period it closed the menu in the instant
+   *            it appeared - the gesture everybody makes, broken.
    */
-  test("HOVER: the pointer opens it, and closing it does not reopen it", async ({ page }) => {
+  test("HOVER: the pointer opens it, a press straight after does not shut it", async ({ page }) => {
     await isolate(page);
     await open(page, "/");
     const trigger = page.locator("#main-menu-trigger");
     const panel = page.locator("#main-menu");
+    // The close control is the panel's first button, above the links.
+    const closeControl = () => page.locator("#main-menu button").first();
 
     await trigger.hover();
     await page.waitForTimeout(60);
     expect(await panel.count(), "HOVER-1: not before the intent delay").toBe(0);
     await expect(panel, "HOVER-1: opens on hover").toBeVisible({ timeout: 2000 });
 
-    // Close with the panel's own button, which is drawn over the trigger, and
-    // leave the pointer there.
-    // The close control is the panel's first button, above the links.
-    await page.locator("#main-menu button").first().click();
+    // Reach and press, the way a person who meant to click would.
+    await page.waitForTimeout(150);
+    await closeControl().click();
+    await page.waitForTimeout(350);
+    await expect(panel, "HOVER-3: the press that opened it does not close it").toBeVisible();
+
+    // Past the grace, the same press is a dismissal and works.
+    await page.waitForTimeout(800);
+    await closeControl().click();
     await expect(panel, "HOVER-2: it closes").toHaveCount(0);
     await page.waitForTimeout(600);
     expect(await panel.count(), "HOVER-2: it stays closed under the cursor").toBe(0);
