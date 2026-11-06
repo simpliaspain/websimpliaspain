@@ -226,7 +226,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Banda final (todas las páginas)
     'cta.title': '¿Cómo contestaría tu centro hoy a las',
-    'cta.titleEmph': '23:47',
+    'cta.titleEmph': '20:53',
     'cta.text': 'Pon la web de tu coworking y habla con tu agente de IA en un minuto. Gratis y sin llamadas.',
     'cta.demo': 'Pruébalo con tu web',
     'cta.watch': 'Ver en acción · 0:40',
@@ -327,6 +327,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.emailPlaceholder': 'tu@empresa.com',
     'contact.phonePlaceholder': '+34 600 000 000',
     'contact.websiteField': 'Sitio web',
+    'contact.emailTitle': 'O escríbenos',
     'contact.callTitle': '¿Prefieres llamar?',
 
     // Diálogo de la demo de voz
@@ -426,6 +427,7 @@ const translations: Record<Language, Record<string, string>> = {
     'howWeWork.step4Desc': 'Cargamos tus tarifas, centros y despachos, conectamos la agenda de cada centro, lo probamos contigo y formamos a tu equipo.',
     'howWeWork.step5Title': 'Lo revisamos contigo',
     'howWeWork.step5Desc': 'Los primeros días revisamos las conversaciones juntos. Después, lo ves todo en tu panel y te llega un informe cada semana.',
+    'howWeWork.stepsTitle': 'Los cinco pasos, de la demo al agente en marcha',
     'howWeWork.dependsTitle': 'De qué depende el precio',
     'howWeWork.depends1': 'Cuántas sedes tienes.',
     'howWeWork.depends2': 'Cuántas consultas os llegan al mes.',
@@ -645,7 +647,7 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Closing band (every page)
     'cta.title': 'How would your centre answer today at',
-    'cta.titleEmph': '23:47',
+    'cta.titleEmph': '20:53',
     'cta.text': 'Enter your coworking\'s website and talk to your AI agent in a minute. Free, no calls.',
     'cta.demo': 'Try it with your website',
     'cta.watch': 'See it in action · 0:40',
@@ -742,6 +744,7 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.emailPlaceholder': 'you@company.com',
     'contact.phonePlaceholder': '+34 600 000 000',
     'contact.websiteField': 'Website',
+    'contact.emailTitle': 'Or write to us',
     'contact.callTitle': 'Prefer to call?',
 
     // Voice demo dialog
@@ -841,6 +844,7 @@ const translations: Record<Language, Record<string, string>> = {
     'howWeWork.step4Desc': 'We load your rates, centres and offices, connect each centre\'s calendar, test it with you and train your team.',
     'howWeWork.step5Title': 'We review it with you',
     'howWeWork.step5Desc': 'For the first few days we review the conversations together. After that, you see everything in your dashboard and get a weekly report.',
+    'howWeWork.stepsTitle': 'The five steps, from the demo to a working agent',
     'howWeWork.dependsTitle': 'What the price depends on',
     'howWeWork.depends1': 'How many locations you have.',
     'howWeWork.depends2': 'How many enquiries you get per month.',

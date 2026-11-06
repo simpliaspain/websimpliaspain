@@ -1,4 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ClientMark } from "@/components/ClientMark";
 
 /**
  * One operator's own month, led by the figure.
@@ -57,7 +58,14 @@ export function HomeCase() {
         </dl>
 
         <div className="mt-[clamp(24px,3vw,36px)] flex flex-wrap items-start gap-x-[clamp(24px,4vw,64px)] gap-y-5">
-          <p className="m-0 min-w-0 flex-[1_1_300px] text-[15px] text-muted-foreground">{t("case.who")}</p>
+          {/* Whose month this is: their mark first, then the sentence that
+              places them, then the quote. The mark belongs here rather than
+              up by the figure - it attributes the numbers, it is not a
+              customer badge. */}
+          <div className="grid min-w-0 flex-[1_1_300px] content-start gap-3">
+            <ClientMark slug="oficinasya" name="Oficinas YA!" className="m-0" />
+            <p className="m-0 text-[15px] text-muted-foreground">{t("case.who")}</p>
+          </div>
           <figure className="m-0 grid min-w-0 flex-[1.4_1_420px] gap-1.5">
             <blockquote className="m-0 text-[clamp(18px,1.6vw,20px)] font-semibold leading-[1.45] text-foreground">
               {t("case.quote")}

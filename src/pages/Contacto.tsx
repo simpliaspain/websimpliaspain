@@ -1,17 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, CheckCircle2, Phone, ArrowRight } from "lucide-react";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
-import { FORM_LEAD_WEBHOOK_URL, PHONE_ALT, PHONE_MAIN, demoUrl } from "@/lib/site";
+import { DemoLink } from "@/components/DemoLinks";
+import { PRIMARY, OUTLINE } from "@/lib/button-styles";
+import { EMAIL, FORM_LEAD_WEBHOOK_URL, PHONE_ALT, PHONE_MAIN, demoUrl } from "@/lib/site";
 
 // Validation schema. The phone is optional (fewer fields, more submissions);
 // if given it must look like a phone number.
@@ -206,124 +206,55 @@ export default function Contacto() {
       <div className="min-h-screen bg-background">
         <Seo titleKey="seo.contact.title" descriptionKey="seo.contact.description" path="/contacto" />
         <Navbar />
-        <main className="pt-32 pb-20">
-          <div className="container">
-            <motion.div
-              initial={false}
-              animate={{ opacity: 1, scale: 1 }}
-              className="max-w-lg mx-auto text-center"
-            >
-              <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-                <CheckCircle2 className="w-10 h-10 text-green-600" />
-              </div>
-              <h1 className="text-3xl font-bold text-foreground mb-4">
-                {t('contact.thankYou')}
+        <main>
+          <section className="pb-[clamp(56px,8vw,120px)] pt-[clamp(40px,7vw,96px)]">
+            <div className="wrap grid max-w-[780px] gap-6">
+              <h1 className="m-0 text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] text-foreground">
+                {t("contact.thankYou")}
               </h1>
-              <p className="text-muted-foreground mb-8">
-                {t('contact.confirmation')}
+              <p className="m-0 max-w-[620px] text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-muted-foreground">
+                {t("contact.confirmation")}
               </p>
-              <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Button asChild size="lg" className="group font-semibold">
-                  <a
-                    href={demoUrl("contacto")}
-                    target="_blank"
-                    rel="noopener"
-                    data-umami-event="demo"
-                    data-umami-event-lugar="contacto"
-                  >
-                    {t('cta.demo')}
-                    <ArrowRight aria-hidden="true" className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1 motion-reduce:transition-none" />
-                    <span className="sr-only"> {t('nav.opensNewTab')}</span>
-                  </a>
-                </Button>
-                <Button variant="outline" size="lg" onClick={() => window.location.href = "/"}>
-                  {t('contact.backHome')}
-                </Button>
+              <div className="flex flex-wrap gap-3">
+                <DemoLink lugar="contacto" />
+                <a href="/" className={OUTLINE}>
+                  {t("contact.backHome")}
+                </a>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </section>
         </main>
         <Footer />
       </div>
     );
   }
 
-  const openMailClient = () => {
-    // Validate form first
-    const result = contactSchema.safeParse(formData);
-    if (!result.success) {
-      const fieldErrors: Partial<Record<keyof ContactFormData, string>> = {};
-      result.error.errors.forEach((err) => {
-        if (err.path[0]) {
-          fieldErrors[err.path[0] as keyof ContactFormData] = err.message;
-        }
-      });
-      setErrors(fieldErrors);
-      return;
-    }
-
-    // Create mailto link with all form data
-    const subject = encodeURIComponent("Nuevo lead WEB - Simplia Spain");
-    const body = encodeURIComponent(
-`NUEVA SOLICITUD DE CONTACTO
-================================
-
-DATOS DEL CLIENTE:
-
-• Nombre: ${formData.nombre}
-• Apellidos: ${formData.apellidos}
-• Email: ${formData.email}
-• Teléfono: ${formData.telefono}
-
-INFORMACIÓN ADICIONAL:
-${formData.informacion || "No proporcionada"}
-
-================================
-Enviado desde: Web Simplia Spain
-Fecha: ${new Date().toLocaleDateString('es-ES', { 
-  weekday: 'long', 
-  year: 'numeric', 
-  month: 'long', 
-  day: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit'
-})}
-`
-    );
-
-    window.location.href = `mailto:info@simpliaspain.com?subject=${subject}&body=${body}`;
-    
-    toast({
-      title: "¡Borrador creado!",
-      description: "Se ha abierto tu cliente de correo con todos los datos. Solo pulsa enviar.",
-    });
-  };
+  // One shape for every control: the buttons' 8px corner, 48px tall, and the
+  // page's own hairline rather than shadcn's default input border.
+  const FIELD = "h-12 rounded-md border-border bg-background text-base";
+  const LABEL = "text-[15px] font-semibold text-foreground";
 
   return (
     <div className="min-h-screen bg-background">
       <Seo titleKey="seo.contact.title" descriptionKey="seo.contact.description" path="/contacto" />
       <Navbar />
-      <main className="pt-28 pb-16">
-        <div className="container max-w-xl mx-auto px-4">
-          {/* No entrance fade: the page is prerendered and this block holds the
-              LCP text, which sat at opacity 0 until hydration (LCP ~2.4s). */}
-          <motion.div
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-8"
-          >
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+      <main>
+        {/* No entrance fade anywhere on the page: it is prerendered and this
+            block holds the LCP text, which used to sit at opacity 0 until
+            hydration (LCP ~2.4s). */}
+        <section className="pb-[clamp(24px,3vw,48px)] pt-[clamp(40px,7vw,96px)]">
+          <div className="wrap grid gap-[clamp(18px,2vw,26px)]">
+            <h1 className="m-0 max-w-[900px] text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] text-foreground">
               {t('contact.title1')} <span className="text-brand">{t('contact.title2')}</span>
             </h1>
-            <p className="text-muted-foreground">
+            <p className="m-0 max-w-[620px] text-pretty text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-muted-foreground">
               {t('contact.subtitle')}{' '}
               {t('contact.subtitleDemo')}{' '}
               <a
                 href={demoUrl("web")}
                 target="_blank"
                 rel="noopener"
-                className="font-medium text-primary underline underline-offset-4 hover:text-primary/80"
+                className="text-link underline underline-offset-2"
                 data-umami-event="demo"
                 data-umami-event-lugar="contacto"
               >
@@ -332,25 +263,22 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               </a>
               .
             </p>
-          </motion.div>
+          </div>
+        </section>
 
-          <motion.form
-            initial={false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            onSubmit={handleSubmit}
-            className="relative bg-card border border-border rounded-2xl p-6 md:p-8 shadow-[0_20px_60px_-15px_hsl(var(--primary)/0.25)] space-y-5"
-          >
+        <section className="border-t border-border py-[clamp(40px,6vw,80px)]">
+          <div className="wrap grid items-start gap-x-[clamp(32px,5vw,72px)] gap-y-12 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <form onSubmit={handleSubmit} className="relative grid gap-5">
             <div className="grid sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="nombre">{t('contact.firstName')} {t('contact.required')}</Label>
+                <Label htmlFor="nombre" className={LABEL}>{t('contact.firstName')} {t('contact.required')}</Label>
                 <Input
                   id="nombre"
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
                   placeholder={t('contact.firstNamePlaceholder')}
-                  className={errors.nombre ? "border-destructive" : ""}
+                  className={cn(FIELD, errors.nombre && "border-destructive")}
                 />
                 {errors.nombre && (
                   <p className="text-xs text-destructive">{errors.nombre}</p>
@@ -358,14 +286,14 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               </div>
 
               <div className="space-y-1.5">
-                <Label htmlFor="apellidos">{t('contact.lastName')} {t('contact.required')}</Label>
+                <Label htmlFor="apellidos" className={LABEL}>{t('contact.lastName')} {t('contact.required')}</Label>
                 <Input
                   id="apellidos"
                   name="apellidos"
                   value={formData.apellidos}
                   onChange={handleChange}
                   placeholder={t('contact.lastNamePlaceholder')}
-                  className={errors.apellidos ? "border-destructive" : ""}
+                  className={cn(FIELD, errors.apellidos && "border-destructive")}
                 />
                 {errors.apellidos && (
                   <p className="text-xs text-destructive">{errors.apellidos}</p>
@@ -374,7 +302,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="email">{t('contact.email')} {t('contact.required')}</Label>
+              <Label htmlFor="email" className={LABEL}>{t('contact.email')} {t('contact.required')}</Label>
               <Input
                 id="email"
                 name="email"
@@ -382,7 +310,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder={t('contact.emailPlaceholder')}
-                className={errors.email ? "border-destructive" : ""}
+                className={cn(FIELD, errors.email && "border-destructive")}
               />
               {errors.email && (
                 <p className="text-xs text-destructive">{errors.email}</p>
@@ -390,7 +318,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="telefono">
+              <Label htmlFor="telefono" className={LABEL}>
                 {t('contact.phone')} <span className="font-normal text-muted-foreground">{t('contact.optional')}</span>
               </Label>
               <Input
@@ -400,7 +328,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
                 value={formData.telefono}
                 onChange={handleChange}
                 placeholder={t('contact.phonePlaceholder')}
-                className={errors.telefono ? "border-destructive" : ""}
+                className={cn(FIELD, errors.telefono && "border-destructive")}
               />
               {errors.telefono && (
                 <p className="text-xs text-destructive">{errors.telefono}</p>
@@ -408,7 +336,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="sedes">
+              <Label htmlFor="sedes" className={LABEL}>
                 {t('contact.sites')} <span className="font-normal text-muted-foreground">{t('contact.optional')}</span>
               </Label>
               {/* Native select: keyboard, screen readers and the phone's own
@@ -418,7 +346,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
                 name="sedes"
                 value={formData.sedes}
                 onChange={handleChange}
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm"
+                className={cn(FIELD, "flex w-full border px-3 py-2")}
               >
                 <option value="">{t('contact.sitesPlaceholder')}</option>
                 {SITES_OPTIONS.map((key) => (
@@ -428,7 +356,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="informacion">{t('contact.message')}</Label>
+              <Label htmlFor="informacion" className={LABEL}>{t('contact.message')}</Label>
               <Textarea
                 id="informacion"
                 name="informacion"
@@ -436,7 +364,7 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
                 onChange={handleChange}
                 placeholder={t('contact.messagePlaceholder')}
                 rows={3}
-                className={errors.informacion ? "border-destructive" : ""}
+                className={cn("rounded-md border-border bg-background text-base", errors.informacion && "border-destructive")}
               />
             </div>
 
@@ -457,38 +385,61 @@ Fecha: ${new Date().toLocaleDateString('es-ES', {
               />
             </div>
 
-            <Button
-              type="submit"
-              size="lg"
-              disabled={isSubmitting}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-              data-umami-event="formulario"
-            >
-              <Send className="w-5 h-5 mr-2" />
-              {t('contact.send')}
-            </Button>
+            <div className="mt-1 flex">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={`${PRIMARY} w-full disabled:opacity-60 sm:w-auto`}
+                data-umami-event="formulario"
+              >
+                {t('contact.send')}
+              </button>
+            </div>
 
-            <p className="text-xs text-center text-muted-foreground">
-              {t('contact.privacyNote')} <a href="/politica-privacidad" className="text-primary hover:underline">{t('contact.privacyPolicy')}</a>.
+            <p className="m-0 text-sm text-muted-foreground">
+              {t('contact.privacyNote')}{' '}
+              <a href="/politica-privacidad" className="text-link underline underline-offset-2">
+                {t('contact.privacyPolicy')}
+              </a>
+              .
             </p>
-          </motion.form>
+          </form>
 
-          {/* Phones: the only page that shows both, on two levels. */}
-          <div className="mt-8 text-center">
-            <p className="text-sm font-semibold text-foreground">{t('contact.callTitle')}</p>
-            <a
-              href={PHONE_MAIN.href}
-              className="mt-2 inline-flex items-center gap-2 text-xl font-bold text-foreground transition-colors hover:text-primary"
-            >
-              <Phone aria-hidden="true" className="h-5 w-5 text-primary" />
-              {PHONE_MAIN.display}
-            </a>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {t('footer.altPhone')}:{' '}
-              <a href={PHONE_ALT.href} className="hover:text-foreground">{PHONE_ALT.display}</a>
-            </p>
+          {/* The alternatives to the form, on their own rules. This is the
+              only page that shows both phone numbers. */}
+          <div className="grid content-start gap-7">
+            <div className="grid gap-1.5 border-t border-foreground pt-5">
+              <p className="m-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                {t('contact.callTitle')}
+              </p>
+              <a
+                href={PHONE_MAIN.href}
+                className="flex min-h-[44px] items-center text-[clamp(22px,2.2vw,28px)] font-bold tracking-[-0.02em] text-foreground transition-colors hover:text-link motion-reduce:transition-none"
+              >
+                {PHONE_MAIN.display}
+              </a>
+              <p className="m-0 text-sm text-muted-foreground">
+                {t('footer.altPhone')}:{' '}
+                <a href={PHONE_ALT.href} className="underline underline-offset-2 hover:text-foreground">
+                  {PHONE_ALT.display}
+                </a>
+              </p>
+            </div>
+
+            <div className="grid gap-1.5 border-t border-border pt-5">
+              <p className="m-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+                {t('contact.emailTitle')}
+              </p>
+              <a
+                href={`mailto:${EMAIL}`}
+                className="flex min-h-[44px] items-center text-[17px] font-semibold text-foreground transition-colors hover:text-link motion-reduce:transition-none"
+              >
+                {EMAIL}
+              </a>
+            </div>
           </div>
-        </div>
+          </div>
+        </section>
       </main>
       <Footer />
     </div>
