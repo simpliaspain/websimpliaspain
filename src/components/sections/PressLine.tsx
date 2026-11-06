@@ -100,7 +100,7 @@ export function PressLine() {
   const { t } = useLanguage();
 
   return (
-    <p className="m-0">
+    <p className="m-0 max-w-[64ch]">
       {t("press.line")} <PressLink outlet={OUTLETS.esRadio} />, <PressLink outlet={OUTLETS.madridNorte} />{" "}
       {t("press.and")} <PressLink outlet={OUTLETS.instituto} />.
     </p>

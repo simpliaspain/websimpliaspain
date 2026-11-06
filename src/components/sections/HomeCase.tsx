@@ -41,7 +41,13 @@ export function HomeCase() {
           id="h-caso"
           className="m-0 flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
         >
-          <span className="flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] leading-[0.86] tracking-[-0.055em] text-brand tabular-nums">
+          {/* Spanish puts a space before the per-cent sign and the figure is
+              written that way, so a reader and a copy-paste both get "37 %".
+              A word space at 176px is 46px wide, which reads as two separate
+              things; the negative word-spacing brings it back to about the
+              thin space the rule actually calls for. English has no space, so
+              there is nothing there for it to act on. */}
+          <span className="flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] leading-[0.86] tracking-[-0.055em] [word-spacing:-0.12em] text-brand tabular-nums">
             {t("case.statValue")}
           </span>
           <span className="mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-balance">
@@ -76,7 +82,7 @@ export function HomeCase() {
           </figure>
         </div>
 
-        <p className="mt-[clamp(24px,3vw,36px)] text-[13px] leading-relaxed text-muted-foreground">
+        <p className="mt-[clamp(24px,3vw,36px)] max-w-[72ch] text-[13px] leading-relaxed text-muted-foreground">
           {t("case.statsNote")}
         </p>
       </div>
