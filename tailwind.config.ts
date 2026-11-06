@@ -104,6 +104,18 @@ export default {
           "0%, 60%, 100%": { opacity: "0.35", transform: "translateY(0)" },
           "30%": { opacity: "1", transform: "translateY(-3px)" },
         },
+        // The redesign's own entrance, `sp-rise`: a short rise with the
+        // easing the export uses for every message that lands.
+        rise: {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        // The same move without the fade, for something already on screen
+        // that is being brought forward rather than introduced.
+        lift: {
+          from: { transform: "translateY(8px)" },
+          to: { transform: "translateY(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -112,6 +124,8 @@ export default {
         "slide-in-right": "slide-in-right 0.5s ease-out forwards",
         "scale-in": "scale-in 0.4s ease-out forwards",
         "typing-dot": "typing-dot 1.1s ease-in-out infinite",
+        rise: "rise 420ms cubic-bezier(0.23, 1, 0.32, 1) both",
+        lift: "lift 420ms cubic-bezier(0.23, 1, 0.32, 1) both",
       },
     },
   },

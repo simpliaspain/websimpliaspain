@@ -11,6 +11,8 @@ interface ServiceDemoVideoProps {
   height: number;
   labelKey: string;
   className?: string;
+  /** Called once, the first time playback reaches the end of the clip. */
+  onFinished?: () => void;
 }
 
 /**
@@ -30,7 +32,7 @@ interface ServiceDemoVideoProps {
  * browser blocks autoplay, play() rejects, the control shows "play" and the
  * poster stays up - the box is never a black rectangle.
  */
-export function ServiceDemoVideo({ src, poster, width, height, labelKey, className }: ServiceDemoVideoProps) {
+export function ServiceDemoVideo({ src, poster, width, height, labelKey, className, onFinished }: ServiceDemoVideoProps) {
   const { t } = useLanguage();
   const figureRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -41,6 +43,31 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
   // Set by the reader's own pause, so scrolling back does not override it.
   const userPaused = useRef(false);
   const playWhenAttached = useRef(false);
+  const finished = useRef(false);
+  const lastTime = useRef(0);
+
+  /**
+   * The clip loops, so it never fires `ended`. Two signals stand in for it,
+   * and either one means the demo has now been seen through once.
+   *
+   * `timeupdate` arrives about four times a second, so the last one before
+   * the loop can be most of a second short of the end - near-the-end alone
+   * missed it. The wrap is the reliable half: the playhead going backwards
+   * can only mean it reached the end and started again, since nothing on
+   * the page seeks (there are no native controls). Fired at most once.
+   */
+  const watchForEnd = () => {
+    if (!onFinished) return;
+    const video = videoRef.current;
+    if (!video) return;
+    const now = video.currentTime;
+    const wrapped = now + 0.5 < lastTime.current;
+    const atTheEnd = Number.isFinite(video.duration) && video.duration > 0 && now >= video.duration - 0.4;
+    lastTime.current = now;
+    if (finished.current || !(wrapped || atTheEnd)) return;
+    finished.current = true;
+    onFinished();
+  };
 
   // A rejected play() (autoplay blocked, or interrupted by a pause) means
   // the element did not start; mirror what it actually is rather than
@@ -162,8 +189,10 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
   return (
     // Redesign (05/11/2026): no card around it any more. The video is its own
     // object - a plain 18px-cornered box, edge to edge, on the page's own
-    // white - matching the chat card beside it.
-    <figure ref={figureRef} className={cn("m-0 overflow-hidden rounded-[18px] bg-[hsl(216_13%_92%)]", className)}>
+    // white - matching the chat card beside it. The fill is the palette's one
+    // soft grey, the same one the invitation under it sits on; it used to be
+    // a cooler, darker grey of its own and the two read as a mistake.
+    <figure ref={figureRef} className={cn("m-0 overflow-hidden rounded-[18px] bg-secondary", className)}>
       <div className="relative w-full">
         {/* React sets `muted` as a property, never as the attribute, so it is
             also forced in the effect above before any play(). */}
@@ -180,7 +209,9 @@ export function ServiceDemoVideo({ src, poster, width, height, labelKey, classNa
           aria-label={t(labelKey)}
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
-          className="block h-auto w-full bg-[hsl(216_13%_92%)] object-contain"
+          onTimeUpdate={watchForEnd}
+          onEnded={watchForEnd}
+          className="block h-auto w-full bg-secondary object-contain"
           style={{ aspectRatio: `${width} / ${height}` }}
         >
           {attached && <source src={src} type="video/mp4" />}

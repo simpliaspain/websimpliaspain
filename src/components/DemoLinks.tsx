@@ -14,11 +14,18 @@ type LinkProps = {
 };
 
 /**
+ * The same button, not asking yet: the outlined shape instead of the solid
+ * one, for a place where the action is available but the page has not
+ * earned the right to shout about it. Same size, same target, same label.
+ */
+const QUIET = "border border-[hsl(216_5%_57%)] bg-transparent text-foreground hover:border-foreground hover:bg-transparent active:scale-100";
+
+/**
  * The site's main action: the instant demo with the visitor's own website.
  * Every demo button goes through here so each one carries `?o=web` (the
  * channel the team sees in the demos panel) and the same Umami event.
  */
-export function DemoLink({ lugar, label, className }: LinkProps) {
+export function DemoLink({ lugar, label, className, quiet = false }: LinkProps & { quiet?: boolean }) {
   const { t } = useLanguage();
   return (
     <a
@@ -27,7 +34,8 @@ export function DemoLink({ lugar, label, className }: LinkProps) {
       rel="noopener"
       data-umami-event="demo"
       data-umami-event-lugar={lugar}
-      className={cn(PRIMARY, className)}
+      data-quiet={quiet || undefined}
+      className={cn(PRIMARY, quiet && QUIET, className)}
     >
       {label ?? t("cta.demo")}
       <span className="sr-only"> {t("nav.opensNewTab")}</span>
