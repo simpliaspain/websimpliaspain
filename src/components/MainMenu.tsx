@@ -195,7 +195,11 @@ export function MainMenu({
   );
 
   const bigLink =
-    "flex min-h-[clamp(64px,10vh,96px)] items-center border-b border-border text-[clamp(30px,4.6vw,52px)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors hover:text-link motion-reduce:transition-none";
+    // The row and its type answer to the window's height as well as its
+    // width. Driven by width alone, a phone held sideways got portrait-sized
+    // rows in a 390px-tall window and five links became a list you had to
+    // scroll. The floor is still well over a 44px target.
+    "flex min-h-[clamp(52px,9.5vh,96px)] items-center border-b border-border text-[min(clamp(30px,4.6vw,52px),9vh)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors hover:text-link motion-reduce:transition-none";
   const smallLink =
     "flex min-h-[44px] items-center text-[17px] font-semibold text-foreground transition-colors hover:text-link motion-reduce:transition-none";
 

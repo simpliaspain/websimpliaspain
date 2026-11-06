@@ -53,9 +53,12 @@ export default function AgentesTelefonicos() {
 
   const waitlistButton = (className: string) => (
     <Button asChild size="lg" className={className}>
-      <Link to={WAITLIST_HREF} data-umami-event="lista-voz">
+      {/* The label is six words; on a 360px phone the button ran off the
+          right edge rather than wrapping, so it is allowed to take two
+          lines and the arrow is held beside the last of them. */}
+      <Link to={WAITLIST_HREF} data-umami-event="lista-voz" className="h-auto min-h-11 !whitespace-normal py-2.5 text-left">
         {t("agents.waitlist")}
-        <ArrowRight aria-hidden="true" className="ml-1 h-4 w-4" />
+        <ArrowRight aria-hidden="true" className="ml-1 h-4 w-4 shrink-0" />
       </Link>
     </Button>
   );
