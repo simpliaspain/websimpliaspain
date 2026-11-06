@@ -16,11 +16,27 @@
  * real scroll position - the page appeared to jump by the scroll amount on
  * open and back on close. An inline declaration marked important wins over
  * every stylesheet rule, important or not.
+ *
+ * While the lock holds, the page's own content width is published as
+ * `--page-width` on the root element. Taking the scrollbar away can widen the
+ * viewport, and an overlay laid out against the viewport - the menu panel -
+ * then centres its container half a scrollbar to the right of the header it
+ * is covering, which is visible as the whole header sliding sideways on open.
+ * Such an overlay closes the gap with
+ *
+ *     padding-right: max(0px, 100% - var(--page-width, 100%))
+ *
+ * which is the difference between its own width and the page's, so it is
+ * correct whether or not this browser widened the viewport at all, and zero
+ * when nothing is locked.
  */
 
 const PROPS = ["position", "top", "left", "right", "width", "height", "overflow", "padding-right"] as const;
 type Prop = (typeof PROPS)[number];
 type SavedStyles = Record<Prop, { value: string; priority: string }>;
+
+/** The page's content width, published on the root while the lock holds. */
+export const PAGE_WIDTH = "--page-width";
 
 let lockCount = 0;
 let saved: SavedStyles | null = null;
@@ -36,7 +52,9 @@ export function lockBodyScroll(): void {
 
   const { body } = document;
   savedScrollY = window.scrollY;
-  const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+  // Measured before anything moves: this is the width the page is laid out
+  // in, and the width every overlay on top of it has to agree with.
+  const pageWidth = body.clientWidth;
 
   saved = Object.fromEntries(
     PROPS.map((p) => [p, { value: body.style.getPropertyValue(p), priority: body.style.getPropertyPriority(p) }]),
@@ -49,8 +67,7 @@ export function lockBodyScroll(): void {
   setImportant("width", "100%");
   setImportant("height", "100%");
   setImportant("overflow", "hidden");
-  // Compensate for the scrollbar so the page does not shift horizontally.
-  if (scrollbarWidth > 0) setImportant("padding-right", `${scrollbarWidth}px`);
+  document.documentElement.style.setProperty(PAGE_WIDTH, `${pageWidth}px`);
 }
 
 export function unlockBodyScroll(): void {
@@ -66,6 +83,7 @@ export function unlockBodyScroll(): void {
     else body.style.removeProperty(p);
   }
   saved = null;
+  document.documentElement.style.removeProperty(PAGE_WIDTH);
   // Instant, not smooth: the page sets scroll-behavior: smooth, which would
   // otherwise animate the restore and make the page glide back on close.
   window.scrollTo({ top: savedScrollY, behavior: "instant" });

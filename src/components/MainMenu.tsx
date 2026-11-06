@@ -224,7 +224,7 @@ export function MainMenu({
       aria-modal="true"
       aria-labelledby="main-menu-title"
       style={{ opacity: shown ? 1 : 0 }}
-      className="fixed inset-0 z-[70] flex h-[100dvh] flex-col overflow-y-auto overscroll-contain bg-background transition-opacity duration-200 ease-out motion-reduce:transition-none"
+      className="fixed inset-0 z-[70] flex h-[100dvh] flex-col overflow-y-auto overscroll-contain bg-background pr-[max(0px,100%_-_var(--page-width,100%))] transition-opacity duration-200 ease-out motion-reduce:transition-none"
     >
       <h2 id="main-menu-title" className="sr-only">
         {t("nav.mainMenu")}
