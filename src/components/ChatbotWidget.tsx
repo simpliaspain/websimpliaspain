@@ -190,11 +190,13 @@ export function ChatbotWidget() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-5 right-5 z-50 w-16 h-16 rounded-full bg-primary text-primary-foreground shadow-lg flex items-center justify-center hover:bg-primary/90 transition-colors"
+            className="fixed bottom-5 right-5 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_14px_32px_-10px_hsl(210_100%_30%_/_0.5)] transition-colors hover:bg-primary/90"
             aria-label={t('chat.open')}
           >
+            {/* No endless halo. It pulsed for as long as the page was open,
+                which is noise once the page has a timed message of its own,
+                and it animated opacity on the compositor forever. */}
             <MessageCircle className="w-7 h-7" />
-            <span className="absolute inset-0 rounded-full bg-primary animate-ping opacity-25" />
           </motion.button>
         )}
       </AnimatePresence>

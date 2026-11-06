@@ -1,9 +1,10 @@
 /**
  * First-visit chat prompt (ChatPrompt).
  *
- *   PROMPT-1  First visit: nothing at 5s; after 8s on the page and 2s idle it
- *             shows, announced politely, without taking focus, with a 44px
- *             hit area; in both locales.
+ *   PROMPT-1  First visit: nothing early; once the page has been read (a
+ *             screenful of scrolling) or SHOW_AFTER_MS has passed, and after
+ *             2s idle, it shows - announced politely, without taking focus,
+ *             with a 44px hit area; in both locales.
  *   PROMPT-2  The close control dismisses it, and a reload does not bring it
  *             back. Keyboard users can reach the close control and use it.
  *   PROMPT-3  Opening the chat (button) hides it and it does not come back.
@@ -23,6 +24,13 @@ import { test, expect, type Page } from "@playwright/test";
 test.use({ storageState: { cookies: [], origins: [] } });
 
 const prompt = (page: Page) => page.locator("[data-chat-prompt]");
+/** The whole card is the open control; it is the card's first button. */
+const openControl = (page: Page) => page.locator("[data-chat-prompt] button").first();
+
+/** Past the no-scroll fallback (22s) and the 2s idle, with margin. */
+async function waitItOut(page: Page) {
+  await page.clock.runFor(26000);
+}
 const INTERACTIVE = 'a[href], button, input, select, textarea, summary, [role="button"], [tabindex]:not([tabindex="-1"])';
 
 async function open(page: Page, lang: "es" | "en" = "es") {
@@ -44,15 +52,19 @@ async function overlapsInteractive(page: Page) {
   }, INTERACTIVE);
 }
 
-for (const [lang, text, close] of [["es", "¿En qué puedo ayudarte?", "Cerrar este mensaje"], ["en", "How can I help you?", "Dismiss this message"]] as const) {
+for (const [lang, text, who, close] of [
+  ["es", "Pregúntame lo que quieras, como haría un cliente tuyo.", "Agente de Simplia", "Cerrar este mensaje"],
+  ["en", "Ask me anything, the way one of your clients would.", "Simplia agent", "Dismiss this message"],
+] as const) {
   test(`PROMPT-1: first visit shows it after the delay, politely, without taking focus (${lang})`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await open(page, lang);
     await page.clock.runFor(5000);
     await expect(prompt(page), "PROMPT-1: not before the delay").toHaveCount(0);
-    await page.clock.runFor(4000);
+    await waitItOut(page);
     await expect(prompt(page)).toBeVisible();
-    await expect(prompt(page).getByRole("button", { name: text })).toBeVisible();
+    await expect(prompt(page), "PROMPT-1: it says who is writing").toContainText(who);
+    await expect(openControl(page), "PROMPT-1: the card carries the message").toContainText(text);
     await expect(prompt(page).getByRole("button", { name: close })).toBeVisible();
     await expect(page.locator("[aria-live='polite']").filter({ hasText: text }), "PROMPT-1: announced politely").toHaveCount(1);
     expect(await page.locator("[data-chat-prompt] [role='alert'], [data-chat-prompt][role='alert']").count()).toBe(0);
@@ -62,12 +74,23 @@ for (const [lang, text, close] of [["es", "¿En qué puedo ayudarte?", "Cerrar e
   });
 }
 
+test("PROMPT-1: a screenful of scrolling brings it forward", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await open(page);
+  await page.clock.runFor(7000);
+  await expect(prompt(page), "PROMPT-1: nothing yet without a sign of interest").toHaveCount(0);
+  await page.evaluate(() => window.scrollTo({ top: window.innerHeight + 200, behavior: "instant" as ScrollBehavior }));
+  await page.clock.runFor(2500);
+  await expect(prompt(page), "PROMPT-1: it comes once the page is being read").toBeVisible();
+});
+
 test("PROMPT-1: an interaction postpones it until the page has been idle 2s", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await open(page);
   // The page clock also flows in real time during load, so leave margin:
-  // interact at ~7s, check at ~8.2s (idle only ~1.2s), then after 2s more.
-  await page.clock.runFor(7000);
+  // interact just short of the fallback, check 1.2s later (past it, but idle
+  // only ~1.2s), then 2s on.
+  await page.clock.runFor(21000);
   // A key press is an interaction (synthetic wheel scrolling is not
   // delivered while the page clock is installed).
   await page.keyboard.press("Shift");
@@ -80,7 +103,7 @@ test("PROMPT-1: an interaction postpones it until the page has been idle 2s", as
 test("PROMPT-2: the close control dismisses it for good; keyboard can reach it", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await open(page);
-  await page.clock.runFor(9000);
+  await waitItOut(page);
   await expect(prompt(page)).toBeVisible();
   // Keyboard: Shift+Tab back from the chat button reaches the close control.
   await page.getByRole("button", { name: "Abrir chat", exact: true }).focus();
@@ -98,7 +121,7 @@ test("PROMPT-2: the close control dismisses it for good; keyboard can reach it",
 test("PROMPT-3: opening the chat hides it and it does not return", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await open(page);
-  await page.clock.runFor(9000);
+  await waitItOut(page);
   await expect(prompt(page)).toBeVisible();
   await page.getByRole("button", { name: "Abrir chat", exact: true }).click();
   await expect(prompt(page)).toHaveCount(0);
@@ -114,8 +137,8 @@ test("PROMPT-3: opening the chat hides it and it does not return", async ({ page
 test("PROMPT-4: clicking the bubble opens the chat", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await open(page);
-  await page.clock.runFor(9000);
-  await prompt(page).getByRole("button", { name: "¿En qué puedo ayudarte?" }).click();
+  await waitItOut(page);
+  await openControl(page).click();
   await expect(page.getByRole("button", { name: "Cerrar chat" })).toBeVisible();
   await expect(prompt(page)).toHaveCount(0);
 });
@@ -123,7 +146,11 @@ test("PROMPT-4: clicking the bubble opens the chat", async ({ page }) => {
 test("PROMPT-5: it auto-dismisses after 12s on screen, not sooner", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await open(page);
-  await page.clock.runFor(9000);
+  // Brought on by scrolling, so the moment it appears is known and the whole
+  // of the 12s is measured from there.
+  await page.clock.runFor(7000);
+  await page.evaluate(() => window.scrollTo({ top: window.innerHeight + 200, behavior: "instant" as ScrollBehavior }));
+  await page.clock.runFor(2500);
   await expect(prompt(page)).toBeVisible();
   await page.clock.runFor(10000);
   await expect(prompt(page), "PROMPT-5: still there at 10s").toBeVisible();
@@ -135,7 +162,7 @@ test("PROMPT-6: reduced motion shows it without animation", async ({ browser }) 
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 }, reducedMotion: "reduce", baseURL: "http://localhost:4173" });
   const page = await context.newPage();
   await open(page);
-  await page.clock.runFor(9000);
+  await waitItOut(page);
   await expect(prompt(page)).toBeVisible();
   const anim = await prompt(page).evaluate((el) => ({ name: getComputedStyle(el).animationName, cls: el.className }));
   expect(anim.name, "PROMPT-6: no animation").toBe("none");
@@ -158,7 +185,7 @@ for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 
   test(`PROMPT-8: it never covers an interactive element (${viewport.width}px)`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await open(page);
-    await page.clock.runFor(9000);
+    await waitItOut(page);
     await expect(prompt(page)).toBeAttached();
     expect(await overlapsInteractive(page), "PROMPT-8: at load").toEqual([]);
     // Hovering pauses its auto-dismiss timer, but it can only be hovered
