@@ -30,10 +30,16 @@ const MESSAGES: Message[] = [
 ];
 
 /** Milliseconds from the card coming into view to each message landing. */
+/** Playback starts from FIRST_SHOWN, so the client's own message is already
+ *  on screen: the card is never an empty frame waiting to be scrolled to, and
+ *  what plays is what the page is actually claiming - the answer. */
+const FIRST_SHOWN = 1;
+
 function schedule(messages: Message[]) {
   const steps: { at: number; shown: number; typing: boolean }[] = [];
   let t = 400;
   messages.forEach((m, i) => {
+    if (i < FIRST_SHOWN) return;
     if (m.from === "agent") {
       steps.push({ at: t, shown: i, typing: true });
       t += 1100;
@@ -71,7 +77,7 @@ export function ExampleChat({
   const play = () => {
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    setShown(0);
+    setShown(FIRST_SHOWN);
     setTyping(false);
     setPlayed(true);
     for (const step of schedule(messages)) {
@@ -89,7 +95,7 @@ export function ExampleChat({
     if (typeof window === "undefined") return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     if (!("IntersectionObserver" in window)) return;
-    setShown(0);
+    setShown(FIRST_SHOWN);
   }, [unanswered]);
 
   // The bubbles carry no transition until the frame after that hide. They
@@ -169,7 +175,14 @@ export function ExampleChat({
         <div
           className={cn(
             "grid flex-1 text-base leading-[1.45]",
-            unanswered ? "min-h-[260px] content-end gap-4 px-[18px] pb-6 pt-7" : "content-end gap-2.5 px-[18px] py-5",
+            /* Answered, the exchange is bottom-aligned, the way a thread sits
+               in a messaging app. Unanswered, the message goes to the top and
+               the verdict to the foot of the card, so the empty space between
+               them is the wait itself - bottom-aligned it was a blank above
+               the message instead, which reads as something still loading. */
+            unanswered
+              ? "min-h-[260px] content-between gap-4 px-[18px] pb-6 pt-5"
+              : "content-end gap-2.5 px-[18px] py-5",
           )}
         >
           {/* Every message holds its own slot from the first paint and only

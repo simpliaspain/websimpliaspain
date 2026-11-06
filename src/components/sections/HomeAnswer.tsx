@@ -32,8 +32,15 @@ export function HomeAnswer() {
           {t("answer.title")}
         </h2>
 
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,400px),1fr))] gap-x-[clamp(20px,3vw,40px)] gap-y-8">
-          <figure id="video" className="m-0 grid min-w-0 content-start scroll-mt-[88px] gap-3">
+        {/* Two columns from lg, and the row is explicit rather than auto-fit
+            so the invitation has somewhere to be: the video is 4:3 and the
+            conversation is a tall card, which left a sixth of the left column
+            empty under the caption. The invitation fills it, right under the
+            demo it is inviting you to try. Stacked, the three read in source
+            order - video, conversation, invitation - and the invitation is
+            full width at the foot of the section, which is where it was. */}
+        <div className="grid gap-x-[clamp(20px,3vw,40px)] gap-y-8 lg:grid-cols-2 lg:[grid-template-rows:auto_1fr]">
+          <figure id="video" className="m-0 grid min-w-0 content-start scroll-mt-[88px] gap-3 lg:col-start-1 lg:row-start-1">
             {/* content-start, or the equal-height columns stretch the 4:3 box
                 and leave a grey band under the picture. */}
             <ServiceDemoVideo
@@ -47,14 +54,14 @@ export function HomeAnswer() {
             <figcaption className="text-[15px] text-muted-foreground">{t("answer.videoCaption")}</figcaption>
           </figure>
 
-          <ExampleChat className="min-w-0" />
-        </div>
+          <ExampleChat className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1" />
 
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-border pt-[clamp(20px,3vw,32px)]">
-          <p className="m-0 flex-[1_1_320px] text-[clamp(17px,1.4vw,19px)] font-semibold text-foreground">
-            {t("answer.tryIt")}
-          </p>
-          <DemoLink lugar="banda-final" />
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-[clamp(20px,3vw,32px)] lg:col-start-1 lg:row-start-2 lg:content-center lg:rounded-[18px] lg:border-t-0 lg:bg-secondary lg:p-[clamp(20px,2vw,28px)]">
+            <p className="m-0 flex-[1_1_280px] text-[clamp(17px,1.4vw,19px)] font-semibold text-foreground">
+              {t("answer.tryIt")}
+            </p>
+            <DemoLink lugar="banda-final" />
+          </div>
         </div>
       </div>
     </section>
