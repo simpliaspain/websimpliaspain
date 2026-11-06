@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Photo } from "@/components/Photo";
-import { hasPhoto } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 
 type Message = { from: "client" | "agent"; key: string; time: string; card?: boolean };
@@ -10,23 +9,23 @@ type Message = { from: "client" | "agent"; key: string; time: string; card?: boo
 const OFFICE_PHOTO = "despacho-8";
 
 /**
- * One conversation, told twice. Lucía writes at 21:47, when the centre has
+ * One conversation, told twice. Marta writes at 20:53, when the centre has
  * been shut for hours; the hero shows that message with nobody to take it,
  * and the section below shows the same message answered. Keeping both in one
  * component means the two can never drift apart.
  *
- * The name and the hour are the ones in the demo video, which sits beside
- * this card in #accion: before, the video showed Lucía at 21:47 and the card
- * showed Marta at 20:53, which read as two unrelated examples side by side.
- * The video is the fixed asset, so the page is written to it. Changing
- * either means changing the other.
+ * The name and the hours are the design's, and the design is what the client
+ * decided. The demo video beside this card in #accion shows a different
+ * scene - Lucía at 21:47 - so the two do not match; that is known and it is
+ * their call. Changing one of them means changing the other, here and in
+ * hero.time, hero.title, closing.title and cta.titleEmph.
  */
 const MESSAGES: Message[] = [
-  { from: "client", key: "example.m1", time: "21:47" },
-  { from: "agent", key: "example.m2", time: "21:47", card: true },
-  { from: "agent", key: "example.m3", time: "21:47" },
-  { from: "client", key: "example.m4", time: "21:48" },
-  { from: "agent", key: "example.m5", time: "21:48" },
+  { from: "client", key: "example.m1", time: "20:53" },
+  { from: "agent", key: "example.m2", time: "20:53", card: true },
+  { from: "agent", key: "example.m3", time: "20:53" },
+  { from: "client", key: "example.m4", time: "20:55" },
+  { from: "agent", key: "example.m5", time: "20:55" },
 ];
 
 /** Milliseconds from the card coming into view to each message landing. */
@@ -61,7 +60,6 @@ export function ExampleChat({
 }) {
   const { t } = useLanguage();
   const unanswered = variant === "unanswered";
-  const officePhoto = hasPhoto(OFFICE_PHOTO);
   const messages = unanswered ? MESSAGES.slice(0, 1) : MESSAGES;
 
   // Starts fully shown, so the prerendered HTML and a visit without
@@ -214,21 +212,16 @@ export function ExampleChat({
                 >
                   <p className="m-0">{t(m.key)}</p>
                   {m.card && (
-                    /* The card the agent sends. The photograph is only drawn
-                       when the file is there; without it the card is two
-                       lines of real detail rather than an empty grey frame
-                       with a picture icon in it, which is what it was. */
-                    <span
-                      className={cn(
-                        "grid items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2",
-                        officePhoto && "grid-cols-[72px_minmax(0,1fr)]",
-                      )}
-                    >
-                      {officePhoto && (
-                        <span className="row-span-2 block h-[72px] w-[72px] overflow-hidden rounded-md bg-secondary">
-                          <Photo name={OFFICE_PHOTO} alt={t("example.cardAlt")} width={1200} height={900} />
-                        </span>
-                      )}
+                    /* The card the agent sends, in the design's own shape: a
+                       square picture, the office, and what the card contains.
+                       The picture is the soft fill until the photograph is
+                       there - drop src/assets/photos/despacho-8.jpg (600x600,
+                       @2x alongside it if there is one) in and it fills
+                       itself, with no code to change. */
+                    <span className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2">
+                      <span className="row-span-2 block h-[72px] w-[72px] overflow-hidden rounded-md bg-secondary">
+                        <Photo name={OFFICE_PHOTO} alt={t("example.cardAlt")} width={600} height={600} />
+                      </span>
                       <span className="self-end font-semibold text-foreground">{t("example.cardTitle")}</span>
                       <span className="self-start text-sm text-muted-foreground">{t("example.cardSub")}</span>
                     </span>

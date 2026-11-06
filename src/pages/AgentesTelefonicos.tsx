@@ -124,7 +124,7 @@ export default function AgentesTelefonicos() {
                           {m.from === "agent" ? <Mic className="h-4 w-4 text-primary" /> : <Users className="h-4 w-4 text-accent-foreground" />}
                         </div>
                         <div className={`flex-1 rounded-xl px-4 py-3 ${m.from === "agent" ? "bg-secondary" : "bg-primary/10"}`}>
-                          <p className="text-sm text-foreground">«{m.text}»</p>
+                          <p className="text-sm text-foreground">"{m.text}"</p>
                         </div>
                       </div>
                     ))}
