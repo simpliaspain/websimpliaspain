@@ -1,22 +1,32 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Image as ImageIcon } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Photo } from "@/components/Photo";
+import { hasPhoto } from "@/lib/photos";
 import { cn } from "@/lib/utils";
 
 type Message = { from: "client" | "agent"; key: string; time: string; card?: boolean };
 
+/** Drop src/assets/photos/despacho-8.jpg in and the card grows a picture. */
+const OFFICE_PHOTO = "despacho-8";
+
 /**
- * One conversation, told twice. Marta writes at 20:53, when the centre has
+ * One conversation, told twice. Lucía writes at 21:47, when the centre has
  * been shut for hours; the hero shows that message with nobody to take it,
  * and the section below shows the same message answered. Keeping both in one
  * component means the two can never drift apart.
+ *
+ * The name and the hour are the ones in the demo video, which sits beside
+ * this card in #accion: before, the video showed Lucía at 21:47 and the card
+ * showed Marta at 20:53, which read as two unrelated examples side by side.
+ * The video is the fixed asset, so the page is written to it. Changing
+ * either means changing the other.
  */
 const MESSAGES: Message[] = [
-  { from: "client", key: "example.m1", time: "20:53" },
-  { from: "agent", key: "example.m2", time: "20:53", card: true },
-  { from: "agent", key: "example.m3", time: "20:53" },
-  { from: "client", key: "example.m4", time: "20:55" },
-  { from: "agent", key: "example.m5", time: "20:55" },
+  { from: "client", key: "example.m1", time: "21:47" },
+  { from: "agent", key: "example.m2", time: "21:47", card: true },
+  { from: "agent", key: "example.m3", time: "21:47" },
+  { from: "client", key: "example.m4", time: "21:48" },
+  { from: "agent", key: "example.m5", time: "21:48" },
 ];
 
 /** Milliseconds from the card coming into view to each message landing. */
@@ -45,6 +55,7 @@ export function ExampleChat({
 }) {
   const { t } = useLanguage();
   const unanswered = variant === "unanswered";
+  const officePhoto = hasPhoto(OFFICE_PHOTO);
   const messages = unanswered ? MESSAGES.slice(0, 1) : MESSAGES;
 
   // Starts fully shown, so the prerendered HTML and a visit without
@@ -92,6 +103,18 @@ export function ExampleChat({
     return () => cancelAnimationFrame(frame);
   }, []);
 
+  // It has to start when the reader is looking at it, not when its top edge
+  // appears. At a third visible and no inset it began while the card was
+  // still a strip at the bottom of the window, so by the time you had
+  // scrolled to it the whole six-second exchange had already happened. The
+  // margin pulls the trigger line well inside the window so playback starts
+  // with the card in front of you.
+  //
+  // Two conditions, because a ratio alone is not enough: most of the card is
+  // the right test when the card fits, but on a phone - or any short window -
+  // the card is taller than the band and its ratio can never reach 0.6, so it
+  // would never start. The second test asks the opposite question, whether
+  // the card fills what you are looking at.
   useEffect(() => {
     if (unanswered || played) return;
     const node = cardRef.current;
@@ -99,9 +122,14 @@ export function ExampleChat({
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[entries.length - 1].isIntersecting) play();
+        const latest = entries[entries.length - 1];
+        if (!latest.isIntersecting) return;
+        const fillsTheView = latest.rootBounds
+          ? latest.intersectionRect.height / latest.rootBounds.height >= 0.8
+          : false;
+        if (latest.intersectionRatio >= 0.6 || fillsTheView) play();
       },
-      { threshold: 0.35 },
+      { threshold: [0, 0.25, 0.5, 0.6, 0.8], rootMargin: "-12% 0px -22% 0px" },
     );
     observer.observe(node);
     return () => observer.disconnect();
@@ -123,7 +151,7 @@ export function ExampleChat({
             aria-hidden="true"
             className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[hsl(216_10%_90%)] text-[15px] font-bold text-foreground"
           >
-            M
+            {t("example.who").trim().charAt(0)}
           </span>
           <div className="min-w-0 flex-1">
             <p className="text-base font-semibold leading-tight text-foreground">{t("example.who")}</p>
@@ -173,10 +201,21 @@ export function ExampleChat({
                 >
                   <p className="m-0">{t(m.key)}</p>
                   {m.card && (
-                    <span className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2">
-                      <span className="row-span-2 flex h-[72px] w-[72px] items-center justify-center overflow-hidden rounded-md bg-secondary text-muted-foreground">
-                        <ImageIcon aria-hidden="true" className="h-5 w-5" />
-                      </span>
+                    /* The card the agent sends. The photograph is only drawn
+                       when the file is there; without it the card is two
+                       lines of real detail rather than an empty grey frame
+                       with a picture icon in it, which is what it was. */
+                    <span
+                      className={cn(
+                        "grid items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2",
+                        officePhoto && "grid-cols-[72px_minmax(0,1fr)]",
+                      )}
+                    >
+                      {officePhoto && (
+                        <span className="row-span-2 block h-[72px] w-[72px] overflow-hidden rounded-md bg-secondary">
+                          <Photo name={OFFICE_PHOTO} alt={t("example.cardAlt")} width={1200} height={900} />
+                        </span>
+                      )}
                       <span className="self-end font-semibold text-foreground">{t("example.cardTitle")}</span>
                       <span className="self-start text-sm text-muted-foreground">{t("example.cardSub")}</span>
                     </span>

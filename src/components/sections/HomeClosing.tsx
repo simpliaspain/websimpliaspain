@@ -4,7 +4,7 @@ import { DemoLink } from "@/components/DemoLinks";
 
 /**
  * The last thing on the page is the first thing again: tonight, someone like
- * Marta is going to ask about an office. One button, and a phone number for
+ * Lucía is going to ask about an office. One button, and a phone number for
  * the readers who would rather talk to a person.
  */
 export function HomeClosing() {

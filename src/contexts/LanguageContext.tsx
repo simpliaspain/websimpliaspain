@@ -70,6 +70,7 @@ const translations: Record<Language, Record<string, string>> = {
     // se traducen y los pone PressLine.
     'press.line': 'Nos han entrevistado en',
     'press.and': 'y el',
+    'press.creditMN24': 'Roberto Zúñiga en Onda Cero Madrid Norte. Foto: Madrid Norte 24 horas.',
     'press.photoAlt': 'Entrevista en el estudio de radio',
     'press.caption': 'Onda Cero Madrid Norte · junio 2026',
     // Titular literal de Madrid Norte 24 horas: es una cita, no copy nuestro, así que va en español en los dos idiomas.
@@ -86,8 +87,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Portada · hero. El titular es la hora y la escena; la coma y el punto
     // entre la hora y el resto los pone el componente, no la traducción.
-    'hero.time': '20:53',
-    'hero.title': 'Marta pregunta por un despacho para 8. Tu centro abre mañana a las 9:00.',
+    'hero.time': '21:47',
+    'hero.title': 'Lucía pregunta por un despacho para 8. Tu centro abre mañana a las 9:00.',
     'hero.subtitle': 'Para entonces habrá escrito a otros tres centros. Simplia le contesta esta noche por tu WhatsApp y le agenda la visita.',
     'hero.demoCta': 'Pruébalo con tu web',
     'hero.demoNote': 'Gratis, 1 minuto',
@@ -97,16 +98,17 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Chat de ejemplo. Una sola conversación contada dos veces: en el hero
     // llega y nadie la coge; en «La misma pregunta» se contesta entera.
-    'example.who': 'Marta · WhatsApp',
+    'example.who': 'Lucía · WhatsApp',
     'example.wrote': 'Escribió a tu centro',
     'example.answers': 'Le contesta Simplia',
     'example.m1': 'Hola, ¿tenéis despacho para 8 personas? Lo necesito esta semana.',
     'example.m2': 'Hola. Sí, tenemos un despacho libre para 8 desde el lunes. Te mando la ficha.',
-    'example.m3': '¿Quieres verlo? Te puedo reservar visita el jueves a las 10:00 o a las 17:30.',
-    'example.m4': 'El jueves a las 10, perfecto.',
+    'example.m3': '¿Quieres verlo? Te puedo reservar visita el jueves a las 10:00 o a las 12:30.',
+    'example.m4': 'Jueves a las 10:00, perfecto.',
     'example.m5': 'Reservado. Antes de la visita te mando un recordatorio con la ubicación.',
     'example.cardTitle': 'Despacho para 8 personas',
-    'example.cardSub': 'Fotos, m², puestos y precio',
+    'example.cardSub': '24 m² · 8 puestos · libre desde el lunes',
+    'example.cardAlt': 'Foto del despacho para 8 personas',
     'example.noAnswer': 'Sin respuesta',
     'example.typing': 'El agente está escribiendo',
     'example.replay': 'Volver a reproducir',
@@ -131,7 +133,7 @@ const translations: Record<Language, Record<string, string>> = {
     'steps.noteLink': 'Ver cómo trabajamos',
 
     // Cierre
-    'closing.title': 'Esta noche alguien como Marta va a preguntar por un despacho. Que le conteste tu centro.',
+    'closing.title': 'Esta noche alguien como Lucía va a preguntar por un despacho. Que le conteste tu centro.',
     'closing.orCall': 'o llama al',
 
     // Barra de confianza y contador en tiempo real
@@ -226,8 +228,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Banda final (todas las páginas)
     'cta.title': '¿Cómo contestaría tu centro hoy a las',
-    'cta.titleEmph': '20:53',
-    'cta.text': 'Pon la web de tu coworking y habla con tu agente de IA en un minuto. Gratis y sin llamadas.',
+    'cta.titleEmph': '21:47',
+    'cta.text': 'Pon la web de tu centro y habla con tu agente de IA en un minuto. Gratis y sin llamadas.',
     'cta.demo': 'Pruébalo con tu web',
     'cta.watch': 'Ver en acción · 0:40',
     'cta.call': 'Hablar 15 minutos',
@@ -498,6 +500,7 @@ const translations: Record<Language, Record<string, string>> = {
     'press.heading': 'Featured in',
     'press.line': 'We have been interviewed on',
     'press.and': 'and at the',
+    'press.creditMN24': 'Roberto Zúñiga on Onda Cero Madrid Norte. Photo: Madrid Norte 24 horas.',
     'press.photoAlt': 'Interview in the radio studio',
     'press.caption': 'Onda Cero Madrid Norte · June 2026',
     'press.quote': 'Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas',
@@ -512,8 +515,8 @@ const translations: Record<Language, Record<string, string>> = {
     'press.action.listenIvoox': 'Listen on iVoox',
 
     // Home · hero
-    'hero.time': '20:53',
-    'hero.title': 'Marta asks about an office for 8. Your centre opens tomorrow at 9:00.',
+    'hero.time': '21:47',
+    'hero.title': 'Lucía asks about an office for 8. Your centre opens tomorrow at 9:00.',
     'hero.subtitle': 'By then she will have written to three other centres. Simplia answers her tonight on your WhatsApp and books the visit.',
     'hero.demoCta': 'Try it with your website',
     'hero.demoNote': 'Free, 1 minute',
@@ -522,16 +525,17 @@ const translations: Record<Language, Record<string, string>> = {
     'hero.strategyCall': 'Talk to us for 15 minutes',
 
     // Example chat
-    'example.who': 'Marta · WhatsApp',
+    'example.who': 'Lucía · WhatsApp',
     'example.wrote': 'Wrote to your centre',
     'example.answers': 'Simplia is answering',
     'example.m1': 'Hi, do you have an office for 8 people? I need it this week.',
     'example.m2': 'Hi. Yes, we have one free for 8 from Monday. Sending you the details.',
-    'example.m3': 'Would you like to see it? I can book a visit on Thursday at 10:00 or 17:30.',
-    'example.m4': 'Thursday at 10, perfect.',
+    'example.m3': 'Would you like to see it? I can book a visit on Thursday at 10:00 or 12:30.',
+    'example.m4': 'Thursday at 10:00, perfect.',
     'example.m5': 'Booked. Before the visit I\'ll send you a reminder with the location.',
     'example.cardTitle': 'Office for 8 people',
-    'example.cardSub': 'Photos, m², desks and price',
+    'example.cardSub': '24 m² · 8 desks · free from Monday',
+    'example.cardAlt': 'Photograph of the office for 8 people',
     'example.noAnswer': 'No reply',
     'example.typing': 'The agent is typing',
     'example.replay': 'Play again',
@@ -556,7 +560,7 @@ const translations: Record<Language, Record<string, string>> = {
     'steps.noteLink': 'See how we work',
 
     // Closing
-    'closing.title': 'Tonight someone like Marta is going to ask about an office. Let your centre answer.',
+    'closing.title': 'Tonight someone like Lucía is going to ask about an office. Let your centre answer.',
     'closing.orCall': 'or call',
 
     // Trust bar and live counter
@@ -647,8 +651,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // Closing band (every page)
     'cta.title': 'How would your centre answer today at',
-    'cta.titleEmph': '20:53',
-    'cta.text': 'Enter your coworking\'s website and talk to your AI agent in a minute. Free, no calls.',
+    'cta.titleEmph': '21:47',
+    'cta.text': 'Enter your centre\'s website and talk to your AI agent in a minute. Free, no calls.',
     'cta.demo': 'Try it with your website',
     'cta.watch': 'See it in action · 0:40',
     'cta.call': 'Talk for 15 minutes',

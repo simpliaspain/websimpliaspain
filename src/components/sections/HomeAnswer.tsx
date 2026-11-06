@@ -7,7 +7,7 @@ import { DemoLink } from "@/components/DemoLinks";
 
 /**
  * The answer to the hero: the same question, this time with the agent on it.
- * The 40-second video on one side, Marta's conversation playing out on the
+ * The 40-second video on one side, Lucía's conversation playing out on the
  * other, and a single line underneath inviting the reader to write to the
  * agent themselves.
  *
