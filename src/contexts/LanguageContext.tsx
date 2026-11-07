@@ -72,6 +72,8 @@ const translations: Record<Language, Record<string, string>> = {
     'press.line': 'Nos han entrevistado en',
     'press.and': 'y el',
     'press.creditMN24': 'Roberto Zúñiga en Onda Cero Madrid Norte. Foto: Madrid Norte 24 horas.',
+    'press.creditEsRadio': 'La entrevista completa, en el pódcast de esRadio.',
+    'press.creditIEA': 'Roberto Zúñiga en los Martes del Emprendimiento del Instituto de Emprendimiento Avanzado.',
     'press.photoAlt': 'Entrevista en el estudio de radio',
     'press.caption': 'Onda Cero Madrid Norte · junio 2026',
     // Titular literal de Madrid Norte 24 horas: es una cita, no copy nuestro, así que va en español en los dos idiomas.
@@ -90,7 +92,6 @@ const translations: Record<Language, Record<string, string>> = {
     // entre la hora y el resto los pone el componente, no la traducción.
     'hero.time': '20:53',
     'hero.title': 'Marta pregunta por un despacho para 8. Tu centro abre mañana a las 9:00.',
-    'hero.subtitle': 'Para entonces habrá escrito a otros tres centros. Simplia le contesta esta noche por tu WhatsApp y le agenda la visita.',
     'hero.demoCta': 'Pruébalo con tu web',
     'hero.demoNote': 'Gratis, 1 minuto',
     'hero.trustLine': 'Para coworkings, centros de negocio y oficinas flexibles de 1 a 15 sedes · Precio a medida para tu centro',
@@ -113,11 +114,9 @@ const translations: Record<Language, Record<string, string>> = {
     'example.noAnswer': 'Sin respuesta',
     'example.typing': 'El agente está escribiendo',
     'example.replay': 'Volver a reproducir',
-    'example.footnote': 'Conversación de ejemplo.',
 
     // La misma pregunta, contestada
     'answer.title': 'La misma pregunta, con Simplia.',
-    'answer.videoCaption': 'Una consulta de noche: el agente contesta en segundos, la visita entra en la agenda del equipo y llega el recordatorio con la ubicación.',
     'answer.tryIt': 'Pruébalo tú: escribe al agente como si fueras un cliente.',
 
     // Qué hace el agente
@@ -217,7 +216,7 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat4Value': '27',
     'case.stat4Label': 'personas dejaron sus datos de contacto',
     'case.who': 'Operador de espacios flexibles con varias sedes en Madrid. Octubre de 2026, su primer mes completo con el agente.',
-    'case.statsNote': '"Fuera del horario de oficina" es fuera de lunes a viernes, de 9:00 a 19:00. Las cifras salen de su propio panel.',
+    'case.statsNote': '"Fuera del horario de oficina" es fuera de lunes a viernes, de 9:00 a 19:00.',
     'case.quote': '"La automatización de los procesos nos está haciendo mucho más productivos"',
     'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
 
@@ -524,6 +523,8 @@ const translations: Record<Language, Record<string, string>> = {
     'press.line': 'We have been interviewed on',
     'press.and': 'and at the',
     'press.creditMN24': 'Roberto Zúñiga on Onda Cero Madrid Norte. Photo: Madrid Norte 24 horas.',
+    'press.creditEsRadio': 'The full interview, on the esRadio podcast.',
+    'press.creditIEA': 'Roberto Zúñiga at the Instituto de Emprendimiento Avanzado.',
     'press.photoAlt': 'Interview in the radio studio',
     'press.caption': 'Onda Cero Madrid Norte · June 2026',
     'press.quote': 'Simplia, la startup española que impulsa agentes telefónicos con inteligencia artificial para empresas',
@@ -540,7 +541,6 @@ const translations: Record<Language, Record<string, string>> = {
     // Home · hero
     'hero.time': '20:53',
     'hero.title': 'Marta asks about an office for 8. Your centre opens tomorrow at 9:00.',
-    'hero.subtitle': 'By then she will have written to three other centres. Simplia answers her tonight on your WhatsApp and books the visit.',
     'hero.demoCta': 'Try it with your website',
     'hero.demoNote': 'Free, 1 minute',
     'hero.trustLine': 'For coworkings, business centres and flexible offices with 1 to 15 locations · Pricing tailored to your centre',
@@ -562,11 +562,9 @@ const translations: Record<Language, Record<string, string>> = {
     'example.noAnswer': 'No reply',
     'example.typing': 'The agent is typing',
     'example.replay': 'Play again',
-    'example.footnote': 'Example conversation.',
 
     // The same question, answered
     'answer.title': 'The same question, with Simplia.',
-    'answer.videoCaption': 'An enquiry at night: the agent answers in seconds, the visit goes into the team\'s calendar and the reminder arrives with the location.',
     'answer.tryIt': 'Try it yourself: write to the agent as if you were a customer.',
 
     // What the agent does
@@ -662,7 +660,7 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat4Value': '27',
     'case.stat4Label': 'people left their contact details',
     'case.who': 'A flexible-space operator with several locations in Madrid. October 2026, their first full month with the agent.',
-    'case.statsNote': '"Outside office hours" means outside Monday to Friday, 9:00 to 19:00. The figures come from their own dashboard.',
+    'case.statsNote': '"Outside office hours" means outside Monday to Friday, 9:00 to 19:00.',
     'case.quote': '"Automating the processes is making us much more productive"',
     'case.quoteSource': 'Roberto, founder of Oficinas YA!',
 
