@@ -27,7 +27,18 @@ function findLogo(slug: string): string | undefined {
   return entry?.[1];
 }
 
-export function ClientMark({ slug, name, className }: { slug: string; name: string; className?: string }) {
+export function ClientMark({
+  slug,
+  name,
+  className,
+  imgClassName,
+}: {
+  slug: string;
+  name: string;
+  className?: string;
+  /** Overrides the default slot, for a place that gives the mark more room. */
+  imgClassName?: string;
+}) {
   const src = findLogo(slug);
 
   if (!src) {
@@ -50,7 +61,7 @@ export function ClientMark({ slug, name, className }: { slug: string; name: stri
         alt={name}
         loading="lazy"
         decoding="async"
-        className="h-11 w-[132px] object-contain object-left"
+        className={cn("h-11 w-[132px] object-contain object-left", imgClassName)}
       />
     </p>
   );

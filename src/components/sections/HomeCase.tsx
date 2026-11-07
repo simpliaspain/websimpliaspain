@@ -66,25 +66,40 @@ export function HomeCase() {
           ))}
         </ul>
 
-        <div className="mt-[clamp(24px,3vw,36px)] flex flex-wrap items-start gap-x-[clamp(24px,4vw,64px)] gap-y-5">
-          {/* Whose month this is: their mark beside the sentence that places
-              them. It attributes the numbers, so it belongs here and not up
-              by the percentage. */}
-          <div className="flex min-w-0 flex-[1_1_300px] items-start gap-4">
-            <ClientMark slug="oficinasya" name="Oficinas YA!" className="m-0 flex-none" />
-            <p className="m-0 text-[15px] text-muted-foreground">{t("case.who")}</p>
+        {/* Whose month this is. Two halves that carry the same weight: the
+            mark at the size a mark deserves with the sentence that places
+            them underneath, and against it what they said about it, with the
+            note on how the figures are counted under that. Side by side as a
+            row of three the mark had to be small, the quotation took the
+            width, and the note ran the whole page on its own underneath,
+            which left the right of the band empty and the band bottom-heavy. */}
+        {/* No rule of its own above this: the list of numbers already closes
+            on one, and two hairlines a few pixels apart read as a mistake. */}
+        <div className="mt-[clamp(36px,5vw,64px)] grid gap-x-[clamp(24px,5vw,72px)] gap-y-9 md:grid-cols-2">
+          <div className="min-w-0">
+            <ClientMark
+              slug="oficinasya"
+              name="Oficinas YA!"
+              className="m-0"
+              imgClassName="h-auto w-full max-w-[min(100%,340px)]"
+            />
+            <p className="m-0 mt-5 max-w-[40ch] text-[15px] leading-relaxed text-muted-foreground">
+              {t("case.who")}
+            </p>
           </div>
-          <figure className="m-0 grid min-w-0 flex-[1.4_1_420px] gap-1.5">
-            <blockquote className="m-0 text-[clamp(18px,1.6vw,20px)] font-semibold leading-[1.45] text-foreground">
-              {t("case.quote")}
-            </blockquote>
-            <figcaption className="text-[15px] text-muted-foreground">{t("case.quoteSource")}</figcaption>
-          </figure>
-        </div>
 
-        <p className="mt-[clamp(24px,3vw,36px)] max-w-[72ch] text-[13px] leading-relaxed text-muted-foreground">
-          {t("case.statsNote")}
-        </p>
+          <div className="grid min-w-0 content-start gap-5">
+            <figure className="m-0 grid gap-1.5">
+              <blockquote className="m-0 text-[clamp(18px,1.6vw,20px)] font-semibold leading-[1.45] text-foreground">
+                {t("case.quote")}
+              </blockquote>
+              <figcaption className="text-[15px] text-muted-foreground">{t("case.quoteSource")}</figcaption>
+            </figure>
+            <p className="m-0 max-w-[52ch] text-[13px] leading-relaxed text-muted-foreground">
+              {t("case.statsNote")}
+            </p>
+          </div>
+        </div>
       </div>
     </section>
   );
