@@ -15,6 +15,10 @@ interface Message {
 export function ChatbotWidget() {
   const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
+  /* A mouse resting on the button brings the card up; taking it away puts
+     it back. A finger does not, because a touch has no "resting on" - it
+     is already a tap, and the tap opens the chat itself. */
+  const [launcherHovered, setLauncherHovered] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -178,7 +182,11 @@ export function ChatbotWidget() {
   return (
     <>
       {/* First-visit nudge; sits just before the button in the tab order. */}
-      <ChatPrompt chatOpen={isOpen} onOpenChat={() => setIsOpen(true)} />
+      <ChatPrompt
+        chatOpen={isOpen}
+        onOpenChat={() => setIsOpen(true)}
+        launcherHovered={launcherHovered}
+      />
 
       {/* Floating Button - DESKTOP: fixed bottom-right, MOBILE: same but will be hidden when open */}
       <AnimatePresence>
@@ -187,10 +195,12 @@ export function ChatbotWidget() {
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-5 right-5 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_14px_32px_-10px_hsl(210_100%_30%_/_0.5)] transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-[hsl(210_100%_38%)] hover:shadow-[0_18px_38px_-10px_hsl(210_100%_30%_/_0.6)] active:scale-95 active:duration-[90ms] motion-reduce:transition-colors motion-reduce:active:scale-100"
+            onPointerEnter={(event) => event.pointerType === "mouse" && setLauncherHovered(true)}
+            onPointerLeave={(event) => event.pointerType === "mouse" && setLauncherHovered(false)}
+            className="fixed bottom-5 right-5 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_14px_32px_-10px_hsl(210_100%_30%_/_0.5)] transition-[background-color,box-shadow] duration-200 ease-out hover:bg-[hsl(210_100%_38%)] hover:shadow-[0_18px_38px_-10px_hsl(210_100%_30%_/_0.6)]"
             aria-label={t('chat.open')}
           >
             {/* No endless halo. It pulsed for as long as the page was open,

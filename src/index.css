@@ -338,6 +338,23 @@
     }
   }
 
+  /* The chat card coming up out of the button and going back down into it.
+     One path, both directions, so dismissing it is the arrival in reverse.
+     The transition lives here rather than in a style attribute so that the
+     component can flush a starting state through it without having to put
+     the declaration back afterwards. */
+  .sp-pop {
+    transition:
+      opacity 200ms ease-out,
+      transform 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sp-pop {
+      transition: none;
+    }
+  }
+
   /* `text-italic-gradient` - an italic, gradient-filled run inside a heading
      - was the old site's one flourish. The redesign sets display type in one
      weight and one colour, so every use became `text-brand` and the utility

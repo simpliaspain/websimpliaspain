@@ -4,14 +4,22 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEY = "chatPromptSeen";
-// Never in the first few seconds, whatever else happens: arriving and being
-// asked a question is the behaviour everyone has learnt to dismiss.
-const FLOOR_MS = 6000;
+// Never in the first twenty seconds, whatever else happens: arriving and being
+// asked a question is the behaviour everyone has learnt to dismiss, and the
+// chat button is now its own way in - the pointer resting on it brings this
+// card up at once, so the timed one can afford to wait.
+const FLOOR_MS = 20000;
 // After that it waits for a sign of interest - a screenful of scrolling, which
 // means the visitor is reading rather than bouncing - and asks only then.
 const ENGAGED_SCROLL = 0.9;
 // If that never comes, it asks anyway, late enough to be a second thought.
-const SHOW_AFTER_MS = 22000;
+const SHOW_AFTER_MS = 45000;
+// The pointer has to settle on the chat button before the card comes up, so
+// crossing the corner of the screen does not flash it.
+const HOVER_IN_MS = 120;
+// And it has 260ms to travel the 16px from the button to the card without the
+// card going away underneath it.
+const HOVER_OUT_MS = 260;
 // Either way, 2s since the last scroll, click, key or touch, so it lands in a
 // pause rather than under a moving thumb.
 const IDLE_MS = 2000;
@@ -33,6 +41,24 @@ function storageAllowsPrompt(): boolean {
   }
 }
 
+/**
+ * The demo is playing and they are looking at it. Interrupting that with a
+ * question is interrupting the one thing on the page that is doing the
+ * selling, so the timed card waits until the clip is behind them.
+ *
+ * Playing is not enough on its own: the clip autoplays whenever it comes
+ * into view and loops, so it can be running two screens above. Half of it
+ * has to be on screen as well.
+ */
+function watchingTheDemo(): boolean {
+  const video = document.querySelector<HTMLVideoElement>("#video video");
+  if (!video || video.paused || video.ended) return false;
+  const box = video.getBoundingClientRect();
+  if (box.height === 0) return false;
+  const onScreen = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0);
+  return onScreen > box.height / 2;
+}
+
 function markSeen() {
   try {
     localStorage.setItem(STORAGE_KEY, "1");
@@ -45,6 +71,8 @@ function markSeen() {
 interface ChatPromptProps {
   chatOpen: boolean;
   onOpenChat: () => void;
+  /** The chat button has a mouse resting on it right now. */
+  launcherHovered?: boolean;
 }
 
 /**
@@ -65,7 +93,7 @@ interface ChatPromptProps {
  * announced through a polite live region when it first becomes visible.
  * Under prefers-reduced-motion it appears and disappears without animation.
  */
-export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
+export function ChatPrompt({ chatOpen, onOpenChat, launcherHovered = false }: ChatPromptProps) {
   const { t } = useLanguage();
   const [phase, setPhase] = useState<"waiting" | "shown" | "done">("waiting");
   const [clear, setClear] = useState(false);
@@ -73,6 +101,22 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
   const [reduceMotion, setReduceMotion] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const engaged = useRef(false);
+
+  // The hover preview, which is a different thing from the timed card even
+  // though it is the same card: it is asked for, so it comes at once and
+  // leaves when you leave, it never spends the once-per-visitor nudge, and
+  // it says nothing to a screen reader - nobody hovers with one.
+  const [cardHovered, setCardHovered] = useState(false);
+  const [preview, setPreview] = useState(false);
+
+  useEffect(() => {
+    const wanted = launcherHovered || cardHovered;
+    const timer = window.setTimeout(
+      () => setPreview(wanted),
+      wanted ? HOVER_IN_MS : HOVER_OUT_MS,
+    );
+    return () => window.clearTimeout(timer);
+  }, [launcherHovered, cardHovered]);
 
   const finish = useCallback(() => {
     markSeen();
@@ -86,7 +130,6 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
       setPhase("done");
       return;
     }
-    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
     const start = Date.now();
     let lastInteraction = start;
     let engaged = false;
@@ -102,6 +145,7 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
       if (!engaged && now - start < SHOW_AFTER_MS) return;
       if (now - lastInteraction < IDLE_MS) return;
       if (document.querySelector('[role="dialog"], [role="alertdialog"], #main-menu')) return;
+      if (watchingTheDemo()) return;
       if (document.activeElement?.matches("input, textarea, select, [contenteditable='true']")) return;
       markSeen();
       setPhase("shown");
@@ -134,12 +178,60 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
     setClear(!overlap);
   }, []);
 
-  useLayoutEffect(() => {
-    if (phase === "shown") checkClear();
-  }, [phase, checkClear]);
+  /** On screen, for whichever of the two reasons. */
+  const open = !chatOpen && (phase === "shown" || preview);
 
   useEffect(() => {
-    if (phase !== "shown") return;
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }, []);
+
+  // Kept in the tree while it leaves, so the exit is the entrance in
+  // reverse rather than the card blinking out of existence.
+  const [present, setPresent] = useState(false);
+  useEffect(() => {
+    if (open) setPresent(true);
+    // Nothing transitions under reduced motion, so nothing would ever tell
+    // us the exit had finished.
+    else if (reduceMotion) setPresent(false);
+  }, [open, reduceMotion]);
+
+  /**
+   * The entrance. React renders the card already at its resting values, so
+   * there is nothing for a transition to run from and the card would simply
+   * be there. This puts the starting values on it, makes the browser take
+   * them (reading offsetHeight is what does that), and then writes the
+   * resting values back - the same ones React just wrote, so the two never
+   * disagree and the next render changes nothing.
+   *
+   * Deliberately not requestAnimationFrame: a frame may never come. Under a
+   * test clock, in a background tab, on a page the browser has stopped
+   * painting, the card would sit at opacity 0 for as long as it was up.
+   */
+  const wasOpen = useRef(false);
+  useLayoutEffect(() => {
+    const node = ref.current;
+    const entering = open && !wasOpen.current;
+    wasOpen.current = open;
+    if (!node || !entering || reduceMotion) return;
+    node.style.transition = "none";
+    node.style.opacity = "0";
+    node.style.transform = "translateY(8px)";
+    void node.offsetHeight;
+    node.style.transition = "";
+    node.style.opacity = "1";
+    node.style.transform = "none";
+  }, [open, present, reduceMotion]);
+
+  // On `present`, not on `open`: the card goes into the tree a render after
+  // `open` turns true, so keyed on `open` this ran while there was still
+  // nothing to measure, left `clear` false, and the card stayed hidden for
+  // as long as it was up.
+  useLayoutEffect(() => {
+    if (present) checkClear();
+  }, [present, open, checkClear]);
+
+  useEffect(() => {
+    if (!open) return;
     let frame = 0;
     const schedule = () => {
       cancelAnimationFrame(frame);
@@ -152,7 +244,7 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
       window.removeEventListener("scroll", schedule);
       window.removeEventListener("resize", schedule);
     };
-  }, [phase, checkClear]);
+  }, [open, checkClear]);
 
   // Announce once, when it is first actually visible.
   useEffect(() => {
@@ -176,23 +268,38 @@ export function ChatPrompt({ chatOpen, onOpenChat }: ChatPromptProps) {
       <div aria-live="polite" className="sr-only">
         {announced && phase === "shown" ? t("chat.prompt") : ""}
       </div>
-      {phase === "shown" && !chatOpen && (
+      {present && (
         <div
           ref={ref}
           data-chat-prompt
-          onMouseEnter={() => (engaged.current = true)}
-          onMouseLeave={() => (engaged.current = false)}
+          onPointerEnter={(event) => {
+            engaged.current = true;
+            if (event.pointerType === "mouse") setCardHovered(true);
+          }}
+          onPointerLeave={(event) => {
+            engaged.current = false;
+            if (event.pointerType === "mouse") setCardHovered(false);
+          }}
           onFocus={() => (engaged.current = true)}
           onBlur={() => (engaged.current = false)}
           onKeyDown={(event) => {
             if (event.key === "Escape") finish();
           }}
+          onTransitionEnd={(event) => {
+            if (event.target !== event.currentTarget || event.propertyName !== "opacity") return;
+            if (!open) setPresent(false);
+          }}
+          /* It comes up out of the button and goes back down into it: one
+             path, both directions. The transition itself is in .sp-pop. */
+          style={{ opacity: open ? 1 : 0, transform: open ? "none" : "translateY(8px)" }}
           className={cn(
+            "sp-pop",
             // The widest it gets is a phone's width less the gutters; the
             // bottom offset clears the 64px button and its 20px inset.
             "fixed bottom-[100px] right-5 z-50 w-[min(21rem,calc(100vw-2.5rem))]",
             !clear && "invisible",
-            !reduceMotion && "animate-in fade-in-0 slide-in-from-bottom-2 duration-200 motion-reduce:animate-none",
+            // Nothing to press while it is on its way out.
+            !open && "pointer-events-none",
           )}
         >
           <div className="relative rounded-[18px] border border-border bg-card text-card-foreground shadow-[0_18px_40px_-16px_hsl(220_20%_6%_/_0.3)]">
