@@ -98,11 +98,26 @@ export function MainMenu({
   const [shown, setShown] = useState(false);
   const locked = useRef(false);
 
+  /**
+   * Where to go once the lock is off, for a link to a band of the page we
+   * are already on. The lock puts the reader back where they were when it
+   * is released, so a plain `#` jump made while the menu was closing was
+   * undone a moment later and nothing moved at all. The destination is
+   * remembered here and used the instant the lock lets go.
+   */
+  const pendingHash = useRef<string | null>(null);
+
   const releaseLock = useCallback(() => {
     if (!locked.current) return;
     locked.current = false;
     unlockBodyScroll();
-  }, []);
+    const hash = pendingHash.current;
+    pendingHash.current = null;
+    if (!hash) return;
+    const target = document.getElementById(hash);
+    if (!target) return;
+    target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+  }, [prefersReducedMotion]);
 
   useLayoutEffect(() => {
     if (isOpen) {
@@ -284,7 +299,22 @@ export function MainMenu({
                 {link.label}
               </Link>
             ) : link.href.startsWith("/#") ? (
-              <a key={link.label} href={link.href} onClick={close} className={bigLink}>
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(event) => {
+                  const id = link.href.slice(2);
+                  // Already on the page this points into: take it over, so
+                  // the jump happens after the scroll lock has let go.
+                  if (location.pathname === "/" && document.getElementById(id)) {
+                    event.preventDefault();
+                    pendingHash.current = id;
+                    if (history.replaceState) history.replaceState(null, "", link.href);
+                  }
+                  close();
+                }}
+                className={bigLink}
+              >
                 {link.label}
               </a>
             ) : (
@@ -307,8 +337,14 @@ export function MainMenu({
           </a>
         </div>
 
-        {/* Everything that is not navigation, kept small and at the foot. */}
-        <div className="mt-auto flex flex-wrap items-center gap-x-7 gap-y-4">
+        {/* Everything that is not navigation, kept small and at the foot.
+            On a phone it is a column - the three ways to reach us one under
+            the other, then a rule, then the legal link and the language on
+            one line - because wrapped into a single row those five things
+            broke wherever they happened to break and read as a pile. From
+            sm the wrapper disappears (`contents`) and they are one row
+            again, which is what the width is there for. */}
+        <div className="mt-auto grid gap-x-7 sm:flex sm:flex-wrap sm:items-center sm:gap-y-4">
           <a
             href="https://panel.simpliaspain.com/?ref=menu"
             target="_blank"
@@ -325,12 +361,14 @@ export function MainMenu({
           <a href={`mailto:${EMAIL}`} className={smallLink}>
             {EMAIL}
           </a>
-          <Link to="/politica-privacidad" onClick={close} className={`${smallLink} font-medium text-muted-foreground`}>
-            {t("footer.privacyPolicy")}
-          </Link>
-          {/* -mx-3 so the buttons' own padding does not push the pair out of
-              line with the text links beside them. */}
-          <LanguageToggle className="-mx-3" />
+          <div className="mt-2 flex items-center justify-between gap-4 border-t border-border pt-1 sm:mt-0 sm:contents sm:border-0 sm:pt-0">
+            <Link to="/politica-privacidad" onClick={close} className={`${smallLink} font-medium text-muted-foreground`}>
+              {t("footer.privacyPolicy")}
+            </Link>
+            {/* -mx-3 so the buttons' own padding does not push the pair out
+                of line with the text links beside them. */}
+            <LanguageToggle className="-mr-3 sm:-mx-3" />
+          </div>
         </div>
       </div>
     </div>,
