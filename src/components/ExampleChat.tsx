@@ -218,12 +218,21 @@ export function ExampleChat({
                        there - drop src/assets/photos/despacho-8.jpg (600x600,
                        @2x alongside it if there is one) in and it fills
                        itself, with no code to change. */
-                    <span className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-x-3 gap-y-0.5 rounded-[10px] border border-[hsl(213_48%_87%)] bg-card p-2">
-                      <span className="row-span-2 block h-[72px] w-[72px] overflow-hidden rounded-md bg-secondary">
+                    <span className="grid grid-cols-[96px_minmax(0,1fr)] overflow-hidden rounded-[10px] border border-[hsl(213_48%_87%)] bg-card">
+                      {/* The picture runs to the card's own edges rather than
+                          sitting as a small square inside it: a thumbnail
+                          with padding around it left a third of the card
+                          empty to the right of two short lines, and this is
+                          how a link preview is drawn in the app the page is
+                          about. It stretches to whatever height the words
+                          need, so a narrow phone cannot leave it short. */}
+                      <span className="block w-24 self-stretch bg-secondary">
                         <Photo name={OFFICE_PHOTO} alt={t("example.cardAlt")} width={600} height={600} />
                       </span>
-                      <span className="self-end font-semibold text-foreground">{t("example.cardTitle")}</span>
-                      <span className="self-start text-sm text-muted-foreground">{t("example.cardSub")}</span>
+                      <span className="flex min-w-0 flex-col justify-center gap-[3px] px-3.5 py-3">
+                        <span className="font-semibold leading-[1.25] text-foreground">{t("example.cardTitle")}</span>
+                        <span className="text-sm leading-[1.3] text-muted-foreground">{t("example.cardSub")}</span>
+                      </span>
                     </span>
                   )}
                   <p
