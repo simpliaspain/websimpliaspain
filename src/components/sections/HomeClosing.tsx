@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { PHONE_MAIN } from "@/lib/site";
 import { DemoLink } from "@/components/DemoLinks";
+import { Reveal } from "@/components/Reveal";
 
 /**
  * The last thing on the page is the first thing again: tonight, someone like
@@ -16,7 +17,7 @@ export function HomeClosing() {
       aria-labelledby="h-final"
       className="scroll-mt-[68px] border-t border-border py-[clamp(64px,9vw,136px)]"
     >
-      <div className="wrap grid gap-7">
+      <Reveal className="wrap grid gap-7">
         <h2
           id="h-final"
           className="m-0 max-w-[900px] text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] tracking-[-0.035em] text-foreground"
@@ -32,7 +33,7 @@ export function HomeClosing() {
             </a>
           </span>
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

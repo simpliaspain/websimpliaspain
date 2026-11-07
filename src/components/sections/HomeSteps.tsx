@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Reveal } from "@/components/Reveal";
 
 /**
  * Four steps on four rules, from the question to the visit. Numbered because
@@ -29,14 +30,20 @@ export function HomeSteps() {
         </h2>
 
         <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,250px),1fr))] gap-x-[clamp(20px,3vw,40px)] p-0">
-          {steps.map((s) => (
-            <li key={s.n} className="grid content-start gap-2 border-t-2 border-foreground pb-7 pt-4">
+          {steps.map((s, i) => (
+            // In order, 70ms apart: the sequence is the point of the section.
+            <Reveal
+              as="li"
+              key={s.n}
+              delay={i * 70}
+              className="grid content-start gap-2 border-t-2 border-foreground pb-7 pt-4"
+            >
               <span className="text-[clamp(28px,2.6vw,38px)] font-bold leading-none tracking-[-0.03em] text-foreground tabular-nums">
                 {s.n}
               </span>
               <span className="text-[19px] font-semibold leading-[1.3] text-foreground">{s.title}</span>
               <span className="text-muted-foreground">{s.text}</span>
-            </li>
+            </Reveal>
           ))}
         </ol>
 

@@ -1,5 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CallLink } from "@/components/DemoLinks";
+import { Reveal } from "@/components/Reveal";
 
 /**
  * What it costs, as a rule rather than a number.
@@ -35,6 +36,7 @@ export function HomePrice() {
       className="scroll-mt-[68px] border-t border-border py-[clamp(64px,9vw,136px)]"
     >
       <div className="wrap">
+        <Reveal>
         <h2
           id="h-precio"
           className="m-0 flex flex-wrap items-end gap-x-[clamp(20px,3vw,44px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
@@ -46,23 +48,24 @@ export function HomePrice() {
             {t("price.figureText")}
           </span>
         </h2>
+        </Reveal>
 
         {/* Three items rather than two columns, so that stacked the reader
             gets the rule, then the proof of it, then the way to ask - the
             button after the evidence instead of between the prose and it. */}
         <div className="mt-[clamp(36px,5vw,64px)] grid gap-x-[clamp(24px,5vw,72px)] gap-y-10 md:grid-cols-2">
-          <div className="min-w-0 md:col-start-1 md:row-start-1">
+          <Reveal className="min-w-0 md:col-start-1 md:row-start-1">
             <p className="m-0 max-w-[46ch] text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-foreground">
               {t("price.lead")}
             </p>
             <p className="m-0 mt-5 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
               {t("price.counts")}
             </p>
-          </div>
+          </Reveal>
 
           {/* The rule, worked out. Two columns on hairlines, the same shape
               the month's numbers use further up the page. */}
-          <div className="min-w-0 md:col-start-2 md:row-span-2 md:row-start-1">
+          <Reveal delay={90} className="min-w-0 md:col-start-2 md:row-span-2 md:row-start-1">
             <div className="grid grid-cols-2 gap-x-6 border-b border-foreground pb-2.5 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
               <span>{t("price.colValue")}</span>
               <span className="text-right">{t("price.colFee")}</span>
@@ -85,11 +88,11 @@ export function HomePrice() {
             <p className="m-0 mt-5 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
               {t("price.anyScale")}
             </p>
-          </div>
+          </Reveal>
 
-          <div className="md:col-start-1 md:row-start-2">
+          <Reveal delay={180} className="md:col-start-1 md:row-start-2">
             <CallLink lugar="precio" />
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
