@@ -5,6 +5,7 @@ import { CTASection } from "@/components/sections/CTASection";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { CallLink, DemoLink } from "@/components/DemoLinks";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Photo } from "@/components/Photo";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
@@ -24,9 +25,21 @@ const FAQ_ITEMS = [1, 2, 3, 4].map((n) => [`howWeWork.q${n}`, `howWeWork.a${n}`]
 export default function ComoTrabajamos() {
   const { t } = useLanguage();
 
+  /**
+   * Two of the five steps carry a photograph, and each one belongs to the
+   * step it is under rather than to the page: the founders stand with the
+   * call you book, because the point of that step is that you talk to them;
+   * the office stands with the setting-up, because what we load in is
+   * rooms. The other three carry none - a picture on every step would be
+   * decoration, and the sequence would stop reading as a sequence.
+   */
   const steps = [1, 2, 3, 4, 5].map((n) => ({
     title: t(`howWeWork.step${n}Title`),
     description: t(`howWeWork.step${n}Desc`),
+    photo:
+      n === 2 ? { name: "equipo", alt: t("contact.teamAlt"), caption: t("contact.teamCaption") }
+      : n === 4 ? { name: "despacho-8", alt: t("example.cardAlt"), caption: undefined }
+      : null,
     action:
       n === 1 ? <DemoLink lugar="como-trabajamos" label={t("howWeWork.step1Cta")} />
       : n === 2 ? <CallLink lugar="como-trabajamos" label={t("howWeWork.step2Cta")} />
@@ -56,19 +69,37 @@ export default function ComoTrabajamos() {
 
         {/* A real sequence, so it is numbered, and each step is a rule rather
             than a card: the number sits in its own column so the titles line
-            up down the page. */}
+            up down the page.
+
+            Two columns from lg, because one was the problem: the steps ran
+            down the left in a 44% measure and the other half of the page was
+            empty from the first step to the last. The heading that was here
+            all along as screen-reader-only text now holds that side - it is
+            a good heading and it was being hidden - and it stays with you as
+            the steps go by, so you always know what you are reading a list
+            of. */}
         <section aria-labelledby="h-pasos" className="border-t border-border py-[clamp(56px,8vw,120px)]">
-          <div className="wrap">
-            <h2 id="h-pasos" className="sr-only">
-              {t("howWeWork.stepsTitle")}
-            </h2>
-            <ol className="m-0 grid list-none border-t border-border p-0">
+          <div className="wrap grid gap-x-[clamp(28px,5vw,80px)] gap-y-[clamp(28px,4vw,48px)] lg:grid-cols-[minmax(0,0.68fr)_minmax(0,1fr)]">
+            <div className="lg:sticky lg:top-[92px] lg:self-start">
+              <h2
+                id="h-pasos"
+                className="m-0 max-w-[460px] text-[clamp(26px,2.9vw,40px)] font-bold leading-[1.1] text-foreground"
+              >
+                {t("howWeWork.stepsTitle")}
+              </h2>
+            </div>
+
+            <ol className="m-0 grid list-none p-0">
               {steps.map((step, index) => (
                 <li
                   key={step.title}
-                  className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-5 border-b border-border py-7 sm:grid-cols-[4rem_minmax(0,1fr)]"
+                  className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-5 border-b border-border py-[clamp(24px,3vw,34px)] sm:grid-cols-[3.5rem_minmax(0,1fr)]"
                 >
-                  <span className="text-[clamp(24px,2.2vw,32px)] font-bold leading-none text-foreground tabular-nums">
+                  {/* The number in the brand blue and at display size: it is
+                      the only thing on the page that says this is a path with
+                      an order, and at the body's size and ink it read as a
+                      bullet. */}
+                  <span className="text-[clamp(28px,2.6vw,40px)] font-bold leading-[0.9] text-brand tabular-nums">
                     <span className="sr-only">
                       {t("how.stepLabel")} {index + 1}
                     </span>
@@ -80,6 +111,23 @@ export default function ComoTrabajamos() {
                     </h3>
                     <p className="m-0 max-w-[640px] text-pretty text-muted-foreground">{step.description}</p>
                     {step.action && <div className="mt-2 flex">{step.action}</div>}
+                    {step.photo && (
+                      <figure className="m-0 mt-3 grid max-w-[460px] gap-2">
+                        <div className="overflow-hidden rounded-[14px] bg-secondary">
+                          <Photo
+                            name={step.photo.name}
+                            alt={step.photo.alt}
+                            width={920}
+                            height={613}
+                            sizes="(min-width: 1024px) 460px, 90vw"
+                            className="aspect-[3/2]"
+                          />
+                        </div>
+                        {step.photo.caption && (
+                          <figcaption className="text-sm text-muted-foreground">{step.photo.caption}</figcaption>
+                        )}
+                      </figure>
+                    )}
                   </div>
                 </li>
               ))}

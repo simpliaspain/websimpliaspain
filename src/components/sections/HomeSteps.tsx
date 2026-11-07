@@ -38,7 +38,7 @@ export function HomeSteps() {
               delay={i * 70}
               className="grid content-start gap-2 border-t border-border pb-7 pt-4"
             >
-              <span className="text-[clamp(28px,2.6vw,38px)] font-bold leading-none tracking-[-0.03em] text-foreground tabular-nums">
+              <span className="text-[clamp(28px,2.6vw,38px)] font-bold leading-none tracking-[-0.03em] text-brand tabular-nums">
                 {s.n}
               </span>
               <span className="text-[19px] font-semibold leading-[1.3] text-foreground">{s.title}</span>
