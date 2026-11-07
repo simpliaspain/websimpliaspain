@@ -11,8 +11,11 @@ import { EMAIL, PHONE_ALT, PHONE_MAIN, demoUrl } from "@/lib/site";
 export function Footer() {
   const { t } = useLanguage();
 
+  /* inline-flex and w-fit, not a full-width row: the rule that grows in
+     under a .sp-link is as wide as the link, and a block-level link in a
+     grid column is as wide as the column. */
   const link =
-    "flex min-h-[44px] items-center text-foreground transition-colors hover:text-link hover:underline motion-reduce:transition-none";
+    "sp-link inline-flex min-h-[44px] w-fit items-center justify-self-start text-foreground hover:text-link";
 
   return (
     <footer className="border-t border-border bg-background text-muted-foreground">
@@ -21,7 +24,7 @@ export function Footer() {
           <Link
             to="/"
             aria-label={t("nav.homeAria")}
-            className="flex min-h-[44px] items-center text-xl font-bold tracking-[-0.02em] text-foreground"
+            className="inline-flex min-h-[44px] w-fit items-center text-xl font-bold tracking-[-0.02em] text-foreground transition-opacity duration-150 ease-out hover:opacity-70 active:opacity-60 active:duration-[70ms] motion-reduce:transition-none"
           >
             Simplia<span className="text-brand">Spain</span>
             <span aria-hidden="true" className="mt-[7px] self-start text-[11px] font-semibold text-brand">

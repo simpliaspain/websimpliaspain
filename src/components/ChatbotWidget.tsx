@@ -190,7 +190,7 @@ export function ChatbotWidget() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-5 right-5 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_14px_32px_-10px_hsl(210_100%_30%_/_0.5)] transition-colors hover:bg-primary/90"
+            className="fixed bottom-5 right-5 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-[0_14px_32px_-10px_hsl(210_100%_30%_/_0.5)] transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-[hsl(210_100%_38%)] hover:shadow-[0_18px_38px_-10px_hsl(210_100%_30%_/_0.6)] active:scale-95 active:duration-[90ms] motion-reduce:transition-colors motion-reduce:active:scale-100"
             aria-label={t('chat.open')}
           >
             {/* No endless halo. It pulsed for as long as the page was open,
@@ -338,7 +338,7 @@ export function ChatbotWidget() {
                     onClick={sendMessage}
                     disabled={!input.trim() || isLoading}
                     aria-label={t('chat.send')}
-                    className="rounded-full w-10 h-10 flex-shrink-0 bg-primary hover:bg-primary/90"
+                    className="rounded-full w-10 h-10 flex-shrink-0 bg-primary transition-[background-color,transform] duration-150 ease-out hover:bg-[hsl(210_100%_38%)] active:scale-95 active:duration-[70ms] motion-reduce:transition-colors motion-reduce:active:scale-100"
                   >
                     {isLoading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

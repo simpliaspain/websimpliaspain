@@ -109,7 +109,7 @@ export default function PoliticaPrivacidad() {
                   <li><strong>Portabilidad:</strong> recibir tus datos en formato estructurado</li>
                 </ul>
                 <p>
-                  Para ejercer estos derechos, contacta con nosotros en <a href="mailto:info@simpliaspain.com" className="text-primary hover:underline">info@simpliaspain.com</a>
+                  Para ejercer estos derechos, contacta con nosotros en <a href="mailto:info@simpliaspain.com" className="sp-underline text-primary">info@simpliaspain.com</a>
                 </p>
               </section>
 
@@ -174,7 +174,7 @@ export default function PoliticaPrivacidad() {
                   puedes contactarnos en:
                 </p>
                 <ul className="list-disc pl-6 space-y-2">
-                  <li><strong>Email:</strong> <a href="mailto:info@simpliaspain.com" className="text-primary hover:underline">info@simpliaspain.com</a></li>
+                  <li><strong>Email:</strong> <a href="mailto:info@simpliaspain.com" className="sp-underline text-primary">info@simpliaspain.com</a></li>
                   <li><strong>Teléfono:</strong> +34 601 755 607 / +34 608 445 993</li>
                 </ul>
               </section>

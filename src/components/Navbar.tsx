@@ -50,7 +50,7 @@ export function Navbar() {
             to="/"
             aria-label={t("nav.homeAria")}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="flex min-h-[44px] items-center text-[clamp(19px,5vw,22px)] font-bold tracking-[-0.02em] text-foreground"
+            className="inline-flex min-h-[44px] w-fit items-center text-[clamp(19px,5vw,22px)] font-bold tracking-[-0.02em] text-foreground transition-opacity duration-150 ease-out hover:opacity-70 active:opacity-60 active:duration-[70ms] motion-reduce:transition-none"
           >
             Simplia<span className="text-brand">Spain</span>
             <span aria-hidden="true" className="mt-[9px] self-start text-[11px] font-semibold text-brand">
@@ -62,7 +62,7 @@ export function Navbar() {
             type="button"
             {...menu.triggerProps}
             aria-label={menu.isOpen ? t("nav.closeMenu") : t("nav.openMenu")}
-            className="-mr-3 flex h-12 w-12 items-center justify-center rounded-md text-foreground transition-transform active:scale-90 motion-reduce:transition-none motion-reduce:active:scale-100"
+            className="-mr-3 flex h-12 w-12 items-center justify-center rounded-md text-foreground transition-[background-color,transform] duration-150 ease-out hover:bg-secondary active:scale-90 active:duration-[70ms] motion-reduce:transition-[background-color] motion-reduce:active:scale-100"
           >
             {/* Always the closed shape: by the time the menu is open the
                 panel covers this, and its own glyph animates into the cross. */}

@@ -101,7 +101,7 @@ function PressLink({ outlet }: { outlet: Outlet }) {
       href={outlet.href}
       target="_blank"
       rel="noopener"
-      className="text-link underline underline-offset-2 hover:decoration-2"
+      className="sp-underline text-link"
       data-umami-event="prensa"
       data-umami-event-medio={outlet.name}
       aria-describedby={picture && mounted && showing ? id : undefined}

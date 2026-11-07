@@ -293,7 +293,7 @@ export function ExampleChat({
           <button
             type="button"
             onClick={play}
-            className="min-h-[44px] font-semibold text-foreground underline underline-offset-4"
+            className="sp-underline min-h-[44px] font-semibold text-foreground"
           >
             {t("example.replay")}
           </button>

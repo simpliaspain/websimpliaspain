@@ -11,6 +11,11 @@ import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
 
+/** The site's answer to the pointer, for the one button on this page that
+ *  keeps a shape of its own. See src/lib/button-styles.ts. */
+const BUTTON_FEEL =
+  "transition-[background-color,box-shadow,transform] duration-200 ease-out hover:bg-[hsl(210_100%_38%)] hover:-translate-y-px hover:shadow-[0_8px_20px_-8px_hsl(210_100%_32%/0.55)] active:translate-y-0 active:scale-[0.97] active:shadow-none active:duration-[90ms] motion-reduce:transition-colors motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100";
+
 /** Waiting list: the contact form, with the message started for them. */
 const WAITLIST_HREF = "/contacto?interes=voz";
 
@@ -93,7 +98,7 @@ export default function AgentesTelefonicos() {
                   {t("agents.heroTitle1")} <span className="text-brand">{t("agents.heroTitle2")}</span> {t("agents.heroTitle3")}
                 </h1>
                 <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("agents.heroDesc")}</p>
-                {waitlistButton("h-12 bg-primary text-primary-foreground hover:bg-primary/90")}
+                {waitlistButton("h-12 bg-primary text-primary-foreground " + BUTTON_FEEL)}
               </motion.div>
 
               {/* Example call, fictional centre, no prices. */}
@@ -247,7 +252,7 @@ export default function AgentesTelefonicos() {
                 </div>
                 <h3 className="mb-2 text-2xl font-bold text-foreground">{t("agents.readyCard")}</h3>
                 <p className="mb-6 text-muted-foreground">{t("agents.readyCardDesc")}</p>
-                {waitlistButton("h-11 w-full bg-primary text-primary-foreground hover:bg-primary/90")}
+                {waitlistButton("h-11 w-full bg-primary text-primary-foreground " + BUTTON_FEEL)}
               </motion.div>
             </div>
           </div>

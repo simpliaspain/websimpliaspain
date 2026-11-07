@@ -216,9 +216,15 @@ export function MainMenu({
     // rows in a 390px-tall window and the links became a list you had to
     // scroll. The floor is still over a 44px target, and it is set so that
     // six entries plus the demo row fit a phone on its side.
-    "flex min-h-[clamp(46px,8.4vh,96px)] items-center border-b border-border text-[min(clamp(30px,4.6vw,52px),8vh)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors hover:text-link motion-reduce:transition-none";
+    "group/nav flex min-h-[clamp(46px,8.4vh,96px)] items-center border-b border-border text-[min(clamp(30px,4.6vw,52px),8vh)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors duration-200 ease-out hover:text-link motion-reduce:transition-none";
+  /* The words lean a little towards the pointer. It sits on the label
+     and not on the row because the row carries the hairline, and a
+     structural rule that slides sideways reads as the page coming
+     apart. */
+  const bigLabel =
+    "inline-block transition-transform duration-200 ease-out group-hover/nav:translate-x-1.5 group-active/nav:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/nav:translate-x-0";
   const smallLink =
-    "flex min-h-[44px] items-center text-[17px] font-semibold text-foreground transition-colors hover:text-link motion-reduce:transition-none";
+    "sp-link inline-flex min-h-[44px] w-fit items-center text-[17px] font-semibold text-foreground hover:text-link";
 
   const goHome = () => {
     close();
@@ -316,7 +322,7 @@ export function MainMenu({
           {navLinks.map((link) =>
             link.href === "/" ? (
               <Link key={link.label} to={link.href} onClick={goHome} className={bigLink}>
-                {link.label}
+                <span className={bigLabel}>{link.label}</span>
               </Link>
             ) : link.href.startsWith("/#") ? (
               <a
@@ -335,11 +341,11 @@ export function MainMenu({
                 }}
                 className={bigLink}
               >
-                {link.label}
+                <span className={bigLabel}>{link.label}</span>
               </a>
             ) : (
               <Link key={link.label} to={link.href} onClick={close} className={bigLink}>
-                {link.label}
+                <span className={bigLabel}>{link.label}</span>
               </Link>
             ),
           )}

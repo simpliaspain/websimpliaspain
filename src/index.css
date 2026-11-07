@@ -258,6 +258,86 @@
     position: relative;
   }
 
+  /* How everything actionable answers the pointer.
+   *
+   * One system, so that a link in the footer and a link in the menu behave
+   * the same way and the page teaches you its own rules once. Three
+   * primitives:
+   *
+   *   .sp-link       a text link with no standing underline - nav, menu,
+   *                  footer, anything set as plain words. A rule grows in
+   *                  from the left under it.
+   *   .sp-underline  a link that already carries an underline - inside a
+   *                  sentence. The underline thickens and tucks closer in
+   *                  rather than appearing from nothing.
+   *   both           go dim the instant the pointer goes down, not when it
+   *                  comes up: feedback belongs to the press.
+   *
+   * Under prefers-reduced-motion the colour and the rule still change and
+   * nothing moves or takes time.
+   */
+  .sp-link {
+    position: relative;
+    transition: color 180ms ease-out;
+  }
+
+  .sp-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -3px;
+    height: 1.5px;
+    border-radius: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    /* From the side the eye starts on, and it settles rather than stops:
+       the same curve every other entrance on the page uses. */
+    transform-origin: left center;
+    transition: transform 340ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .sp-link:hover::after,
+  .sp-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .sp-link:active {
+    opacity: 0.7;
+    transition-duration: 70ms;
+  }
+
+  .sp-underline {
+    text-decoration-line: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, currentColor 42%, transparent);
+    transition:
+      color 180ms ease-out,
+      text-decoration-color 180ms ease-out,
+      text-decoration-thickness 180ms ease-out,
+      text-underline-offset 180ms ease-out;
+  }
+
+  .sp-underline:hover,
+  .sp-underline:focus-visible {
+    text-decoration-color: currentColor;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 2px;
+  }
+
+  .sp-underline:active {
+    opacity: 0.7;
+    transition-duration: 70ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sp-link,
+    .sp-link::after,
+    .sp-underline {
+      transition: none;
+    }
+  }
+
   /* `text-italic-gradient` - an italic, gradient-filled run inside a heading
      - was the old site's one flourish. The redesign sets display type in one
      weight and one colour, so every use became `text-brand` and the utility

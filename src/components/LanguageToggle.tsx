@@ -35,7 +35,7 @@ export function LanguageToggle({ className }: { className?: string }) {
               aria-current={current ? "true" : undefined}
               aria-label={current ? undefined : option.switchTo}
               className={cn(
-                "flex min-h-[44px] items-center px-3 text-[15px] font-semibold tracking-[0.04em] transition-colors motion-reduce:transition-none",
+                "flex min-h-[44px] items-center px-3 text-[15px] font-semibold tracking-[0.04em] transition-[color,opacity] duration-150 ease-out active:opacity-70 active:duration-[70ms] motion-reduce:transition-colors",
                 current ? "text-foreground" : "text-muted-foreground hover:text-link",
               )}
             >

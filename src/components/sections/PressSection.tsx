@@ -29,7 +29,7 @@ const IVOOX = "https://go.ivoox.com/rf/175866987";
 // One treatment for every outbound link in the section: same size, weight,
 // colour, icon and hit area, whether an item has one link or two.
 const linkClass =
-  "inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 underline decoration-border underline-offset-4 transition-colors hover:decoration-primary hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none";
+  "sp-underline inline-flex min-h-11 items-center gap-1.5 rounded-md px-2 hover:text-primary";
 
 function OutLink({ href, label, newTab, muted = false, inline = false }: { href: string; label: string; newTab: string; muted?: boolean; inline?: boolean }) {
   return (
