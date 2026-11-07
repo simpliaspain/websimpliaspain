@@ -34,6 +34,14 @@ const MESSAGES: Message[] = [
  *  what plays is what the page is actually claiming - the answer. */
 const FIRST_SHOWN = 1;
 
+/**
+ * The room kept under the card for the replay control, which is taken out of
+ * the flow and centred there. Anything laid out beside the card and meant to
+ * end level with it reserves the same - HomeAnswer's invitation does, with
+ * `lg:mb-9`. One number, both places; change them together.
+ */
+const CAPTION_ROOM = "pb-9";
+
 function schedule(messages: Message[]) {
   const steps: { at: number; shown: number; typing: boolean }[] = [];
   let t = 400;
@@ -145,7 +153,7 @@ export function ExampleChat({
   const done = played && shown === messages.length;
 
   return (
-    <figure className={cn("m-0 grid content-start gap-3", className)}>
+    <figure className={cn("relative m-0 grid content-start", !unanswered && CAPTION_ROOM, className)}>
       {/* The bloom sits on a wrapper, not on the card: the card clips its own
           overflow for the rounded corners and would cut the glow off. */}
       <div ref={cardRef} className="bloom">
@@ -277,7 +285,10 @@ export function ExampleChat({
 
       {/* Nothing but the replay. It said "Conversación de ejemplo." under a
           card that is self-evidently an example conversation. */}
-      <figcaption className="flex min-h-[1px] flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+      {/* Out of the flow and centred under the card, so the card's own
+          bottom edge is the bottom of the column and whatever sits beside it
+          can end exactly level with it. */}
+      <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-center text-sm text-muted-foreground">
         {done && (
           <button
             type="button"
