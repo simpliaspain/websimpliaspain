@@ -152,6 +152,22 @@
 
   html {
     scroll-behavior: smooth;
+    /* Keep the scrollbar's column reserved whether or not there is a
+       scrollbar in it. An overlay that locks the page takes the scrollbar
+       away, and without this the white page widens into that column at the
+       instant the menu opens - nothing moves, but the whole surface grows
+       15px to the right and the eye reads it as a lurch. Platforms with
+       overlay scrollbars reserve nothing, because there is nothing to
+       reserve, and nothing changes for them either way.
+
+       `overflow-y: scroll` is what actually holds the column: a gutter is
+       only reserved on a scroll container, and the root's own overflow is
+       `visible`, which propagates to the viewport and leaves nothing for
+       `scrollbar-gutter` to act on. With both, the track is always there,
+       disabled when there is nothing to scroll, and the page never changes
+       width. It also stops short pages jumping against long ones. */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
   }
 
   body {

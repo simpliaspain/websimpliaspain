@@ -66,6 +66,11 @@ export function lockBodyScroll(): void {
   setImportant("right", "0");
   setImportant("width", "100%");
   setImportant("height", "100%");
+  // Safe because `html` carries `overflow-y: scroll`: the body's overflow
+  // only propagates to the viewport while the root's is `visible`, and if it
+  // did it would cancel the reserved scrollbar column and let the white page
+  // widen into it the moment the menu opens - nothing moving, but the whole
+  // surface growing, which the eye reads as a lurch to the right.
   setImportant("overflow", "hidden");
   document.documentElement.style.setProperty(PAGE_WIDTH, `${pageWidth}px`);
 }
