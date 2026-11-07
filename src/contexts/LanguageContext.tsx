@@ -204,7 +204,8 @@ const translations: Record<Language, Record<string, string>> = {
     // Cifras de octubre de 2026, medidas sobre mt_conversaciones del tenant
     // "oficinasya" en Europe/Madrid. Ventana cerrada a propósito: los datos
     // siguen creciendo, y un número vivo en la web acabaría contradiciendo al
-    // panel. Si se actualizan, hay que cambiar también case.statsNote.
+    // panel. "Fuera del horario de oficina" es fuera de L-V de 9:00 a 19:00,
+    // aunque la web ya no lo imprima.
     'case.statValue': '37 %',
     'case.statText': 'de las consultas que recibió Oficinas YA! en octubre llegaron fuera del horario de oficina. Les contestó el agente.',
     'case.stat1Value': '65',
@@ -215,8 +216,6 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat3Label': 'con interés de alquiler',
     'case.stat4Value': '27',
     'case.stat4Label': 'personas dejaron sus datos de contacto',
-    'case.who': 'Operador de espacios flexibles con varias sedes en Madrid. Octubre de 2026, su primer mes completo con el agente.',
-    'case.statsNote': '"Fuera del horario de oficina" es fuera de lunes a viernes, de 9:00 a 19:00.',
     'case.quote': '"La automatización de los procesos nos está haciendo mucho más productivos"',
     'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
 
@@ -225,8 +224,7 @@ const translations: Record<Language, Record<string, string>> = {
     // en 100.000 € a propósito; la regla sigue y lo dice 'price.anyScale'.
     'price.figure': '×10',
     'price.figureText': 'el valor que te devolvemos por cada euro que nos pagas.',
-    'price.lead': 'Nuestro precio es la décima parte del valor que te generamos. Si el agente no te aporta valor, no hay nada que cobrar; cuanto más te aporte, más nos pagas — y más te queda.',
-    'price.counts': 'Cuenta como valor lo que el agente mueve de verdad: clientes conseguidos, tiempo que tu equipo deja de dedicar a contestar y lo que gana el servicio al responder al momento. Lo medimos contigo, con las cifras de tu panel.',
+    'price.lead': 'Nuestro precio es la décima parte del valor que te generamos. Si el agente no te aporta valor, no hay nada que cobrar; cuanto más te aporte, más nos pagas y más te queda.',
     'price.colValue': 'Valor al mes',
     'price.colFee': 'Lo que pagas',
     'price.row1Value': '1.000 €',
@@ -659,8 +657,6 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat3Label': 'with real renting intent',
     'case.stat4Value': '27',
     'case.stat4Label': 'people left their contact details',
-    'case.who': 'A flexible-space operator with several locations in Madrid. October 2026, their first full month with the agent.',
-    'case.statsNote': '"Outside office hours" means outside Monday to Friday, 9:00 to 19:00.',
     'case.quote': '"Automating the processes is making us much more productive"',
     'case.quoteSource': 'Roberto, founder of Oficinas YA!',
 
@@ -668,8 +664,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Price: no amounts of ours, the rule that produces them.
     'price.figure': '×10',
     'price.figureText': 'the value you get back for every euro you pay us.',
-    'price.lead': 'Our price is a tenth of the value we create for you. If the agent brings you nothing, there is nothing to charge; the more it brings, the more you pay us — and the more you keep.',
-    'price.counts': 'Value is what the agent actually moves: clients won, the hours your team stops spending on replies, and what the service gains by answering at once. We measure it with you, from your own panel.',
+    'price.lead': 'Our price is a tenth of the value we create for you. If the agent brings you nothing, there is nothing to charge; the more it brings, the more you pay us and the more you keep.',
     'price.colValue': 'Value a month',
     'price.colFee': 'What you pay',
     'price.row1Value': '€1,000',

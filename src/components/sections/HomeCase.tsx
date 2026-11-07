@@ -88,21 +88,15 @@ export function HomeCase() {
               href="https://www.oficinasya.es"
               openInNewTab={t("nav.opensNewTab")}
             />
-            <p className="m-0 mt-5 max-w-[40ch] text-[15px] leading-relaxed text-muted-foreground">
-              {t("case.who")}
-            </p>
           </Reveal>
 
-          <Reveal delay={90} className="grid min-w-0 content-start gap-5">
+          <Reveal delay={90} className="grid min-w-0 content-start">
             <figure className="m-0 grid gap-1.5">
               <blockquote className="m-0 text-[clamp(18px,1.6vw,20px)] font-semibold leading-[1.45] text-foreground">
                 {t("case.quote")}
               </blockquote>
               <figcaption className="text-[15px] text-muted-foreground">{t("case.quoteSource")}</figcaption>
             </figure>
-            <p className="m-0 max-w-[52ch] text-[13px] leading-relaxed text-muted-foreground">
-              {t("case.statsNote")}
-            </p>
           </Reveal>
         </div>
       </div>
