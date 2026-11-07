@@ -38,8 +38,8 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Seo titleKey="seo.home.title" descriptionKey="seo.home.description" path="/" />
       {/* Describes the one service the page sells. It reuses the page's own
-          meta description rather than the hero subtitle, which opens
-          mid-scene and does not stand alone here. */}
+          meta description: the hero is a headline and two buttons, with
+          nothing underneath that would stand alone here. */}
       <JsonLd
         data={{
           "@type": "Service",

@@ -275,8 +275,9 @@ export function ExampleChat({
         </div>
       </div>
 
-      <figcaption className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-muted-foreground">
-        <span>{t("example.footnote")}</span>
+      {/* Nothing but the replay. It said "Conversación de ejemplo." under a
+          card that is self-evidently an example conversation. */}
+      <figcaption className="flex min-h-[1px] flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
         {done && (
           <button
             type="button"

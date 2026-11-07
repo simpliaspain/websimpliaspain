@@ -31,9 +31,6 @@ export function HomeHero() {
                 the page at this size. The full stop after it stays black. */}
             <span className="text-brand tabular-nums">{t("hero.time")}</span>. {t("hero.title")}
           </h1>
-          <p className="m-0 max-w-[560px] text-pretty text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-muted-foreground">
-            {t("hero.subtitle")}
-          </p>
           <div className="flex flex-wrap gap-3">
             <DemoLink lugar="hero" />
             <WatchButton />

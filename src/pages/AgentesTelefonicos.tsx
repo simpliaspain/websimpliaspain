@@ -130,7 +130,6 @@ export default function AgentesTelefonicos() {
                     ))}
                   </div>
                 </div>
-                <p className="mt-3 text-center text-xs text-muted-foreground">{t("example.footnote")}</p>
               </div>
             </div>
           </div>

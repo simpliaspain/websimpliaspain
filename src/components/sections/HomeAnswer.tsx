@@ -51,7 +51,7 @@ export function HomeAnswer() {
             order - video, conversation, invitation - and the invitation is
             full width at the foot of the section, which is where it was. */}
         <div className="grid gap-x-[clamp(20px,3vw,40px)] gap-y-8 lg:grid-cols-2 lg:[grid-template-rows:auto_1fr]">
-          <figure id="video" className="m-0 grid min-w-0 content-start scroll-mt-[88px] gap-3 lg:col-start-1 lg:row-start-1">
+          <figure id="video" className="m-0 grid min-w-0 content-start scroll-mt-[88px] lg:col-start-1 lg:row-start-1">
             {/* content-start, or the equal-height columns stretch the 4:3 box
                 and leave a grey band under the picture. */}
             <ServiceDemoVideo
@@ -63,7 +63,6 @@ export function HomeAnswer() {
               className="w-full"
               onFinished={() => setDemoSeen(true)}
             />
-            <figcaption className="text-[15px] text-muted-foreground">{t("answer.videoCaption")}</figcaption>
           </figure>
 
           <ExampleChat className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1" />
