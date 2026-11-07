@@ -409,7 +409,7 @@ export default function Contacto() {
           {/* The alternatives to the form, on their own rules. This is the
               only page that shows both phone numbers. */}
           <div className="grid content-start gap-7">
-            <div className="grid gap-1.5 border-t border-foreground pt-5">
+            <div className="grid gap-1.5">
               <p className="m-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
                 {t('contact.callTitle')}
               </p>
@@ -443,15 +443,32 @@ export default function Contacto() {
                 form did, and on a page that asks for someone's name and
                 telephone number the two faces on the other end are worth
                 more than the white space they fill. */}
-            <figure className="m-0 grid gap-2.5">
-              <span className="block overflow-hidden rounded-[18px] bg-secondary">
+            {/* The photograph was taken against a pale blue wall that is
+                almost the page's own accent, so it is treated to finish the
+                job rather than to look treated: a touch more contrast, the
+                colour pulled a little towards the brand, and a wash of the
+                brand blue laid over it in soft light, which deepens the wall
+                without touching their faces. Under the pointer the wash
+                lifts and the photograph comes up to its natural colour - a
+                small reward for looking, and it cannot hide anything,
+                because the untreated picture is the one underneath. */}
+            <figure className="group m-0 grid gap-2.5">
+              <span className="relative block overflow-hidden rounded-[18px] bg-secondary">
                 <Photo
                   name="equipo"
                   alt={t('contact.teamAlt')}
                   width={1279}
                   height={683}
                   sizes="(min-width: 1024px) 400px, 100vw"
+                  className="contrast-[1.08] saturate-[0.92] transition-[filter] duration-500 ease-out group-hover:contrast-100 group-hover:saturate-100 motion-reduce:transition-none"
                 />
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-brand mix-blend-soft-light opacity-[0.22] transition-opacity duration-500 ease-out group-hover:opacity-0 motion-reduce:transition-none"
+                />
+                {/* The merest edge, so the picture does not float free of the
+                    hairlines above it. */}
+                <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[18px] ring-1 ring-inset ring-foreground/[0.08]" />
               </span>
               <figcaption className="text-[15px] text-muted-foreground">{t('contact.teamCaption')}</figcaption>
             </figure>
