@@ -7,10 +7,26 @@ import { cn } from "@/lib/utils";
  * the outlined shape and carries the only glyph on the page - a triangle
  * drawn with borders, which needs no icon set and scales with the text.
  */
-export function WatchButton({ className }: { className?: string }) {
+export function WatchButton({
+  className,
+  onPointerEnter,
+  onPointerLeave,
+}: {
+  className?: string;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
+}) {
   const { t } = useLanguage();
   return (
-    <a href="#video" className={cn(OUTLINE, "pl-[18px] pr-[22px]", className)} data-umami-event="ver-video">
+    <a
+      href="#video"
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onFocus={onPointerEnter}
+      onBlur={onPointerLeave}
+      className={cn(OUTLINE, "pl-[18px] pr-[22px]", className)}
+      data-umami-event="ver-video"
+    >
       <span
         aria-hidden="true"
         className="block h-0 w-0 border-y-[7px] border-l-[11px] border-y-transparent border-l-current"
