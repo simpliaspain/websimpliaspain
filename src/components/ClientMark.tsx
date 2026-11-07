@@ -32,12 +32,17 @@ export function ClientMark({
   name,
   className,
   imgClassName,
+  href,
+  openInNewTab,
 }: {
   slug: string;
   name: string;
   className?: string;
   /** Overrides the default slot, for a place that gives the mark more room. */
   imgClassName?: string;
+  /** Their own site. The mark becomes a link to it. */
+  href?: string;
+  openInNewTab?: string;
 }) {
   const src = findLogo(slug);
 
@@ -51,18 +56,37 @@ export function ClientMark({
     );
   }
 
+  // The export's slot: 132 x 44, contained and never cropped, so whatever
+  // shape the client's file is it sits on the same baseline as the text
+  // beside it.
+  const mark = (
+    <img
+      src={src}
+      alt={name}
+      loading="lazy"
+      decoding="async"
+      className={cn("h-11 w-[132px] object-contain object-left", imgClassName)}
+    />
+  );
+
   return (
     <p className={cn("m-0", className)}>
-      {/* The export's slot: 132 x 44, contained and never cropped, so whatever
-          shape the client's file is it sits on the same baseline as the text
-          beside it. */}
-      <img
-        src={src}
-        alt={name}
-        loading="lazy"
-        decoding="async"
-        className={cn("h-11 w-[132px] object-contain object-left", imgClassName)}
-      />
+      {href ? (
+        // Their mark, so it goes to them. Opacity rather than a colour on
+        // hover: nothing can be done to a logo's own colours that is not a
+        // worse version of the logo.
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener"
+          className="inline-block rounded-sm transition-opacity duration-200 hover:opacity-70 motion-reduce:transition-none"
+        >
+          {mark}
+          {openInNewTab && <span className="sr-only"> {openInNewTab}</span>}
+        </a>
+      ) : (
+        mark
+      )}
     </p>
   );
 }
