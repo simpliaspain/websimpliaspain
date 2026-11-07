@@ -41,7 +41,7 @@ export function HomeCase() {
         <Reveal>
         <h2
           id="h-caso"
-          className="m-0 flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
+          className="m-0 flex flex-wrap items-center gap-x-[clamp(24px,4vw,56px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
         >
           {/* Spanish puts a space before the per-cent sign and the figure is
               written that way, so a reader and a copy-paste both get "37 %".
@@ -52,7 +52,12 @@ export function HomeCase() {
           <span className="flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] leading-[0.86] tracking-[-0.055em] [word-spacing:-0.12em] text-brand tabular-nums">
             {t("case.statValue")}
           </span>
-          <span className="mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-balance">
+          {/* Centred on the figure, not sitting on its baseline: the sentence
+              runs to four lines at this width, so bottom-aligned its last
+              line met the figure's foot and the other three stood above the
+              figure's head. No nudge under it either - that was there to
+              correct the bottom alignment. */}
+          <span className="min-w-0 max-w-[640px] flex-[1_1_360px] text-balance">
             {t("case.statText")}
           </span>
         </h2>
