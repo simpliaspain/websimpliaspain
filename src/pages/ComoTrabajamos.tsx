@@ -62,7 +62,7 @@ export default function ComoTrabajamos() {
             <h2 id="h-pasos" className="sr-only">
               {t("howWeWork.stepsTitle")}
             </h2>
-            <ol className="m-0 grid list-none border-t border-foreground p-0">
+            <ol className="m-0 grid list-none border-t border-border p-0">
               {steps.map((step, index) => (
                 <li
                   key={step.title}

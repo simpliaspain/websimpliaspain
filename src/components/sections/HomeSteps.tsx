@@ -36,7 +36,7 @@ export function HomeSteps() {
               as="li"
               key={s.n}
               delay={i * 70}
-              className="grid content-start gap-2 border-t-2 border-foreground pb-7 pt-4"
+              className="grid content-start gap-2 border-t border-border pb-7 pt-4"
             >
               <span className="text-[clamp(28px,2.6vw,38px)] font-bold leading-none tracking-[-0.03em] text-foreground tabular-nums">
                 {s.n}
