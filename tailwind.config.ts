@@ -30,6 +30,7 @@ export default {
         // the logo and graphics. Small blue text uses primary or link.
         brand: "hsl(var(--brand))",
         link: "hsl(var(--link))",
+        "surface-demo": "hsl(var(--surface-demo))",
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

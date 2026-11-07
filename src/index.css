@@ -71,6 +71,13 @@
     /* 10px, so shadcn's rounded-md lands on the redesign's 8px buttons */
     --radius: 0.625rem;
 
+    /* The grey inside the demo clip, sampled from the film itself: the
+       commonest colour in its own frame is #F3F3F3, a neutral, while the
+       palette's soft fill is the export's warmer #F0F1EE. In one column,
+       one directly under the other, the two read as a mistake rather than
+       as two greys. Whatever sits against the video takes this one. */
+    --surface-demo: 0 0% 95.3%;
+
     /* The page's content width while an overlay holds the scroll lock. Unset
        the rest of the time, so the fallback in every use is 100% and the
        compensation it feeds comes to zero. See src/lib/scroll-lock.ts. */

@@ -67,27 +67,42 @@ export function HomeAnswer() {
 
           <ExampleChat className="min-w-0 lg:col-start-2 lg:row-span-2 lg:row-start-1" />
 
+          {/* The invitation, built the way the rest of the page is built: a
+              line of display type, one supporting sentence under it in the
+              grey, and the action below them both. It was a semibold sentence
+              and a button side by side in a tinted box - the sentence read as
+              a field label and the box had no hierarchy at all, which is the
+              one thing the redesign never does.
+
+              It takes the grey of the clip above it rather than the palette's
+              warm fill, so the two stacked panels in this column read as one
+              surface; and it is the height of what is in it, sitting at the
+              foot of the column level with the conversation beside it. */}
           <div
             className={cn(
-              "flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-[clamp(20px,3vw,32px)] lg:col-start-1 lg:row-start-2 lg:self-end lg:rounded-[18px] lg:border-t-0 lg:bg-secondary lg:p-[clamp(22px,2.2vw,30px)]",
+              "grid gap-[clamp(16px,1.8vw,22px)] rounded-[18px] bg-surface-demo p-[clamp(20px,2.2vw,30px)]",
+              "lg:col-start-1 lg:row-start-2 lg:mb-9 lg:self-end",
               demoSeen && "motion-safe:animate-lift",
             )}
           >
-            <p className="m-0 flex-[1_1_280px] text-[clamp(17px,1.4vw,19px)] font-semibold text-foreground">
-              {t("answer.tryIt")}
-            </p>
-            {/* The panel is the height of what is in it and sits at the foot
-                of its column, level with the conversation beside it. Stretched
-                to fill the column it became a grey box with a sentence adrift
-                in the middle of it; the space it was padding out is better
-                spent as plain white under the video. */}
+            <div className="grid gap-1.5">
+              <p className="m-0 text-[clamp(21px,2.1vw,28px)] font-bold leading-[1.12] tracking-[-0.03em] text-foreground">
+                {t("answer.tryItLead")}
+              </p>
+              {/* A measure, not a column width: the panel is as wide as the
+                  video, which is wide enough to set this one sentence in a
+                  single flat line that nobody reads. */}
+              <p className="m-0 max-w-[38ch] text-[clamp(15px,1.15vw,17px)] leading-[1.5] text-muted-foreground">
+                {t("answer.tryItHow")}
+              </p>
+            </div>
             {/* Keyed on the state so the button is a new element when the
                 demo finishes and the entrance actually runs. */}
             <DemoLink
               key={demoSeen ? "loud" : "quiet"}
               lugar="banda-final"
               quiet={!demoSeen}
-              className={cn(demoSeen && "motion-safe:animate-rise")}
+              className={cn("justify-self-start", demoSeen && "motion-safe:animate-rise")}
             />
           </div>
         </div>

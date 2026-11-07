@@ -117,7 +117,10 @@ const translations: Record<Language, Record<string, string>> = {
 
     // La misma pregunta, contestada
     'answer.title': 'La misma pregunta, con Simplia.',
-    'answer.tryIt': 'Pruébalo tú: escribe al agente como si fueras un cliente.',
+    // Dos líneas, no una: la invitación y cómo se hace. En una sola frase
+    // ambas cosas iban al mismo tamaño y el recuadro no tenía jerarquía.
+    'answer.tryItLead': 'Pruébalo tú.',
+    'answer.tryItHow': 'Escribe al agente como si fueras un cliente.',
 
     // Qué hace el agente
     'steps.title': 'Qué hace el agente, de la pregunta a la visita.',
@@ -563,7 +566,8 @@ const translations: Record<Language, Record<string, string>> = {
 
     // The same question, answered
     'answer.title': 'The same question, with Simplia.',
-    'answer.tryIt': 'Try it yourself: write to the agent as if you were a customer.',
+    'answer.tryItLead': 'Try it yourself.',
+    'answer.tryItHow': 'Write to the agent as if you were a customer.',
 
     // What the agent does
     'steps.title': 'What the agent does, from the question to the visit.',
