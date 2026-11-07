@@ -220,7 +220,7 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat4Value': '27',
     'case.stat4Label': 'dejaron sus datos de contacto',
     'case.quote': '"La automatización de los procesos nos está haciendo mucho más productivos"',
-    'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
+    'case.quoteSource': 'Roberto, cofundador de Oficinas YA!',
 
     // Precio. No lleva importes nuestros: lleva la regla que los produce, que
     // es comprobable contra el propio mes del operador. La escalera se queda
@@ -662,7 +662,7 @@ const translations: Record<Language, Record<string, string>> = {
     'case.stat4Value': '27',
     'case.stat4Label': 'left their contact details',
     'case.quote': '"Automating the processes is making us much more productive"',
-    'case.quoteSource': 'Roberto, founder of Oficinas YA!',
+    'case.quoteSource': 'Roberto, co-founder of Oficinas YA!',
 
     // Getting started (no prices)
     // Price: no amounts of ours, the rule that produces them.
