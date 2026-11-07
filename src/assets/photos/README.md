@@ -17,13 +17,15 @@ orden: `.avif`, `.webp`, `.jpg`, `.png`. Lo normal es dejar `.webp` y `.jpg`.
 
 | Nombre | Qué es | Tamaño mínimo |
 |---|---|---|
-| `despacho-8.jpg` | El despacho del chat de ejemplo. Horizontal. | 1200 × 900 |
 | `retrato-roberto.jpg` | Retrato de Roberto Zúñiga. Vertical 4:5. | 1600 × 2000 |
 | `retrato-sergio.jpg` | Retrato de Sergio Zúñiga. Vertical 4:5. | 1600 × 2000 |
 | `esradio.jpg` | Foto de la entrevista en esRadio. Horizontal 16:9. | 1280 × 720 |
 | `ieavanzado.jpg` | Foto del Instituto de Empresa Avanzado. Horizontal 16:9. | 1280 × 720 |
 
-`madridnorte24h.jpg` ya está: es el fotograma de Onda Cero Madrid Norte.
+Ya están: `madridnorte24h.jpg` (el fotograma de Onda Cero Madrid Norte) y
+`despacho-8.webp` (el despacho del chat de ejemplo, recortado cuadrado de la
+foto que mandó el cliente el 7/11; la ficha lo dibuja a 72 × 72 con `cover`,
+así que **si se cambia, que venga ya recortada en cuadrado**).
 
 ## Antes de dejarlas aquí
 
