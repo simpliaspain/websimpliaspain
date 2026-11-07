@@ -69,13 +69,18 @@ export function HomeAnswer() {
 
           <div
             className={cn(
-              "flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-[clamp(20px,3vw,32px)] lg:col-start-1 lg:row-start-2 lg:content-center lg:rounded-[18px] lg:border-t-0 lg:bg-secondary lg:p-[clamp(20px,2vw,28px)]",
+              "flex flex-wrap items-center gap-x-6 gap-y-4 border-t border-border pt-[clamp(20px,3vw,32px)] lg:col-start-1 lg:row-start-2 lg:self-end lg:rounded-[18px] lg:border-t-0 lg:bg-secondary lg:p-[clamp(22px,2.2vw,30px)]",
               demoSeen && "motion-safe:animate-lift",
             )}
           >
             <p className="m-0 flex-[1_1_280px] text-[clamp(17px,1.4vw,19px)] font-semibold text-foreground">
               {t("answer.tryIt")}
             </p>
+            {/* The panel is the height of what is in it and sits at the foot
+                of its column, level with the conversation beside it. Stretched
+                to fill the column it became a grey box with a sentence adrift
+                in the middle of it; the space it was padding out is better
+                spent as plain white under the video. */}
             {/* Keyed on the state so the button is a new element when the
                 demo finishes and the entrance actually runs. */}
             <DemoLink

@@ -21,23 +21,31 @@ export function HomeHero() {
       aria-labelledby="h-inicio"
       className="pb-[clamp(56px,8vw,120px)] pt-[clamp(40px,7vw,112px)]"
     >
-      <div className="wrap flex flex-wrap items-center gap-[clamp(36px,5vw,80px)]">
-        <div className="grid min-w-0 flex-[1.25_1_520px] gap-[clamp(18px,2vw,26px)]">
-          <h1
-            id="h-inicio"
-            className="m-0 text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] text-foreground"
-          >
-            {/* The hour is the hook, so it leads and it is the only blue on
-                the page at this size. The full stop after it stays black. */}
-            <span className="text-brand tabular-nums">{t("hero.time")}</span>. {t("hero.title")}
-          </h1>
-          <div className="flex flex-wrap gap-3">
-            <DemoLink lugar="hero" />
-            <WatchButton />
-          </div>
-        </div>
+      {/* Three items rather than two columns. Stacked, they read in the order
+          that makes the argument: the hour and the question, then the message
+          with nobody to take it, and only then the two ways to answer it -
+          the buttons used to sit between the headline and the thing the
+          headline is about. Side by side from lg, the buttons go back under
+          the headline and the card takes the other column whole. */}
+      <div className="wrap grid gap-x-[clamp(36px,5vw,80px)] gap-y-[clamp(26px,4vw,40px)] lg:grid-cols-[1.25fr_minmax(0,1fr)] lg:[grid-template-rows:auto_auto] lg:items-center">
+        <h1
+          id="h-inicio"
+          className="m-0 min-w-0 text-[clamp(32px,4.2vw,56px)] font-bold leading-[1.05] text-foreground lg:col-start-1 lg:row-start-1 lg:self-end"
+        >
+          {/* The hour is the hook, so it leads and it is the only blue on
+              the page at this size. The full stop after it stays black. */}
+          <span className="text-brand tabular-nums">{t("hero.time")}</span>. {t("hero.title")}
+        </h1>
 
-        <ExampleChat variant="unanswered" className="mx-auto min-w-0 max-w-[440px] flex-[1_1_360px]" />
+        <ExampleChat
+          variant="unanswered"
+          className="mx-auto w-full min-w-0 max-w-[440px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
+        />
+
+        <div className="flex flex-wrap gap-3 lg:col-start-1 lg:row-start-2 lg:mt-[clamp(18px,2vw,26px)] lg:self-start">
+          <DemoLink lugar="hero" />
+          <WatchButton />
+        </div>
       </div>
     </section>
   );
