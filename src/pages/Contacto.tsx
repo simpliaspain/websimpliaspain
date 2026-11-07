@@ -255,7 +255,7 @@ export default function Contacto() {
                 href={demoUrl("web")}
                 target="_blank"
                 rel="noopener"
-                className="text-link underline underline-offset-2"
+                className="sp-underline text-link"
                 data-umami-event="demo"
                 data-umami-event-lugar="contacto"
               >
@@ -399,7 +399,7 @@ export default function Contacto() {
 
             <p className="m-0 text-sm text-muted-foreground">
               {t('contact.privacyNote')}{' '}
-              <a href="/politica-privacidad" className="text-link underline underline-offset-2">
+              <a href="/politica-privacidad" className="sp-underline text-link">
                 {t('contact.privacyPolicy')}
               </a>
               .
@@ -410,30 +410,30 @@ export default function Contacto() {
               only page that shows both phone numbers. */}
           <div className="grid content-start gap-7">
             <div className="grid gap-1.5">
-              <p className="m-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="m-0 text-[15px] font-semibold text-muted-foreground">
                 {t('contact.callTitle')}
               </p>
               <a
                 href={PHONE_MAIN.href}
-                className="flex min-h-[44px] items-center text-[clamp(22px,2.2vw,28px)] font-bold tracking-[-0.02em] text-foreground transition-colors hover:text-link motion-reduce:transition-none"
+                className="sp-link inline-flex min-h-[44px] w-fit items-center text-[clamp(22px,2.2vw,28px)] font-bold tracking-[-0.02em] text-foreground hover:text-link"
               >
                 {PHONE_MAIN.display}
               </a>
               <p className="m-0 text-sm text-muted-foreground">
                 {t('footer.altPhone')}:{' '}
-                <a href={PHONE_ALT.href} className="underline underline-offset-2 hover:text-foreground">
+                <a href={PHONE_ALT.href} className="sp-underline hover:text-foreground">
                   {PHONE_ALT.display}
                 </a>
               </p>
             </div>
 
             <div className="grid gap-1.5 border-t border-border pt-5">
-              <p className="m-0 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+              <p className="m-0 text-[15px] font-semibold text-muted-foreground">
                 {t('contact.emailTitle')}
               </p>
               <a
                 href={`mailto:${EMAIL}`}
-                className="flex min-h-[44px] items-center text-[17px] font-semibold text-foreground transition-colors hover:text-link motion-reduce:transition-none"
+                className="sp-link inline-flex min-h-[44px] w-fit items-center text-[17px] font-semibold text-foreground hover:text-link"
               >
                 {EMAIL}
               </a>

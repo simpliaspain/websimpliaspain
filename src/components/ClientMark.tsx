@@ -50,7 +50,7 @@ export function ClientMark({
     // Not an empty frame: the client's name, set as a label. It occupies the
     // same place the mark will and reads as attribution on its own.
     return (
-      <p className={cn("m-0 text-[15px] font-semibold uppercase leading-[1.3] tracking-[0.08em] text-foreground", className)}>
+      <p className={cn("m-0 text-[17px] font-bold leading-[1.3] tracking-[-0.015em] text-foreground", className)}>
         {name}
       </p>
     );
