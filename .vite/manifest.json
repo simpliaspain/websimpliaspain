@@ -1,6 +1,6 @@
 {
-  "_client-BK2e_qIB.js": {
-    "file": "assets/client-BK2e_qIB.js",
+  "_client-By21h-Be.js": {
+    "file": "assets/client-By21h-Be.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,36 +8,71 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-x-FhV4_l.js",
+    "file": "assets/app-CxK7N0cc.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-BK2e_qIB.js",
-      "_client-BK2e_qIB.js"
+      "_client-By21h-Be.js",
+      "_client-By21h-Be.js"
     ],
     "css": [
-      "assets/app-Tp_YnXBi.css"
+      "assets/app-uCu9MqRS.css"
     ],
     "assets": [
+      "assets/despacho-8-DlMtWi0s.webp",
+      "assets/despacho-8@2x-1uw83Ffy.webp",
+      "assets/equipo-BOLa-K3Q.webp",
+      "assets/equipo@2x-BzXvrBgt.webp",
+      "assets/esradio-DCE3nZDZ.webp",
+      "assets/ieavanzado-DLFwy-fH.webp",
+      "assets/ieavanzado@2x-BIqGYOj_.webp",
+      "assets/madridnorte24h-CQSMlvkH.jpg",
+      "assets/madridnorte24h@2x-nmKLPta1.jpg",
       "assets/simplia-demo-1024-BmgMIDe_.mp4",
       "assets/simplia-demo-poster-1024-DH3EJkm8.webp",
-      "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
-      "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
-      "assets/logo-mn24h-2x-M8oDfTNa.png"
+      "assets/oficinasya-DCZI6O70.png"
     ]
   },
-  "src/assets/press/logo-mn24h-2x.png": {
-    "file": "assets/logo-mn24h-2x-M8oDfTNa.png",
-    "src": "src/assets/press/logo-mn24h-2x.png"
+  "src/assets/clients/oficinasya.png": {
+    "file": "assets/oficinasya-DCZI6O70.png",
+    "src": "src/assets/clients/oficinasya.png"
   },
-  "src/assets/press/ondacero-entrevista-1440.jpg": {
-    "file": "assets/ondacero-entrevista-1440-nmKLPta1.jpg",
-    "src": "src/assets/press/ondacero-entrevista-1440.jpg"
+  "src/assets/photos/despacho-8.webp": {
+    "file": "assets/despacho-8-DlMtWi0s.webp",
+    "src": "src/assets/photos/despacho-8.webp"
   },
-  "src/assets/press/ondacero-entrevista-720.jpg": {
-    "file": "assets/ondacero-entrevista-720-CQSMlvkH.jpg",
-    "src": "src/assets/press/ondacero-entrevista-720.jpg"
+  "src/assets/photos/despacho-8@2x.webp": {
+    "file": "assets/despacho-8@2x-1uw83Ffy.webp",
+    "src": "src/assets/photos/despacho-8@2x.webp"
+  },
+  "src/assets/photos/equipo.webp": {
+    "file": "assets/equipo-BOLa-K3Q.webp",
+    "src": "src/assets/photos/equipo.webp"
+  },
+  "src/assets/photos/equipo@2x.webp": {
+    "file": "assets/equipo@2x-BzXvrBgt.webp",
+    "src": "src/assets/photos/equipo@2x.webp"
+  },
+  "src/assets/photos/esradio.webp": {
+    "file": "assets/esradio-DCE3nZDZ.webp",
+    "src": "src/assets/photos/esradio.webp"
+  },
+  "src/assets/photos/ieavanzado.webp": {
+    "file": "assets/ieavanzado-DLFwy-fH.webp",
+    "src": "src/assets/photos/ieavanzado.webp"
+  },
+  "src/assets/photos/ieavanzado@2x.webp": {
+    "file": "assets/ieavanzado@2x-BIqGYOj_.webp",
+    "src": "src/assets/photos/ieavanzado@2x.webp"
+  },
+  "src/assets/photos/madridnorte24h.jpg": {
+    "file": "assets/madridnorte24h-CQSMlvkH.jpg",
+    "src": "src/assets/photos/madridnorte24h.jpg"
+  },
+  "src/assets/photos/madridnorte24h@2x.jpg": {
+    "file": "assets/madridnorte24h@2x-nmKLPta1.jpg",
+    "src": "src/assets/photos/madridnorte24h@2x.jpg"
   },
   "src/assets/services/simplia-demo-1024.mp4": {
     "file": "assets/simplia-demo-1024-BmgMIDe_.mp4",
