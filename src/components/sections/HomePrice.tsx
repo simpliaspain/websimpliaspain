@@ -1,7 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { CallLink } from "@/components/DemoLinks";
 import { Reveal } from "@/components/Reveal";
-import { StatHeading } from "@/components/StatHeading";
 
 /**
  * What it costs, as a rule rather than a number.
@@ -38,9 +37,17 @@ export function HomePrice() {
     >
       <div className="wrap">
         <Reveal>
-          <StatHeading id="h-precio" figure={t("price.figure")} size="md">
+        <h2
+          id="h-precio"
+          className="m-0 flex flex-wrap items-end gap-x-[clamp(20px,3vw,44px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
+        >
+          <span className="flex-none whitespace-nowrap text-[clamp(72px,10vw,136px)] leading-[0.86] tracking-[-0.055em] text-brand tabular-nums">
+            {t("price.figure")}
+          </span>
+          <span className="mb-[clamp(4px,1vw,12px)] min-w-0 max-w-[620px] flex-[1_1_340px] text-balance">
             {t("price.figureText")}
-          </StatHeading>
+          </span>
+        </h2>
         </Reveal>
 
         {/* Three items rather than two columns, so that stacked the reader
@@ -56,7 +63,7 @@ export function HomePrice() {
           {/* The rule, worked out. Two columns on hairlines, the same shape
               the month's numbers use further up the page. */}
           <Reveal delay={90} className="min-w-0 md:col-start-2 md:row-span-2 md:row-start-1">
-            <div className="grid grid-cols-2 gap-x-6 border-b border-border pb-2.5 text-sm font-semibold uppercase tracking-[0.08em] text-muted-foreground">
+            <div className="grid grid-cols-2 gap-x-6 border-b border-border pb-2.5 text-sm font-semibold text-muted-foreground">
               <span>{t("price.colValue")}</span>
               <span className="text-right">{t("price.colFee")}</span>
             </div>
