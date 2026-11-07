@@ -23,14 +23,11 @@ type LinkProps = {
 /**
  * The same button, not asking yet: the outlined shape instead of the solid
  * one, for a place where the action is available but the page has not
- * earned the right to shout about it. Same size, same target, same label.
- *
- * Reaching it with the pointer is the reader asking, though, so it lights
- * up to the full blue under the cursor - the quiet state is the page being
- * patient, not the button being half-available.
+ * earned the right to shout about it. Same size, same target, same label,
+ * and the same blue the moment it is reached - the quiet state is the page
+ * being patient, not the button being half-available.
  */
-const QUIET =
-  "border border-[hsl(216_5%_57%)] bg-transparent text-foreground hover:border-primary hover:bg-primary hover:text-primary-foreground active:scale-100";
+const QUIET = OUTLINE;
 
 /**
  * The site's main action: the instant demo with the visitor's own website.

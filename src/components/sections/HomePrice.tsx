@@ -58,9 +58,6 @@ export function HomePrice() {
             <p className="m-0 max-w-[46ch] text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-foreground">
               {t("price.lead")}
             </p>
-            <p className="m-0 mt-5 max-w-[46ch] text-[15px] leading-relaxed text-muted-foreground">
-              {t("price.counts")}
-            </p>
           </Reveal>
 
           {/* The rule, worked out. Two columns on hairlines, the same shape
@@ -90,9 +87,12 @@ export function HomePrice() {
             </p>
           </Reveal>
 
-          <Reveal delay={180} className="md:col-start-1 md:row-start-2">
+          {/* Not revealed. Everything around it comes up; the one thing on
+              the band you might reach for stays still, because a button that
+              is still moving slides out from under the pointer. */}
+          <div className="md:col-start-1 md:row-start-2">
             <CallLink lugar="precio" />
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
