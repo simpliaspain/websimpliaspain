@@ -4,6 +4,7 @@ import { useReducedMotion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LanguageToggle } from "./LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { cn } from "@/lib/utils";
 import { lockBodyScroll, unlockBodyScroll } from "@/lib/scroll-lock";
 import { EMAIL, PHONE_MAIN, demoUrl } from "@/lib/site";
 import { MENU_ID, type MainMenuController } from "@/hooks/use-main-menu";
@@ -244,7 +245,21 @@ export function MainMenu({
       aria-modal="true"
       aria-labelledby="main-menu-title"
       style={{ opacity: shown ? 1 : 0 }}
-      className="fixed inset-0 z-[70] flex h-[100dvh] flex-col overflow-y-auto overscroll-contain bg-background pr-[max(0px,100%_-_var(--page-width,100%))] transition-opacity duration-200 ease-out motion-reduce:transition-none"
+      /* The panel's own scrollbar is hidden, and that is not cosmetic: it
+         takes 15px out of the content width when it appears, which moves the
+         panel's logo and close control 7.5px left of the header's that they
+         are drawn over. The entrance below starts the content 10px low, so
+         for a quarter of a second the panel overflowed, a scrollbar came,
+         everything shifted left, and then it all snapped back as the
+         animation finished - the lurch and the bounce. It still scrolls by
+         wheel, touch and keyboard on a window too short to hold it.
+         `overflow-hidden` until it has arrived stops it being scrollable
+         during the entrance at all. */
+      className={cn(
+        "fixed inset-0 z-[70] flex h-[100dvh] flex-col overscroll-contain bg-background pr-[max(0px,100%_-_var(--page-width,100%))] transition-opacity duration-200 ease-out motion-reduce:transition-none",
+        "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        shown ? "overflow-y-auto" : "overflow-hidden",
+      )}
     >
       <h2 id="main-menu-title" className="sr-only">
         {t("nav.mainMenu")}
@@ -288,7 +303,12 @@ export function MainMenu({
         style={
           prefersReducedMotion
             ? undefined
-            : { transform: shown ? "none" : "translateY(10px)", transition: "transform 260ms cubic-bezier(0.22,0.61,0.36,1)" }
+            : {
+                transform: shown ? "none" : "translateY(10px)",
+                // Settles rather than stops: the same curve the rest of the
+                // site uses, and long enough to finish after the fade.
+                transition: "transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1)",
+              }
         }
         className="mx-auto flex w-full max-w-[1240px] flex-1 flex-col gap-[clamp(32px,6vh,64px)] px-5 pb-[calc(clamp(32px,6vh,64px)+env(safe-area-inset-bottom))] pt-[clamp(32px,7vh,80px)] sm:px-8 lg:px-12"
       >
