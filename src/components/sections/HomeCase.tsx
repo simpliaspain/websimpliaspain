@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ClientMark } from "@/components/ClientMark";
 import { Reveal } from "@/components/Reveal";
+import { StatHeading } from "@/components/StatHeading";
 
 /**
  * One operator's own month, led by the figure.
@@ -39,26 +40,12 @@ export function HomeCase() {
     >
       <div className="wrap">
         <Reveal>
-        <h2
-          id="h-caso"
-          className="m-0 flex flex-wrap items-end gap-x-[clamp(24px,4vw,56px)] gap-y-2 text-[clamp(24px,2.8vw,38px)] font-bold leading-[1.12] text-foreground"
-        >
-          {/* Spanish puts a space before the per-cent sign and the figure is
-              written that way, so a reader and a copy-paste both get "37 %".
-              A word space at 176px is 46px wide, which reads as two separate
-              things; the negative word-spacing brings it back to about the
-              thin space the rule actually calls for. English has no space, so
-              there is nothing there for it to act on. */}
-          <span className="flex-none whitespace-nowrap text-[clamp(84px,13vw,176px)] leading-[0.86] tracking-[-0.055em] [word-spacing:-0.12em] text-brand tabular-nums">
-            {t("case.statValue")}
-          </span>
-          <span className="mb-[clamp(4px,1vw,14px)] min-w-0 max-w-[640px] flex-[1_1_360px] text-balance">
+          <StatHeading id="h-caso" figure={t("case.statValue")}>
             {t("case.statText")}
-          </span>
-        </h2>
+          </StatHeading>
         </Reveal>
 
-        <ul className="m-0 mt-[clamp(40px,6vw,72px)] grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] border-t border-foreground p-0">
+        <ul className="m-0 mt-[clamp(40px,6vw,72px)] grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,190px),1fr))] border-t border-border p-0">
           {stats.map((s, i) => (
             <Reveal as="li" key={s.label} delay={i * 70} className="border-b border-border pb-6 pr-5 pt-5">
               <span className="block whitespace-nowrap text-[clamp(36px,3.4vw,52px)] font-bold leading-none tracking-[-0.04em] text-foreground tabular-nums">
