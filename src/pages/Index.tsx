@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { HomeHero } from "@/components/sections/HomeHero";
 import { HomeAnswer } from "@/components/sections/HomeAnswer";
 import { HomeCase } from "@/components/sections/HomeCase";
+import { HomePrice } from "@/components/sections/HomePrice";
 import { HomeSteps } from "@/components/sections/HomeSteps";
 import { FAQSection } from "@/components/sections/FAQSection";
 import { PressLine } from "@/components/sections/PressLine";
@@ -56,6 +57,7 @@ const Index = () => {
         <HomeAnswer />
         <HomeCase />
         <HomeSteps />
+        <HomePrice />
         <FAQSection titleKey="faq.operatorTitle" items={OPERATOR_FAQ} footer={<PressLine />} />
         <HomeClosing />
       </main>

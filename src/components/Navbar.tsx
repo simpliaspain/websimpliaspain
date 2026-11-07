@@ -24,6 +24,7 @@ export function Navbar() {
     { label: t("nav.home"), href: "/" },
     { label: t("nav.howWeWork"), href: "/como-trabajamos" },
     { label: t("nav.case"), href: "/#caso" },
+    { label: t("nav.price"), href: "/#precio" },
     { label: t("nav.contact"), href: "/contacto" },
   ];
 

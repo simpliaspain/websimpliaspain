@@ -4,7 +4,14 @@ import { PRIMARY, OUTLINE } from "@/lib/button-styles";
 import { cn } from "@/lib/utils";
 
 /** Where on the site a button sits; sent to Umami as `lugar`. */
-export type Lugar = "hero" | "menu" | "como-trabajamos" | "banda-final" | "contacto" | "agente-whatsapp";
+export type Lugar =
+  | "hero"
+  | "menu"
+  | "como-trabajamos"
+  | "banda-final"
+  | "contacto"
+  | "agente-whatsapp"
+  | "precio";
 
 type LinkProps = {
   lugar: Lugar;

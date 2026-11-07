@@ -48,6 +48,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.tryDemoDesc': 'Pon la web de tu coworking y habla con tu agente de IA en un minuto. Gratis.',
     'nav.tryDemo': 'Pruébalo con tu web',
     'nav.case': 'Caso real',
+    'nav.price': 'Precio',
     'nav.mainMenu': 'Menú principal',
     'nav.openMenu': 'Abrir el menú',
     'nav.closeMenu': 'Cerrar el menú',
@@ -220,6 +221,23 @@ const translations: Record<Language, Record<string, string>> = {
     'case.quote': '"La automatización de los procesos nos está haciendo mucho más productivos"',
     'case.quoteSource': 'Roberto, fundador de Oficinas YA!',
 
+    // Precio. No lleva importes nuestros: lleva la regla que los produce, que
+    // es comprobable contra el propio mes del operador. La escalera se queda
+    // en 100.000 € a propósito; la regla sigue y lo dice 'price.anyScale'.
+    'price.figure': '×10',
+    'price.figureText': 'el valor que te devolvemos por cada euro que nos pagas.',
+    'price.lead': 'Nuestro precio es la décima parte del valor que te generamos. Si el agente no te aporta valor, no hay nada que cobrar; cuanto más te aporte, más nos pagas — y más te queda.',
+    'price.counts': 'Cuenta como valor lo que el agente mueve de verdad: clientes conseguidos, tiempo que tu equipo deja de dedicar a contestar y lo que gana el servicio al responder al momento. Lo medimos contigo, con las cifras de tu panel.',
+    'price.colValue': 'Valor al mes',
+    'price.colFee': 'Lo que pagas',
+    'price.row1Value': '1.000 €',
+    'price.row1Fee': '100 €',
+    'price.row2Value': '10.000 €',
+    'price.row2Fee': '1.000 €',
+    'price.row3Value': '100.000 €',
+    'price.row3Fee': '10.000 €',
+    'price.anyScale': 'La regla no cambia con el tamaño: siempre la décima parte, sea cual sea la cifra.',
+
     // Cómo empezar (sin precios)
     'pricing.title': 'Un precio a medida para tu',
     'pricing.titleEmph': 'centro',
@@ -332,6 +350,8 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.phonePlaceholder': '+34 600 000 000',
     'contact.websiteField': 'Sitio web',
     'contact.emailTitle': 'O escríbenos',
+    'contact.teamAlt': 'Roberto y Sergio, fundadores de Simplia Spain',
+    'contact.teamCaption': 'Roberto y Sergio, fundadores de Simplia Spain. Contestamos nosotros.',
     'contact.callTitle': '¿Prefieres llamar?',
 
     // Diálogo de la demo de voz
@@ -486,6 +506,7 @@ const translations: Record<Language, Record<string, string>> = {
     'nav.tryDemoDesc': 'Enter your coworking\'s website and talk to your AI agent in a minute. Free.',
     'nav.tryDemo': 'Try it with your website',
     'nav.case': 'Real case',
+    'nav.price': 'Price',
     'nav.mainMenu': 'Main menu',
     'nav.openMenu': 'Open the menu',
     'nav.closeMenu': 'Close the menu',
@@ -646,6 +667,21 @@ const translations: Record<Language, Record<string, string>> = {
     'case.quoteSource': 'Roberto, founder of Oficinas YA!',
 
     // Getting started (no prices)
+    // Price: no amounts of ours, the rule that produces them.
+    'price.figure': '×10',
+    'price.figureText': 'the value you get back for every euro you pay us.',
+    'price.lead': 'Our price is a tenth of the value we create for you. If the agent brings you nothing, there is nothing to charge; the more it brings, the more you pay us — and the more you keep.',
+    'price.counts': 'Value is what the agent actually moves: clients won, the hours your team stops spending on replies, and what the service gains by answering at once. We measure it with you, from your own panel.',
+    'price.colValue': 'Value a month',
+    'price.colFee': 'What you pay',
+    'price.row1Value': '€1,000',
+    'price.row1Fee': '€100',
+    'price.row2Value': '€10,000',
+    'price.row2Fee': '€1,000',
+    'price.row3Value': '€100,000',
+    'price.row3Fee': '€10,000',
+    'price.anyScale': 'The rule does not change with size: always a tenth, whatever the figure.',
+
     'pricing.title': 'Pricing tailored to your',
     'pricing.titleEmph': 'centre',
     'pricing.text': 'It depends on how many locations you have and what you need. Try it with your website, we talk for 15 minutes and send you a no-obligation proposal.',
@@ -753,6 +789,8 @@ const translations: Record<Language, Record<string, string>> = {
     'contact.phonePlaceholder': '+34 600 000 000',
     'contact.websiteField': 'Website',
     'contact.emailTitle': 'Or write to us',
+    'contact.teamAlt': 'Roberto and Sergio, founders of Simplia Spain',
+    'contact.teamCaption': 'Roberto and Sergio, founders of Simplia Spain. We answer ourselves.',
     'contact.callTitle': 'Prefer to call?',
 
     // Voice demo dialog
