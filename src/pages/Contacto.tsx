@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
 import { DemoLink } from "@/components/DemoLinks";
+import { Photo } from "@/components/Photo";
 import { PRIMARY, OUTLINE } from "@/lib/button-styles";
 import { EMAIL, FORM_LEAD_WEBHOOK_URL, PHONE_ALT, PHONE_MAIN, demoUrl } from "@/lib/site";
 
@@ -437,6 +438,23 @@ export default function Contacto() {
                 {EMAIL}
               </a>
             </div>
+
+            {/* Who answers. The column ran out of content well before the
+                form did, and on a page that asks for someone's name and
+                telephone number the two faces on the other end are worth
+                more than the white space they fill. */}
+            <figure className="m-0 grid gap-2.5">
+              <span className="block overflow-hidden rounded-[18px] bg-secondary">
+                <Photo
+                  name="equipo"
+                  alt={t('contact.teamAlt')}
+                  width={1279}
+                  height={683}
+                  sizes="(min-width: 1024px) 400px, 100vw"
+                />
+              </span>
+              <figcaption className="text-[15px] text-muted-foreground">{t('contact.teamCaption')}</figcaption>
+            </figure>
           </div>
           </div>
         </section>
