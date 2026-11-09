@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --ink: #0C0E12;
+    --brand: #0080FF;
+    --muted: #4D535B;
+    --line: #DFE0DC;
+    --soft: #F0F1EE;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1200px; height: 630px; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #fff;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 56px;
+    padding: 0 72px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .left { flex: 1 1 auto; min-width: 0; }
+  .mark { display: flex; align-items: center; gap: 14px; margin-bottom: 30px; }
+  .mark svg { width: 34px; height: 44px; display: block; }
+  .mark span { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; }
+
+  h1 {
+    font-size: 66px;
+    font-weight: 700;
+    line-height: 1.07;
+    letter-spacing: -0.04em;
+    max-width: 14ch;
+    margin-bottom: 26px;
+  }
+  h1 em { font-style: normal; color: var(--brand); }
+
+  p { font-size: 24px; line-height: 1.4; color: var(--muted); max-width: 26ch; }
+
+  /* The message that is the whole argument, drawn the way the site draws it. */
+  .bubble {
+    flex: none;
+    width: 352px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px 18px;
+    background: #fff;
+  }
+  .who { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #E4E6E9; color: var(--ink);
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .who b { font-size: 15px; font-weight: 600; }
+  .msg {
+    background: #F2F3F5;
+    border-radius: 14px 14px 14px 4px;
+    padding: 11px 13px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .time { display: block; margin-top: 5px; font-size: 13px; color: var(--muted); }
+  .reply {
+    margin-top: 8px;
+    background: #E3EFFC;
+    border-radius: 14px 14px 4px 14px;
+    padding: 11px 13px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+  <div class="mark">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="27.8 21 44.4 58" aria-hidden="true">
+      <path d="M50.39751958224544 79.0C64.10248041775458 79.0 72.16644908616188 72.37467362924282 72.16644908616188 62.11488250652741C72.16644908616188 52.65013054830287 64.82180156657964 47.8041775456919 55.31919060052219 45.60835509138381L50.208224543080945 44.35900783289817C45.437989556135776 43.22323759791123 41.197780678851174 41.44386422976501 41.197780678851174 37.24151436031332C41.197780678851174 33.4556135770235 44.52937336814622 30.72976501305483 50.43537859007833 30.72976501305483C56.22780678851175 30.72976501305483 59.824412532637076 33.34203655352481 60.24086161879895 37.847258485639685H71.40926892950392C71.21997389033942 27.928198433420363 63.04242819843342 21.0 50.54895561357702 21.0C38.282637075718014 21.0 29.34791122715405 27.81462140992167 29.34791122715405 37.99869451697128C29.34791122715405 46.21409921671018 35.06462140992167 51.02219321148824 44.60509138381201 53.331592689295036L50.81396866840731 54.88381201044386C56.947127937336816 56.39817232375979 60.54373368146214 58.177545691906005 60.54373368146214 62.039164490861616C60.54373368146214 66.3172323759791 56.45496083550914 69.23237597911226 50.28394255874674 69.23237597911226C44.03720626631854 69.23237597911226 39.456266318537864 66.3929503916449 39.07767624020888 60.67624020887728H27.833550913838124C28.174281984334208 72.677545691906 36.84399477806789 79.0 50.39751958224544 79.0Z" fill="#0080FF"/>
+    </svg>
+    <span>Simplia Spain</span>
+  </div>
+
+  <h1>Tu centro contesta a las&nbsp;20:53. <em>Aunque esté cerrado.</em></h1>
+
+  <p>Agente de IA de WhatsApp para coworkings y centros de negocio.</p>
+  </div>
+
+  <div class="bubble">
+      <div class="who"><span class="avatar">M</span><b>Marta · WhatsApp</b></div>
+      <div class="msg">Hola, ¿tenéis despacho para 8 personas?<span class="time">20:53</span></div>
+      <div class="reply">Sí, tenemos uno libre desde el lunes. Te mando la ficha.</div>
+  </div>
+</body>
+</html>
