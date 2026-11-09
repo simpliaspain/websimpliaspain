@@ -13,6 +13,26 @@ componente devuelve `null` y quien lo usa se maqueta sin foto.
 Si existen varias extensiones con el mismo nombre se prefiere, por este
 orden: `.avif`, `.webp`, `.jpg`, `.png`. Lo normal es dejar `.webp` y `.jpg`.
 
+## La foto de los fundadores va en dos versiones
+
+| Archivo | Qué es |
+|---|---|
+| `equipo.webp` | **El original**, tal como lo mandasteis. No se usa en la web; se guarda. |
+| `equipo-recorte.webp` | La que sale en Contacto y en el segundo paso de Cómo trabajamos: **sin la pared del estudio** y en una sola tinta azul. |
+
+La segunda se hace con `recorte.py`, que está en esta misma carpeta:
+
+    python src/assets/photos/recorte.py src/assets/photos/equipo.webp src/assets/photos/equipo-recorte.webp
+    python src/assets/photos/recorte.py src/assets/photos/equipo@2x.webp "src/assets/photos/equipo-recorte@2x.webp"
+
+Quita la pared por relleno desde los bordes de arriba (nunca desde abajo, que
+es donde está la mesa) y pasa la foto a `#102C47` con `screen`, que es la
+mezcla que lleva el negro al color y deja el blanco en blanco. **El azul va
+dentro del archivo**: si se cambia el de la web, hay que volver a generarla.
+
+Lo único que hace el CSS es apagar la mesa hacia abajo; ver `.tinta` en
+`src/index.css`.
+
 ## Las que faltan ahora mismo
 
 | Nombre | Qué es | Tamaño mínimo |

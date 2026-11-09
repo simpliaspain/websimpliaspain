@@ -456,7 +456,7 @@ export default function Contacto() {
             <figure className="m-0 grid gap-2.5">
               <span className="tinta block">
                 <Photo
-                  name="equipo"
+                  name="equipo-recorte"
                   alt={t('contact.teamAlt')}
                   width={1279}
                   height={683}

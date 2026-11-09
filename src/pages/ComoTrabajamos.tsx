@@ -38,7 +38,7 @@ export default function ComoTrabajamos() {
     title: t(`howWeWork.step${n}Title`),
     description: t(`howWeWork.step${n}Desc`),
     photo:
-      n === 2 ? { name: "equipo", alt: t("contact.teamAlt"), caption: t("contact.teamCaption") }
+      n === 2 ? { name: "equipo-recorte", alt: t("contact.teamAlt"), caption: t("contact.teamCaption") }
       : n === 4 ? { name: "despacho-8", alt: t("example.cardAlt"), caption: undefined }
       : null,
     action:
@@ -116,7 +116,7 @@ export default function ComoTrabajamos() {
                       <figure className="m-0 mt-3 grid max-w-[460px] gap-2">
                         <div
                           className={cn(
-                            step.photo.name === "equipo"
+                            step.photo.name === "equipo-recorte"
                               ? "tinta"
                               : "overflow-hidden rounded-[14px] bg-secondary",
                           )}

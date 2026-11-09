@@ -316,62 +316,29 @@
     }
   }
 
-  /* La foto, impresa en la tinta de Simplia y disuelta en el papel.
+  /* La foto de los fundadores, apoyada en el blanco de la página.
    *
-   * Dos ideas, y la segunda es la que hace el estilo:
+   * Casi todo el trabajo está hecho en el archivo y no aquí, y por una
+   * razón: la pared azul del estudio era lo que hacía que la foto se leyera
+   * como una nube. Mientras siguiera ahí, cualquier tinte la convertía en
+   * un rectángulo de color que había que desvanecer por los cuatro lados -
+   * y eso es, exactamente, una nube. Recortada, no hay rectángulo que
+   * disimular: los dos salen sobre el blanco con su propia silueta, y el
+   * duotono viene ya en el archivo (una capa de mezcla en CSS pintaría
+   * también donde la foto ya no está, porque `screen` sobre nada da el
+   * color entero).
    *
-   * 1. **Una sola tinta.** La foto va a gris y encima se aclara el azul con
-   *    `screen`. Esa es la mezcla que hace un duotono de verdad con el papel
-   *    intacto: `screen` lleva el negro al color y deja el blanco en blanco,
-   *    así que las sombras se vuelven azul y el fondo sigue siendo la página.
-   *    Ni `multiply` (que convierte el blanco en el propio azul: la foto
-   *    entera queda teñida, fondo incluido) ni `color` (que satura cada tono
-   *    al máximo y pone las caras azul eléctrico).
+   * Lo único que queda por hacer aquí es la mesa. Es un bloque macizo con
+   * dos esquinas rectas, así que se apaga hacia abajo y el resto de la foto
+   * ni se toca: ni arriba, ni a los lados. Quien lo mire no ve un borde en
+   * ningún sitio, pero tampoco ve niebla.
    *
-   * 2. **No hay marco.** La foto no vive en una caja con esquina redonda:
-   *    se desvanece en el blanco de la página. Dos máscaras que se cortan
-   *    entre sí - uno que apaga el pie y otro que redondea las esquinas y
-   *    los lados - hacen que no haya ningún borde que recortar.
-   *
-   * El azul es #102C47: el de marca (#0080FF) llevado hacia la tinta de la
-   * web (#0C0E13). Es el tono al que van a parar las sombras, y a plena
-   * saturación serían azul de bolígrafo. Este deja la foto serena y sigue
-   * siendo, sin dudarlo, el azul de la casa.
-   *
-   * Y el contraste sube un poco antes de la mezcla: `screen` aclara todo
-   * por definición, así que sin eso la foto se queda lavada.
+   * Cómo se hizo el archivo, en recorte.py junto a las fotos.
    */
   .tinta {
-    position: relative;
-    isolation: isolate;
-    /* La máscara va en el envoltorio y no en la imagen, para que apague a la
-       vez la foto y la capa de tinta que lleva encima; en la imagen sola,
-       el azul quedaría flotando donde la foto ya se ha desvanecido. */
-    --alto: linear-gradient(to bottom, transparent 0%, #000 14%, #000 56%, transparent 99%);
-    --ancho: linear-gradient(to right, transparent 0%, #000 11%, #000 89%, transparent 100%);
-    -webkit-mask-image: var(--alto), var(--ancho);
-    mask-image: var(--alto), var(--ancho);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
-  }
-
-  .tinta img {
-    filter: grayscale(1) contrast(1.24);
-  }
-
-  /* `z-index: 1`, y no es decoración: la foto lleva un filtro, lo que la
-     convierte en contexto de apilado, y un contexto de apilado con
-     `z-index: auto` se pinta en el mismo paso que las cajas posicionadas y
-     después de ellas, por venir más tarde en el documento. Sin nivel propio
-     esta capa se queda debajo de la foto y no tiñe nada. */
-  .tinta::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background: #102c47;
-    mix-blend-mode: screen;
+    --mesa: linear-gradient(to bottom, #000 0%, #000 54%, rgba(0, 0, 0, 0.4) 79%, transparent 96%);
+    -webkit-mask-image: var(--mesa);
+    mask-image: var(--mesa);
   }
 
   /* The chat card coming up out of the button and going back down into it.
