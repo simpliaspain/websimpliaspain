@@ -316,6 +316,66 @@
     }
   }
 
+  /* A cyanotype, on the wrapper of a photograph.
+   *
+   * What a cyanotype actually is: a print in Prussian blue, where every
+   * tone of the picture is that one blue at the picture's own brightness -
+   * deep navy in the shadows, cyan through the middle, and the paper itself
+   * in the highlights. So that is how it is built, and not as a blue wash
+   * laid on top of a colour photograph:
+   *
+   *   1. the picture goes to pure luminance, with a little more contrast,
+   *      the way a print has more than a negative;
+   *   2. `mix-blend-mode: color` takes the hue and the saturation from the
+   *      blue and the brightness from the picture, which is the duotone;
+   *   3. a pale screen lifts the highlights to paper, because a cyanotype's
+   *      lightest tone is the sheet, not pale blue.
+   *
+   * `isolation: isolate` is what keeps the two blends inside the picture;
+   * without it they would blend with whatever the page has behind it. If a
+   * browser cannot do blend modes, what is left is step 1 - a good black
+   * and white photograph - which is why the hue is not in the filter.
+   *
+   * The blue is #1F4E8C and not the brand's #0080FF: a cyanotype's blue is
+   * an iron blue, and the brand blue through `color` turns the shadows into
+   * electric navy and the faces into sky.
+   */
+  .cianotipia {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .cianotipia img {
+    filter: grayscale(1) contrast(1.12) brightness(1.03);
+  }
+
+  /* `z-index: 1`, and it is not decoration: the picture carries a filter,
+     which makes it a stacking context, and a stacking context with
+     `z-index: auto` is painted in the same step as the positioned boxes -
+     after them, because it comes later in the document. Without a level of
+     their own both of these sat underneath the photograph and the print
+     came out in plain black and white. */
+  .cianotipia::before,
+  .cianotipia::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .cianotipia::before {
+    background: #1f4e8c;
+    mix-blend-mode: color;
+  }
+
+  .cianotipia::after {
+    background: #eaf2fb;
+    mix-blend-mode: screen;
+    opacity: 0.1;
+  }
+
   /* The chat card coming up out of the button and going back down into it.
      One path, both directions, so dismissing it is the arrival in reverse.
      The transition lives here rather than in a style attribute so that the

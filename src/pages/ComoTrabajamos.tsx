@@ -6,6 +6,7 @@ import { FAQSection } from "@/components/sections/FAQSection";
 import { CallLink, DemoLink } from "@/components/DemoLinks";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Photo } from "@/components/Photo";
+import { cn } from "@/lib/utils";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
@@ -113,7 +114,12 @@ export default function ComoTrabajamos() {
                     {step.action && <div className="mt-2 flex">{step.action}</div>}
                     {step.photo && (
                       <figure className="m-0 mt-3 grid max-w-[460px] gap-2">
-                        <div className="overflow-hidden rounded-[14px] bg-secondary">
+                        <div
+                          className={cn(
+                            "overflow-hidden rounded-[14px] bg-secondary",
+                            step.photo.name === "equipo" && "cianotipia",
+                          )}
+                        >
                           <Photo
                             name={step.photo.name}
                             alt={step.photo.alt}

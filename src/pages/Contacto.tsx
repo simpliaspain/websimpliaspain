@@ -443,28 +443,25 @@ export default function Contacto() {
                 form did, and on a page that asks for someone's name and
                 telephone number the two faces on the other end are worth
                 more than the white space they fill. */}
-            {/* The photograph was taken against a pale blue wall that is
-                almost the page's own accent, so it is treated to finish the
-                job rather than to look treated: a touch more contrast, the
-                colour pulled a little towards the brand, and a wash of the
-                brand blue laid over it in soft light, which deepens the wall
-                without touching their faces. Under the pointer the wash
-                lifts and the photograph comes up to its natural colour - a
-                small reward for looking, and it cannot hide anything,
-                because the untreated picture is the one underneath. */}
-            <figure className="group m-0 grid gap-2.5">
-              <span className="relative block overflow-hidden rounded-[18px] bg-secondary">
+            {/* A cyanotype. The two founders are the one photograph on the
+                site of the people who answer, and printed in iron blue it
+                stops being a snapshot and becomes of a piece with
+                everything around it - the blue is the page's, the paper is
+                the page's white.
+
+                It does not come up to full colour under the pointer any
+                more. A photograph is not a control, and a picture that
+                changes when you reach for it reads as something you can
+                press. The print is the finished state. See .cianotipia in
+                src/index.css for how the duotone is built. */}
+            <figure className="m-0 grid gap-2.5">
+              <span className="cianotipia block overflow-hidden rounded-[18px] bg-secondary">
                 <Photo
                   name="equipo"
                   alt={t('contact.teamAlt')}
                   width={1279}
                   height={683}
                   sizes="(min-width: 1024px) 400px, 100vw"
-                  className="contrast-[1.08] saturate-[0.92] transition-[filter] duration-500 ease-out group-hover:contrast-100 group-hover:saturate-100 motion-reduce:transition-none"
-                />
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-0 bg-brand mix-blend-soft-light opacity-[0.22] transition-opacity duration-500 ease-out group-hover:opacity-0 motion-reduce:transition-none"
                 />
                 {/* The merest edge, so the picture does not float free of the
                     hairlines above it. */}
