@@ -316,64 +316,62 @@
     }
   }
 
-  /* A cyanotype, on the wrapper of a photograph.
+  /* La foto, impresa en la tinta de Simplia y disuelta en el papel.
    *
-   * What a cyanotype actually is: a print in Prussian blue, where every
-   * tone of the picture is that one blue at the picture's own brightness -
-   * deep navy in the shadows, cyan through the middle, and the paper itself
-   * in the highlights. So that is how it is built, and not as a blue wash
-   * laid on top of a colour photograph:
+   * Dos ideas, y la segunda es la que hace el estilo:
    *
-   *   1. the picture goes to pure luminance, with a little more contrast,
-   *      the way a print has more than a negative;
-   *   2. `mix-blend-mode: color` takes the hue and the saturation from the
-   *      blue and the brightness from the picture, which is the duotone;
-   *   3. a pale screen lifts the highlights to paper, because a cyanotype's
-   *      lightest tone is the sheet, not pale blue.
+   * 1. **Una sola tinta.** La foto va a gris y encima se aclara el azul con
+   *    `screen`. Esa es la mezcla que hace un duotono de verdad con el papel
+   *    intacto: `screen` lleva el negro al color y deja el blanco en blanco,
+   *    así que las sombras se vuelven azul y el fondo sigue siendo la página.
+   *    Ni `multiply` (que convierte el blanco en el propio azul: la foto
+   *    entera queda teñida, fondo incluido) ni `color` (que satura cada tono
+   *    al máximo y pone las caras azul eléctrico).
    *
-   * `isolation: isolate` is what keeps the two blends inside the picture;
-   * without it they would blend with whatever the page has behind it. If a
-   * browser cannot do blend modes, what is left is step 1 - a good black
-   * and white photograph - which is why the hue is not in the filter.
+   * 2. **No hay marco.** La foto no vive en una caja con esquina redonda:
+   *    se desvanece en el blanco de la página. Dos máscaras que se cortan
+   *    entre sí - uno que apaga el pie y otro que redondea las esquinas y
+   *    los lados - hacen que no haya ningún borde que recortar.
    *
-   * The blue is #1F4E8C and not the brand's #0080FF: a cyanotype's blue is
-   * an iron blue, and the brand blue through `color` turns the shadows into
-   * electric navy and the faces into sky.
+   * El azul es #102C47: el de marca (#0080FF) llevado hacia la tinta de la
+   * web (#0C0E13). Es el tono al que van a parar las sombras, y a plena
+   * saturación serían azul de bolígrafo. Este deja la foto serena y sigue
+   * siendo, sin dudarlo, el azul de la casa.
+   *
+   * Y el contraste sube un poco antes de la mezcla: `screen` aclara todo
+   * por definición, así que sin eso la foto se queda lavada.
    */
-  .cianotipia {
+  .tinta {
     position: relative;
     isolation: isolate;
+    /* La máscara va en el envoltorio y no en la imagen, para que apague a la
+       vez la foto y la capa de tinta que lleva encima; en la imagen sola,
+       el azul quedaría flotando donde la foto ya se ha desvanecido. */
+    --alto: linear-gradient(to bottom, transparent 0%, #000 14%, #000 56%, transparent 99%);
+    --ancho: linear-gradient(to right, transparent 0%, #000 11%, #000 89%, transparent 100%);
+    -webkit-mask-image: var(--alto), var(--ancho);
+    mask-image: var(--alto), var(--ancho);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
   }
 
-  .cianotipia img {
-    filter: grayscale(1) contrast(1.12) brightness(1.03);
+  .tinta img {
+    filter: grayscale(1) contrast(1.24);
   }
 
-  /* `z-index: 1`, and it is not decoration: the picture carries a filter,
-     which makes it a stacking context, and a stacking context with
-     `z-index: auto` is painted in the same step as the positioned boxes -
-     after them, because it comes later in the document. Without a level of
-     their own both of these sat underneath the photograph and the print
-     came out in plain black and white. */
-  .cianotipia::before,
-  .cianotipia::after {
+  /* `z-index: 1`, y no es decoración: la foto lleva un filtro, lo que la
+     convierte en contexto de apilado, y un contexto de apilado con
+     `z-index: auto` se pinta en el mismo paso que las cajas posicionadas y
+     después de ellas, por venir más tarde en el documento. Sin nivel propio
+     esta capa se queda debajo de la foto y no tiñe nada. */
+  .tinta::before {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    border-radius: inherit;
-  }
-
-  .cianotipia::before {
-    background: #1f4e8c;
-    mix-blend-mode: color;
-  }
-
-  .cianotipia::after {
-    background: #eaf2fb;
+    background: #102c47;
     mix-blend-mode: screen;
-    opacity: 0.1;
   }
 
   /* The chat card coming up out of the button and going back down into it.

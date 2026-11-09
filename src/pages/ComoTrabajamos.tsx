@@ -116,8 +116,9 @@ export default function ComoTrabajamos() {
                       <figure className="m-0 mt-3 grid max-w-[460px] gap-2">
                         <div
                           className={cn(
-                            "overflow-hidden rounded-[14px] bg-secondary",
-                            step.photo.name === "equipo" && "cianotipia",
+                            step.photo.name === "equipo"
+                              ? "tinta"
+                              : "overflow-hidden rounded-[14px] bg-secondary",
                           )}
                         >
                           <Photo

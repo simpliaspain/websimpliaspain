@@ -443,19 +443,18 @@ export default function Contacto() {
                 form did, and on a page that asks for someone's name and
                 telephone number the two faces on the other end are worth
                 more than the white space they fill. */}
-            {/* A cyanotype. The two founders are the one photograph on the
-                site of the people who answer, and printed in iron blue it
-                stops being a snapshot and becomes of a piece with
-                everything around it - the blue is the page's, the paper is
-                the page's white.
+            {/* Impresa en una sola tinta y sin marco: la foto se
+                desvanece en el blanco de la página en vez de vivir en una
+                caja con esquina redonda. Por eso no lleva ni relleno de
+                fondo ni filete alrededor - no hay borde que señalar, y un
+                relleno gris se vería justo donde la foto ya no está.
 
-                It does not come up to full colour under the pointer any
-                more. A photograph is not a control, and a picture that
-                changes when you reach for it reads as something you can
-                press. The print is the finished state. See .cianotipia in
-                src/index.css for how the duotone is built. */}
+                Tampoco vuelve a color al pasar el ratón. Una foto no es un
+                control, y una imagen que cambia cuando la señalas se lee
+                como algo que se puede pulsar. La impresión es el estado
+                final. Cómo se construye, en .tinta de src/index.css. */}
             <figure className="m-0 grid gap-2.5">
-              <span className="cianotipia block overflow-hidden rounded-[18px] bg-secondary">
+              <span className="tinta block">
                 <Photo
                   name="equipo"
                   alt={t('contact.teamAlt')}
@@ -463,9 +462,6 @@ export default function Contacto() {
                   height={683}
                   sizes="(min-width: 1024px) 400px, 100vw"
                 />
-                {/* The merest edge, so the picture does not float free of the
-                    hairlines above it. */}
-                <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[18px] ring-1 ring-inset ring-foreground/[0.08]" />
               </span>
               <figcaption className="text-[15px] text-muted-foreground">{t('contact.teamCaption')}</figcaption>
             </figure>
