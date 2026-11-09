@@ -1,5 +1,5 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { CallLink, DemoLink } from "@/components/DemoLinks";
+import { ActionPair } from "@/components/ActionPair";
 
 /**
  * The closing band on every page but the home, which has its own
@@ -25,10 +25,7 @@ export function CTASection() {
         <p className="m-0 max-w-[620px] text-[clamp(17px,1.4vw,19px)] leading-[1.5] text-muted-foreground">
           {t("cta.text")}
         </p>
-        <div className="flex flex-wrap gap-3">
-          <DemoLink lugar="banda-final" />
-          <CallLink lugar="banda-final" />
-        </div>
+        <ActionPair lugar="banda-final" />
       </div>
     </section>
   );

@@ -1,8 +1,6 @@
-import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ExampleChat } from "@/components/ExampleChat";
-import { DemoLink } from "@/components/DemoLinks";
-import { WatchButton } from "@/components/HomeButtons";
+import { ActionPair } from "@/components/ActionPair";
 
 /**
  * The first screen is the moment, not the promise: 20:53, a question about
@@ -15,19 +13,6 @@ import { WatchButton } from "@/components/HomeButtons";
  */
 export function HomeHero() {
   const { t } = useLanguage();
-
-  /**
-   * Only one of the two is ever the blue one, and it is the one the pointer
-   * is on. "Pruébalo con tu web" is blue at rest, because it is what the
-   * page is asking for; reach for the second button and the first hands the
-   * blue over for as long as you are there, then takes it back. Two solid
-   * blue buttons side by side would be the page asking for two things at
-   * once, and neither would read as the answer.
-   *
-   * It is the same `quiet` state the button already has, so the swap is the
-   * colour transition both shapes already carry - nothing new moves.
-   */
-  const [watchWanted, setWatchWanted] = useState(false);
 
   return (
     <section
@@ -56,13 +41,11 @@ export function HomeHero() {
           className="mx-auto w-full min-w-0 max-w-[440px] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
         />
 
-        <div className="flex flex-wrap gap-3 lg:col-start-1 lg:row-start-2 lg:mt-[clamp(18px,2vw,26px)] lg:self-start">
-          <DemoLink lugar="hero" quiet={watchWanted} />
-          <WatchButton
-            onPointerEnter={() => setWatchWanted(true)}
-            onPointerLeave={() => setWatchWanted(false)}
-          />
-        </div>
+        <ActionPair
+          lugar="hero"
+          secondary="watch"
+          className="lg:col-start-1 lg:row-start-2 lg:mt-[clamp(18px,2vw,26px)] lg:self-start"
+        />
       </div>
     </section>
   );

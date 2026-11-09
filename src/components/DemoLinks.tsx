@@ -53,7 +53,21 @@ export function DemoLink({ lugar, label, className, quiet = false }: LinkProps &
 }
 
 /** Secondary action: the 15-minute call on Cal.com. */
-export function CallLink({ lugar, label, className }: LinkProps) {
+export function CallLink({
+  lugar,
+  label,
+  className,
+  onPointerEnter,
+  onPointerLeave,
+  onFocus,
+  onBlur,
+}: LinkProps & {
+  /** Set by ActionPair, so reaching for this hands it the blue. */
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
+}) {
   const { t } = useLanguage();
   return (
     <a
@@ -62,6 +76,10 @@ export function CallLink({ lugar, label, className }: LinkProps) {
       rel="noopener noreferrer"
       data-umami-event="llamada"
       data-umami-event-lugar={lugar}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onFocus={onFocus}
+      onBlur={onBlur}
       className={cn(OUTLINE, className)}
     >
       {label ?? t("cta.call")}

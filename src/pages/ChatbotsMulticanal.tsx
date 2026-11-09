@@ -8,7 +8,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Seo } from "@/components/Seo";
 import { JsonLd, ORGANIZATION_ID } from "@/components/JsonLd";
 import { SITE_URL } from "@/lib/site";
-import { CallLink, DemoLink } from "@/components/DemoLinks";
+import { DemoLink } from "@/components/DemoLinks";
+import { ActionPair } from "@/components/ActionPair";
 import { ExampleChat } from "@/components/ExampleChat";
 
 /**
@@ -61,10 +62,7 @@ export default function ChatbotsMulticanal() {
                   {t("chatbots.heroTitle1")} <span className="text-brand">{t("chatbots.heroTitle2")}</span>
                 </h1>
                 <p className="mb-8 max-w-xl text-lg text-muted-foreground">{t("chatbots.heroDesc")}</p>
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <DemoLink lugar="agente-whatsapp" className="h-12" />
-                  <CallLink lugar="agente-whatsapp" className="h-12" />
-                </div>
+                <ActionPair lugar="agente-whatsapp" className="gap-4" buttonClassName="h-12" />
               </motion.div>
 
               <ExampleChat className="mx-auto lg:mr-0" />
