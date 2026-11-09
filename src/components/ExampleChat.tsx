@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Photo } from "@/components/Photo";
 import { cn } from "@/lib/utils";
+import { despertarSonido, guardarSonido, sonidoEncendido, tono } from "@/lib/sound";
 
 type Message = { from: "client" | "agent"; key: string; time: string; card?: boolean };
 
@@ -77,6 +78,12 @@ export function ExampleChat({
   const [typing, setTyping] = useState(false);
   const [played, setPlayed] = useState(false);
   const [animatable, setAnimatable] = useState(false);
+  const [conSonido, setConSonido] = useState(false);
+
+  // Se lee después de montar, no al montar: lo que diga el almacenamiento de
+  // esta persona no está en el HTML que se prerenderiza, y leerlo durante el
+  // primer pintado haría que servidor y navegador dijeran cosas distintas.
+  useEffect(() => setConSonido(sonidoEncendido()), []);
   const cardRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
 
@@ -91,6 +98,9 @@ export function ExampleChat({
         window.setTimeout(() => {
           setShown(step.shown);
           setTyping(step.typing);
+          if (!step.typing && step.shown > FIRST_SHOWN) {
+            tono(messages[step.shown - 1].from === "client" ? "cliente" : "agente");
+          }
         }, step.at),
       );
     }
@@ -309,15 +319,41 @@ export function ExampleChat({
       {/* Out of the flow and centred under the card, so the card's own
           bottom edge is the bottom of the column and whatever sits beside it
           can end exactly level with it. */}
-      <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-center text-sm text-muted-foreground">
+      {/* Tres columnas y no una fila centrada: con las dos laterales iguales,
+          «volver a reproducir» queda exactamente en el centro del cuadro
+          aunque a su derecha haya otro control. */}
+      <figcaption className="absolute inset-x-0 bottom-0 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-sm text-muted-foreground">
         {done && (
-          <button
-            type="button"
-            onClick={play}
-            className="sp-underline min-h-[44px] font-semibold text-foreground"
-          >
-            {t("example.replay")}
-          </button>
+          <>
+            <span aria-hidden="true" />
+            <button
+              type="button"
+              onClick={play}
+              className="sp-underline col-start-2 min-h-[44px] font-semibold text-foreground"
+            >
+              {t("example.replay")}
+            </button>
+            {/* El interruptor vive aquí, donde está el sonido, y no en un
+                ajuste escondido: es el sitio donde a alguien le apetecería
+                encenderlo. Encenderlo suena una vez, que es a la vez la
+                confirmación y el permiso que pide el navegador. */}
+            <button
+              type="button"
+              aria-pressed={conSonido}
+              onClick={() => {
+                const siguiente = !conSonido;
+                setConSonido(siguiente);
+                guardarSonido(siguiente);
+                if (siguiente) {
+                  despertarSonido();
+                  tono("agente");
+                }
+              }}
+              className="sp-link col-start-3 min-h-[44px] justify-self-end"
+            >
+              {t(conSonido ? "example.soundOff" : "example.soundOn")}
+            </button>
+          </>
         )}
       </figcaption>
     </figure>
