@@ -9,28 +9,51 @@
  *           mirando un solo mensaje.
  *   CHAT-2  no suena nada de fábrica, ni siquiera reproduciéndose sola.
  *   CHAT-3  el interruptor enciende, suena una vez al encenderlo, suena un
- *           tono por mensaje al volver a reproducir, se recuerda, y silencia.
+ *           ding por mensaje al volver a reproducir, se recuerda, y silencia.
+ *           Y lo que suena es el archivo del vídeo, no la campana de respaldo.
  *   CHAT-4  «volver a reproducir» sigue centrado bajo la tarjeta con el
  *           interruptor al lado, y los dos no se solapan.
+ *   CHAT-5  si el archivo del ding no carga, la campana de respaldo suena en
+ *           su lugar - y en todos los mensajes, no sólo en el primero.
  */
 import { test, expect, type Page } from "@playwright/test";
 
-/** Cuenta los osciladores que se crean, que es sonar sin tener que oírlo. */
+type Cuenta = { muestras: number; sintetizados: number };
+
+/**
+ * Cuenta sonidos sin tener que oírlos, y distingue de dónde salen: una
+ * `muestra` es el ding del vídeo, el archivo; un `sintetizado` es la campana
+ * de respaldo, la que sólo debe sonar si el archivo no se puede cargar. Que
+ * el respaldo esté a cero es parte de lo que se comprueba: si el archivo se
+ * rompiera o desapareciera, la web seguiría sonando y nadie se enteraría.
+ */
 async function contarTonos(page: Page) {
   await page.addInitScript(() => {
-    (window as unknown as { __tonos: number }).__tonos = 0;
+    const cuenta = { muestras: 0, sintetizados: 0 };
+    (window as unknown as { __sonidos: typeof cuenta }).__sonidos = cuenta;
     const Orig = window.AudioContext;
     if (!Orig) return;
     window.AudioContext = class extends Orig {
+      createBufferSource() {
+        cuenta.muestras++;
+        return super.createBufferSource();
+      }
       createOscillator() {
-        (window as unknown as { __tonos: number }).__tonos++;
+        cuenta.sintetizados++;
         return super.createOscillator();
       }
     } as typeof AudioContext;
   });
 }
 
-const tonos = (page: Page) => page.evaluate(() => (window as unknown as { __tonos: number }).__tonos);
+const tonos = (page: Page) => page.evaluate(() => (window as unknown as { __sonidos: Cuenta }).__sonidos);
+
+const aCero = (page: Page) =>
+  page.evaluate(() => {
+    const c = (window as unknown as { __sonidos: Cuenta }).__sonidos;
+    c.muestras = 0;
+    c.sintetizados = 0;
+  });
 
 async function reproducir(page: Page) {
   await page.evaluate(() => document.getElementById("accion")?.scrollIntoView({ block: "center" }));
@@ -74,7 +97,10 @@ test("CHAT-2: de fábrica no suena nada", async ({ page }) => {
   await page.goto("/");
   await page.waitForSelector("html[data-hydrated]");
   await reproducir(page);
-  expect(await tonos(page), "CHAT-2: ha sonado sin que nadie lo pidiera").toBe(0);
+  expect(await tonos(page), "CHAT-2: ha sonado sin que nadie lo pidiera").toEqual({
+    muestras: 0,
+    sintetizados: 0,
+  });
 });
 
 test("CHAT-3: el interruptor enciende, suena, se recuerda y silencia", async ({ page }) => {
@@ -84,20 +110,67 @@ test("CHAT-3: el interruptor enciende, suena, se recuerda y silencia", async ({ 
   await page.waitForSelector("html[data-hydrated]");
   await reproducir(page);
 
+  // El archivo se pide justo al encender, así que el primer ding puede tardar
+  // unos milisegundos en llegar. Espera a que suene en vez de mirar una vez.
   await page.getByRole("button", { name: "Con sonido" }).click();
-  expect(await tonos(page), "CHAT-3: encenderlo tiene que confirmarse con un tono").toBe(1);
+  await expect
+    .poll(async () => (await tonos(page)).muestras, {
+      message: "CHAT-3: encenderlo tiene que confirmarse con el ding del vídeo",
+      timeout: 10000,
+    })
+    .toBe(1);
+  expect(
+    (await tonos(page)).sintetizados,
+    "CHAT-3: ha sonado la campana de respaldo, o sea que el archivo no carga",
+  ).toBe(0);
   expect(await page.evaluate(() => localStorage.getItem("chatSonido"))).toBe("1");
 
-  await page.evaluate(() => ((window as unknown as { __tonos: number }).__tonos = 0));
+  await aCero(page);
   await page.getByRole("button", { name: "Volver a reproducir" }).click();
   await hastaElFinal(page);
-  expect(await tonos(page), "CHAT-3: un tono por mensaje que entra").toBe(4);
+  expect(await tonos(page), "CHAT-3: un ding por mensaje que entra").toEqual({
+    muestras: 4,
+    sintetizados: 0,
+  });
 
   await page.getByRole("button", { name: "Silenciar" }).click();
-  await page.evaluate(() => ((window as unknown as { __tonos: number }).__tonos = 0));
+  await aCero(page);
   await page.getByRole("button", { name: "Volver a reproducir" }).click();
   await hastaElFinal(page);
-  expect(await tonos(page), "CHAT-3: silenciado es silenciado").toBe(0);
+  expect(await tonos(page), "CHAT-3: silenciado es silenciado").toEqual({
+    muestras: 0,
+    sintetizados: 0,
+  });
+});
+
+test("CHAT-5: si el archivo del ding no carga, la campana de respaldo suena igual", async ({ page }) => {
+  await contarTonos(page);
+  // El archivo desaparece, como si el despliegue se lo hubiera dejado.
+  await page.route("**/*.mp3", (ruta) => ruta.abort());
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForSelector("html[data-hydrated]");
+  await reproducir(page);
+
+  await page.getByRole("button", { name: "Con sonido" }).click();
+  // La campana son dos parciales, así que cuenta por osciladores y no por
+  // sonidos; lo que se comprueba es que suena, no cuántos osciladores usa.
+  await expect
+    .poll(async () => (await tonos(page)).sintetizados > 0, {
+      message: "CHAT-5: sin archivo se queda muda",
+      timeout: 10000,
+    })
+    .toBe(true);
+  expect((await tonos(page)).muestras, "CHAT-5: no puede haber sonado el archivo").toBe(0);
+
+  // Y sigue sonando el resto de la conversación, no sólo el primero.
+  await aCero(page);
+  await page.getByRole("button", { name: "Volver a reproducir" }).click();
+  await hastaElFinal(page);
+  expect(
+    (await tonos(page)).sintetizados,
+    "CHAT-5: sólo sonó el primero y el resto de la conversación se quedó callada",
+  ).toBeGreaterThanOrEqual(4);
 });
 
 for (const ancho of [1440, 390, 360]) {
