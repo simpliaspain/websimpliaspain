@@ -132,19 +132,40 @@ export function ExampleChat({
     const node = cardRef.current;
     if (!node || !("IntersectionObserver" in window)) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // Y una tercera, que es una red por debajo de las otras dos. Las dos
+    // anteriores se miden contra la ventana encogida por el margen, y hay
+    // alturas de ventana en las que una tarjeta alta no llega a ninguna de
+    // las dos aunque la tengas delante: a 768x900 se veían 548 de sus 627
+    // px y la conversación no arrancaba nunca, así que quien entraba por ahí
+    // se quedaba mirando un solo mensaje para siempre. Esta mira la ventana
+    // de verdad y espera a que te pares: un tercio de la tarjeta a la vista
+    // durante ocho décimas es alguien leyéndola, no alguien pasando.
+    let espera = 0;
     const observer = new IntersectionObserver(
       (entries) => {
         const latest = entries[entries.length - 1];
+        window.clearTimeout(espera);
         if (!latest.isIntersecting) return;
         const fillsTheView = latest.rootBounds
           ? latest.intersectionRect.height / latest.rootBounds.height >= 0.8
           : false;
-        if (latest.intersectionRatio >= 0.6 || fillsTheView) play();
+        if (latest.intersectionRatio >= 0.6 || fillsTheView) {
+          play();
+          return;
+        }
+        const caja = latest.boundingClientRect;
+        const aLaVista = Math.min(caja.bottom, window.innerHeight) - Math.max(caja.top, 0);
+        if (caja.height > 0 && aLaVista / caja.height >= 0.35) {
+          espera = window.setTimeout(play, 800);
+        }
       },
-      { threshold: [0, 0.25, 0.5, 0.6, 0.8], rootMargin: "-12% 0px -22% 0px" },
+      { threshold: [0, 0.25, 0.35, 0.5, 0.6, 0.8], rootMargin: "-12% 0px -22% 0px" },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(espera);
+      observer.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unanswered, played]);
 
