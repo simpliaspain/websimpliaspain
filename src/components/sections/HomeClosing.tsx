@@ -28,7 +28,7 @@ export function HomeClosing() {
           <DemoLink lugar="banda-final" />
           <span className="flex min-h-[44px] flex-wrap items-center gap-x-[0.3em] text-[17px] font-semibold text-foreground">
             {t("closing.orCall")}
-            <a href={PHONE_MAIN.href} className="flex min-h-[44px] items-center underline underline-offset-4">
+            <a href={PHONE_MAIN.href} className="sp-underline inline-flex min-h-[44px] items-center">
               {PHONE_MAIN.display}
             </a>
           </span>

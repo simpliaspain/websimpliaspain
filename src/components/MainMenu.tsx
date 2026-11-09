@@ -222,7 +222,7 @@ export function MainMenu({
      structural rule that slides sideways reads as the page coming
      apart. */
   const bigLabel =
-    "inline-block transition-transform duration-200 ease-out group-hover/nav:translate-x-1.5 group-active/nav:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/nav:translate-x-0";
+    "inline-block transition-transform duration-200 ease-[cubic-bezier(0.22,0.61,0.36,1)] group-hover/nav:translate-x-1.5 group-active/nav:translate-x-1 motion-reduce:transition-none motion-reduce:group-hover/nav:translate-x-0";
   const smallLink =
     "sp-link inline-flex min-h-[44px] w-fit items-center text-[17px] font-semibold text-foreground hover:text-link";
 

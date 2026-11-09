@@ -94,16 +94,11 @@
        so it is left alone and this is used only where measured. */
     --border-interactive: 214 20% 52%;
 
-    /* Custom tokens. The page is white; the only wash left is the soft blue
-       bloom behind the two chat cards, which is the one piece of the old
-       look the redesign keeps. */
-    --gradient-primary: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
-    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-
-    /* Shadows */
-    --shadow-glow: 0 0 60px hsl(210 100% 50% / 0.15);
-    --shadow-card: 0 4px 24px hsl(0 0% 0% / 0.08);
-    --shadow-sm: 0 2px 8px hsl(0 0% 0% / 0.05);
+    /* The page is white; the only wash left is the soft blue bloom behind
+       the two chat cards, which is the one piece of the old look the
+       redesign keeps. Its gradients, glows and drop shadows are gone, and
+       so are the tokens that described them - nothing had referenced them
+       since the rebuild. */
 
     /* Sidebar */
     --sidebar-background: 0 0% 100%;
@@ -206,23 +201,6 @@
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, hsl(210 100% 50%) 0%, hsl(200 100% 45%) 100%);
-  }
-
-  .bg-gradient-card {
-    background: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(210 20% 98%) 100%);
-  }
-
-  .glow {
-    box-shadow: 0 0 60px hsl(210 100% 50% / 0.2);
-  }
-
-  .glow-sm {
-    box-shadow: 0 0 30px hsl(210 100% 50% / 0.15);
-  }
-
   /* The redesign's measure: 1240px with a fluid gutter. Tailwind's own
      `container` is still used by the pages that have not been rebuilt. */
   .wrap {
@@ -359,48 +337,4 @@
      - was the old site's one flourish. The redesign sets display type in one
      weight and one colour, so every use became `text-brand` and the utility
      is gone. Nothing should bring it back. */
-}
-
-/* Fade in animation */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.8s ease-out forwards;
-}
-
-/* Pulse glow animation */
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px hsl(210 100% 50% / 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px hsl(210 100% 50% / 0.5);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-/* Floating animation */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
 }

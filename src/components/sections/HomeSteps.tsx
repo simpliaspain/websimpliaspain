@@ -53,7 +53,7 @@ export function HomeSteps() {
               to /como-trabajamos and has to be as easy to hit as a button. */}
           <Link
             to="/como-trabajamos"
-            className="inline-flex min-h-[44px] items-center text-link underline underline-offset-2"
+            className="sp-underline inline-flex min-h-[44px] items-center text-link"
           >
             {t("steps.noteLink")}
           </Link>

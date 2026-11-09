@@ -87,18 +87,6 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-        "fade-in": {
-          from: { opacity: "0", transform: "translateY(20px)" },
-          to: { opacity: "1", transform: "translateY(0)" },
-        },
-        "slide-in-right": {
-          from: { opacity: "0", transform: "translateX(20px)" },
-          to: { opacity: "1", transform: "translateX(0)" },
-        },
-        "scale-in": {
-          from: { opacity: "0", transform: "scale(0.95)" },
-          to: { opacity: "1", transform: "scale(1)" },
-        },
         // The three dots in the example chat's typing bubble. Referenced by
         // name from ExampleChat so the delay can be set per dot.
         "typing-dot": {
@@ -121,12 +109,9 @@ export default {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s ease-out forwards",
-        "slide-in-right": "slide-in-right 0.5s ease-out forwards",
-        "scale-in": "scale-in 0.4s ease-out forwards",
         "typing-dot": "typing-dot 1.1s ease-in-out infinite",
-        rise: "rise 420ms cubic-bezier(0.23, 1, 0.32, 1) both",
-        lift: "lift 420ms cubic-bezier(0.23, 1, 0.32, 1) both",
+        rise: "rise 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
+        lift: "lift 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both",
       },
     },
   },
