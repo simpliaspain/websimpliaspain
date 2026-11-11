@@ -114,7 +114,7 @@ const translations: Record<Language, Record<string, string>> = {
     'example.noAnswer': 'Sin respuesta',
     'example.typing': 'El agente está escribiendo',
     'example.replay': 'Volver a reproducir',
-    'example.soundOn': 'Con sonido',
+    'example.soundOn': 'Oír los mensajes',
     'example.soundOff': 'Silenciar',
 
     // La misma pregunta, contestada
@@ -565,7 +565,7 @@ const translations: Record<Language, Record<string, string>> = {
     'example.noAnswer': 'No reply',
     'example.typing': 'The agent is typing',
     'example.replay': 'Play again',
-    'example.soundOn': 'With sound',
+    'example.soundOn': 'Hear the messages',
     'example.soundOff': 'Mute',
 
     // The same question, answered

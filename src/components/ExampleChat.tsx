@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Photo } from "@/components/Photo";
 import { cn } from "@/lib/utils";
-import { despertarSonido, guardarSonido, sonidoEncendido, tono } from "@/lib/sound";
+import { despertarSonido, guardarSonido, sonidoEncendido, sonidoListo, tono } from "@/lib/sound";
 
 type Message = { from: "client" | "agent"; key: string; time: string; card?: boolean };
 
@@ -79,11 +79,23 @@ export function ExampleChat({
   const [played, setPlayed] = useState(false);
   const [animatable, setAnimatable] = useState(false);
   const [conSonido, setConSonido] = useState(false);
+  // Encendido y listo son dos cosas distintas. `conSonido` es la preferencia,
+  // que se recuerda entre visitas; `listo` es el permiso del navegador, que
+  // no se recuerda y sólo se consigue con un gesto. Confundirlos era el
+  // fallo: quien volvía con el sonido puesto veía «Silenciar» y no oía nada.
+  const [listo, setListo] = useState(false);
+  // El HTML prerenderizado no lleva controles que necesiten JavaScript, así
+  // que esto sólo se enciende en un navegador que lo esté ejecutando.
+  const [vivo, setVivo] = useState(false);
 
   // Se lee después de montar, no al montar: lo que diga el almacenamiento de
   // esta persona no está en el HTML que se prerenderiza, y leerlo durante el
   // primer pintado haría que servidor y navegador dijeran cosas distintas.
-  useEffect(() => setConSonido(sonidoEncendido()), []);
+  useEffect(() => {
+    setConSonido(sonidoEncendido());
+    setListo(sonidoListo());
+    setVivo(true);
+  }, []);
   const cardRef = useRef<HTMLDivElement>(null);
   const timers = useRef<number[]>([]);
 
@@ -324,36 +336,53 @@ export function ExampleChat({
           aunque a su derecha haya otro control. */}
       <figcaption className="absolute inset-x-0 bottom-0 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-sm text-muted-foreground">
         {done && (
-          <>
-            <span aria-hidden="true" />
-            <button
-              type="button"
-              onClick={play}
-              className="sp-underline col-start-2 min-h-[44px] font-semibold text-foreground"
-            >
-              {t("example.replay")}
-            </button>
-            {/* El interruptor vive aquí, donde está el sonido, y no en un
-                ajuste escondido: es el sitio donde a alguien le apetecería
-                encenderlo. Encenderlo suena una vez, que es a la vez la
-                confirmación y el permiso que pide el navegador. */}
-            <button
-              type="button"
-              aria-pressed={conSonido}
-              onClick={() => {
-                const siguiente = !conSonido;
-                setConSonido(siguiente);
-                guardarSonido(siguiente);
-                if (siguiente) {
-                  despertarSonido();
-                  tono("agente");
-                }
-              }}
-              className="sp-link col-start-3 min-h-[44px] justify-self-end"
-            >
-              {t(conSonido ? "example.soundOff" : "example.soundOn")}
-            </button>
-          </>
+          <button
+            type="button"
+            onClick={play}
+            className="sp-underline col-start-2 min-h-[44px] font-semibold text-foreground"
+          >
+            {t("example.replay")}
+          </button>
+        )}
+        {/* El control del sonido vive aquí, donde está el sonido, y no en un
+            ajuste escondido: es el sitio donde a alguien le apetecería
+            encenderlo.
+
+            Está desde el primer momento, no sólo al acabar la reproducción.
+            Antes esperaba a `done` y tardaba 6,3 s en existir, así que quien
+            miraba la tarjeta no tenía con qué encender el sonido hasta que
+            la conversación ya había pasado entera.
+
+            Y no es un interruptor, es una invitación: pulsarlo enciende el
+            sonido, pide el permiso del navegador y **vuelve a reproducir la
+            conversación**, que es lo que la persona quiere al pulsar «oír
+            los mensajes». Antes sonaba una campanada suelta y nada más, y
+            encima sobre una conversación que ya había terminado.
+
+            La etiqueta dice lo que va a pasar, no lo que cree estar puesto:
+            mientras no haya permiso del navegador sigue invitando, aunque la
+            preferencia esté guardada de otra visita. Por eso no lleva
+            `aria-pressed`: no es un estado, es una acción. */}
+        {vivo && !unanswered && (
+          <button
+            type="button"
+            onClick={() => {
+              if (conSonido && listo) {
+                setConSonido(false);
+                guardarSonido(false);
+                return;
+              }
+              setConSonido(true);
+              guardarSonido(true);
+              void despertarSonido().then((ok) => {
+                setListo(ok);
+                play();
+              });
+            }}
+            className="sp-link col-start-3 min-h-[44px] justify-self-end"
+          >
+            {t(conSonido && listo ? "example.soundOff" : "example.soundOn")}
+          </button>
         )}
       </figcaption>
     </figure>

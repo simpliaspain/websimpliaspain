@@ -14,12 +14,20 @@
  * pulsar cualquier cosa es un sitio que alguien abre en una oficina y cierra
  * de golpe.
  *
- * Apagado de fábrica, y el interruptor está debajo del cuadro, al lado de
+ * Apagado de fábrica, y el control está debajo del cuadro, al lado de
  * «volver a reproducir»: justo donde alguien querría encenderlo. La
  * preferencia se recuerda, pero no basta con ella - el contexto de audio sólo
  * se crea con un gesto de la persona, que es además lo que exigen los
  * navegadores. Así, recién cargada la página, no suena nada hasta que alguien
  * toca algo, y eso es por construcción y no por suerte.
+ *
+ * De ahí que haya dos preguntas y no una: `sonidoEncendido` es la
+ * preferencia, que viaja entre visitas, y `sonidoListo` es el permiso del
+ * navegador, que no viaja. Confundirlas fue un fallo real: quien volvía con
+ * el sonido encendido se encontraba la conversación muda y el botón
+ * diciéndole «Silenciar». `despertarSonido` devuelve si el permiso se ha
+ * conseguido de verdad, para que la pantalla no prometa un sonido que no va
+ * a salir.
  *
  * El archivo tampoco se descarga al cargar la página: se pide al encender el
  * interruptor, que es la primera vez que hace falta. Son 7 KB.
@@ -99,18 +107,41 @@ function cargar(ctx: AudioContext) {
 }
 
 /**
- * Prepara el audio. Sólo tiene efecto llamado desde un gesto de la persona;
- * en cualquier otro momento el navegador deja el contexto suspendido y los
- * tonos se descartan solos.
+ * ¿Puede sonar ahora mismo? Es una pregunta distinta de si el sonido está
+ * encendido, y la diferencia es justo donde estaba el fallo: la preferencia
+ * se guarda entre visitas, pero el permiso del navegador no. Quien volvía
+ * con el sonido encendido se encontraba la conversación muda y un botón
+ * diciendo «Silenciar». Ahora el botón pregunta esto para saber qué poner.
  */
-export function despertarSonido() {
-  if (typeof window === "undefined") return;
+export function sonidoListo(): boolean {
+  return contexto !== null && contexto.state === "running";
+}
+
+/**
+ * Prepara el audio y dice si ha quedado listo. Sólo funciona llamado desde
+ * un gesto de la persona: en cualquier otro momento el navegador deja el
+ * contexto suspendido, y entonces devuelve `false` para que quien llama
+ * pueda decir la verdad en pantalla en vez de prometer un sonido que no va
+ * a salir.
+ */
+export async function despertarSonido(): Promise<boolean> {
+  if (typeof window === "undefined") return false;
   const Contexto =
     window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!Contexto) return;
+  if (!Contexto) return false;
   if (!contexto) contexto = new Contexto();
-  if (contexto.state === "suspended") void contexto.resume();
-  void cargar(contexto);
+  if (contexto.state === "suspended") {
+    try {
+      await contexto.resume();
+    } catch {
+      /* Sin gesto el navegador lo rechaza; se dirá que no está listo. */
+    }
+  }
+  if (contexto.state !== "running") return false;
+  // Espera a tener el archivo antes de decir que sí: así el primer ding de
+  // la reproducción que viene detrás ya suena, sin depender de la espera.
+  await cargar(contexto);
+  return true;
 }
 
 /**

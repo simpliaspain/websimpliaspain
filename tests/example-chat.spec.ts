@@ -8,13 +8,21 @@
  *           aunque la tuvieras delante. Quien entraba por ahí se quedaba
  *           mirando un solo mensaje.
  *   CHAT-2  no suena nada de fábrica, ni siquiera reproduciéndose sola.
- *   CHAT-3  el interruptor enciende, suena una vez al encenderlo, suena un
- *           ding por mensaje al volver a reproducir, se recuerda, y silencia.
- *           Y lo que suena es el archivo del vídeo, no la campana de respaldo.
+ *   CHAT-3  pulsar «oír los mensajes» hace oír la conversación entera -un
+ *           ding por mensaje-, se recuerda, y después silencia. Y lo que
+ *           suena es el archivo del vídeo, no la campana de respaldo.
  *   CHAT-4  «volver a reproducir» sigue centrado bajo la tarjeta con el
- *           interruptor al lado, y los dos no se solapan.
+ *           control del sonido al lado, y los dos no se solapan.
  *   CHAT-5  si el archivo del ding no carga, la campana de respaldo suena en
  *           su lugar - y en todos los mensajes, no sólo en el primero.
+ *   CHAT-6  el control del sonido existe mientras la conversación se está
+ *           reproduciendo. Antes esperaba a que terminara y tardaba 6,3 s en
+ *           aparecer, así que no había con qué encenderlo a tiempo.
+ *   CHAT-7  quien vuelve con el sonido encendido no recibe un botón que
+ *           miente. La preferencia se guarda entre visitas y el permiso del
+ *           navegador no, así que la conversación pasa muda; antes el botón
+ *           ponía «Silenciar» encima de ese silencio. Ahora invita, y
+ *           pulsarlo la hace sonar.
  */
 import { test, expect, type Page } from "@playwright/test";
 
@@ -55,9 +63,15 @@ const aCero = (page: Page) =>
     c.sintetizados = 0;
   });
 
+/**
+ * Pone la tarjeta delante y espera a que la conversación termine. El final
+ * se mide por «volver a reproducir», que es el único control que aparece al
+ * acabar: el del sonido está desde el principio, así que esperar a que haya
+ * *algún* botón en el pie ya no espera a nada.
+ */
 async function reproducir(page: Page) {
   await page.evaluate(() => document.getElementById("accion")?.scrollIntoView({ block: "center" }));
-  await page.waitForSelector("#accion figcaption button", { timeout: 30000 });
+  await expect(page.getByRole("button", { name: "Volver a reproducir" })).toBeVisible({ timeout: 30000 });
 }
 
 /**
@@ -103,27 +117,27 @@ test("CHAT-2: de fábrica no suena nada", async ({ page }) => {
   });
 });
 
-test("CHAT-3: el interruptor enciende, suena, se recuerda y silencia", async ({ page }) => {
+test("CHAT-3: pulsar «oír los mensajes» hace oír la conversación, se recuerda y silencia", async ({ page }) => {
   await contarTonos(page);
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   await page.waitForSelector("html[data-hydrated]");
   await reproducir(page);
 
-  // El archivo se pide justo al encender, así que el primer ding puede tardar
-  // unos milisegundos en llegar. Espera a que suene en vez de mirar una vez.
-  await page.getByRole("button", { name: "Con sonido" }).click();
-  await expect
-    .poll(async () => (await tonos(page)).muestras, {
-      message: "CHAT-3: encenderlo tiene que confirmarse con el ding del vídeo",
-      timeout: 10000,
-    })
-    .toBe(1);
-  expect(
-    (await tonos(page)).sintetizados,
-    "CHAT-3: ha sonado la campana de respaldo, o sea que el archivo no carga",
-  ).toBe(0);
+  // Pulsarlo no da una campanada suelta: vuelve a reproducir la conversación
+  // con sonido, que es lo que quiere quien lo pulsa. Cuatro mensajes entran,
+  // cuatro dings. Y son del archivo, no de la campana de respaldo: así un
+  // archivo roto no puede esconderse detrás del respaldo.
+  await page.getByRole("button", { name: "Oír los mensajes" }).click();
+  await hastaElFinal(page);
+  expect(await tonos(page), "CHAT-3: pulsarlo tiene que hacer oír los cuatro mensajes").toEqual({
+    muestras: 4,
+    sintetizados: 0,
+  });
   expect(await page.evaluate(() => localStorage.getItem("chatSonido"))).toBe("1");
+
+  // Ya con permiso, el botón sí es un interruptor y lo dice.
+  await expect(page.getByRole("button", { name: "Silenciar" })).toBeVisible();
 
   await aCero(page);
   await page.getByRole("button", { name: "Volver a reproducir" }).click();
@@ -143,6 +157,62 @@ test("CHAT-3: el interruptor enciende, suena, se recuerda y silencia", async ({ 
   });
 });
 
+test("CHAT-6: el control del sonido existe mientras la conversación se reproduce", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForSelector("html[data-hydrated]");
+  await page.evaluate(() => document.getElementById("accion")?.scrollIntoView({ block: "center" }));
+
+  // Mientras se reproduce no hay «volver a reproducir», y antes el control del
+  // sonido tampoco: tardaba 6,3 s en existir, así que quien miraba la tarjeta
+  // no tenía con qué encender el sonido hasta que ya había pasado todo.
+  await expect(
+    page.getByRole("button", { name: "Oír los mensajes" }),
+    "CHAT-6: no hay con qué encender el sonido mientras la conversación pasa",
+  ).toBeVisible({ timeout: 15000 });
+  await expect(
+    page.getByRole("button", { name: "Volver a reproducir" }),
+    "CHAT-6: la conversación ya había acabado, así que esto no prueba nada",
+  ).toBeHidden();
+});
+
+test("CHAT-7: quien vuelve con el sonido encendido no recibe un botón que miente", async ({ page }) => {
+  await contarTonos(page);
+  // La preferencia está guardada de una visita anterior. El permiso del
+  // navegador no se guarda, así que esta visita todavía no puede sonar.
+  await page.addInitScript(() => {
+    try {
+      localStorage.setItem("chatSonido", "1");
+    } catch {
+      /* da igual: lo que se comprueba es lo de abajo */
+    }
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  await page.waitForSelector("html[data-hydrated]");
+  await reproducir(page);
+
+  // La conversación ha pasado en silencio, y eso no se puede evitar: sin un
+  // gesto el navegador no deja sonar nada. Lo que sí se puede evitar es
+  // mentir sobre ello, que es lo que hacía antes.
+  expect(await tonos(page), "CHAT-7: ha sonado sin gesto, o sea que la cuenta no mide nada").toEqual({
+    muestras: 0,
+    sintetizados: 0,
+  });
+  await expect(
+    page.getByRole("button", { name: "Silenciar" }),
+    "CHAT-7: dice «Silenciar» con la conversación muda - eso era el fallo",
+  ).toBeHidden();
+
+  // Y sigue habiendo una salida obvia: pulsar y oírla.
+  await page.getByRole("button", { name: "Oír los mensajes" }).click();
+  await hastaElFinal(page);
+  expect(await tonos(page), "CHAT-7: pulsarlo tampoco la hace sonar").toEqual({
+    muestras: 4,
+    sintetizados: 0,
+  });
+});
+
 test("CHAT-5: si el archivo del ding no carga, la campana de respaldo suena igual", async ({ page }) => {
   await contarTonos(page);
   // El archivo desaparece, como si el despliegue se lo hubiera dejado.
@@ -152,24 +222,17 @@ test("CHAT-5: si el archivo del ding no carga, la campana de respaldo suena igua
   await page.waitForSelector("html[data-hydrated]");
   await reproducir(page);
 
-  await page.getByRole("button", { name: "Con sonido" }).click();
   // La campana son dos parciales, así que cuenta por osciladores y no por
   // sonidos; lo que se comprueba es que suena, no cuántos osciladores usa.
-  await expect
-    .poll(async () => (await tonos(page)).sintetizados > 0, {
-      message: "CHAT-5: sin archivo se queda muda",
-      timeout: 10000,
-    })
-    .toBe(true);
-  expect((await tonos(page)).muestras, "CHAT-5: no puede haber sonado el archivo").toBe(0);
-
-  // Y sigue sonando el resto de la conversación, no sólo el primero.
-  await aCero(page);
-  await page.getByRole("button", { name: "Volver a reproducir" }).click();
+  // Cuatro mensajes entran, así que con una campana por mensaje tiene que
+  // haber al menos cuatro: eso descarta el fallo de que sonara sólo la
+  // primera y el resto de la conversación se quedara callada.
+  await page.getByRole("button", { name: "Oír los mensajes" }).click();
   await hastaElFinal(page);
+  expect((await tonos(page)).muestras, "CHAT-5: no puede haber sonado el archivo").toBe(0);
   expect(
     (await tonos(page)).sintetizados,
-    "CHAT-5: sólo sonó el primero y el resto de la conversación se quedó callada",
+    "CHAT-5: sin archivo la conversación se queda muda",
   ).toBeGreaterThanOrEqual(4);
 });
 
