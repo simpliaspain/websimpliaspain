@@ -1,6 +1,6 @@
 {
-  "_client-CKc88FJo.js": {
-    "file": "assets/client-CKc88FJo.js",
+  "_client-Dhr36dJ4.js": {
+    "file": "assets/client-Dhr36dJ4.js",
     "name": "client",
     "isDynamicEntry": true,
     "imports": [
@@ -8,20 +8,22 @@
     ]
   },
   "index.html": {
-    "file": "assets/app-D04x4UJQ.js",
+    "file": "assets/app-DKlSrRep.js",
     "name": "app",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
-      "_client-CKc88FJo.js",
-      "_client-CKc88FJo.js"
+      "_client-Dhr36dJ4.js",
+      "_client-Dhr36dJ4.js"
     ],
     "css": [
-      "assets/app-DKi_gSnv.css"
+      "assets/app-Cr0eY-XG.css"
     ],
     "assets": [
       "assets/despacho-8-DlMtWi0s.webp",
       "assets/despacho-8@2x-1uw83Ffy.webp",
+      "assets/equipo-recorte-Bixt2ig3.webp",
+      "assets/equipo-recorte@2x-BW27VNGk.webp",
       "assets/equipo-BOLa-K3Q.webp",
       "assets/equipo@2x-BzXvrBgt.webp",
       "assets/esradio-DCE3nZDZ.webp",
@@ -29,6 +31,7 @@
       "assets/ieavanzado@2x-BIqGYOj_.webp",
       "assets/madridnorte24h-CQSMlvkH.jpg",
       "assets/madridnorte24h@2x-nmKLPta1.jpg",
+      "assets/ding-MyT9QKKr.mp3",
       "assets/simplia-demo-1024-BmgMIDe_.mp4",
       "assets/simplia-demo-poster-1024-DH3EJkm8.webp",
       "assets/oficinasya-DCZI6O70.png"
@@ -45,6 +48,14 @@
   "src/assets/photos/despacho-8@2x.webp": {
     "file": "assets/despacho-8@2x-1uw83Ffy.webp",
     "src": "src/assets/photos/despacho-8@2x.webp"
+  },
+  "src/assets/photos/equipo-recorte.webp": {
+    "file": "assets/equipo-recorte-Bixt2ig3.webp",
+    "src": "src/assets/photos/equipo-recorte.webp"
+  },
+  "src/assets/photos/equipo-recorte@2x.webp": {
+    "file": "assets/equipo-recorte@2x-BW27VNGk.webp",
+    "src": "src/assets/photos/equipo-recorte@2x.webp"
   },
   "src/assets/photos/equipo.webp": {
     "file": "assets/equipo-BOLa-K3Q.webp",
@@ -81,5 +92,9 @@
   "src/assets/services/simplia-demo-poster-1024.webp": {
     "file": "assets/simplia-demo-poster-1024-DH3EJkm8.webp",
     "src": "src/assets/services/simplia-demo-poster-1024.webp"
+  },
+  "src/assets/sounds/ding.mp3": {
+    "file": "assets/ding-MyT9QKKr.mp3",
+    "src": "src/assets/sounds/ding.mp3"
   }
 }
