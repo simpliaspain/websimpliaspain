@@ -211,12 +211,34 @@ export function MainMenu({
   );
 
   const bigLink =
-    // The row and its type answer to the window's height as well as its
-    // width. Driven by width alone, a phone held sideways got portrait-sized
-    // rows in a 390px-tall window and the links became a list you had to
-    // scroll. The floor is still over a 44px target, and it is set so that
-    // six entries plus the demo row fit a phone on its side.
-    "group/nav flex min-h-[clamp(46px,8.4vh,96px)] items-center border-b border-border text-[min(clamp(30px,4.6vw,52px),8vh)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors duration-200 ease-out hover:text-link motion-reduce:transition-none";
+    // The row answers to the window's height as well as its width: driven by
+    // width alone, a phone held sideways got portrait-sized rows in a 390px
+    // window. What went wrong is that only the row answered. The type was
+    // capped at 8vh, which at any usable desktop width never binds -the 52px
+    // width cap is always lower- so on a wide but short window the row
+    // collapsed around type that did not move: 52px of text in a 59px row at
+    // 1440x700, the hairlines all but touching the letters, where the design
+    // sets the figure at 0.57 of its row.
+    //
+    // So there is one figure now, `--letra`, and the row is derived from it
+    // instead of being measured separately. The type takes the smaller of
+    // what the width allows and what the height allows; the row is that
+    // times 1.72, which is the 0.58 proportion the design uses, with a 56px
+    // floor so a thumb always has its target. The proportion then holds by
+    // construction at every size, and it cannot drift apart again.
+    //
+    // Deriving the row this way also fixes the other end. Tied to the window
+    // the row grew to 84px on an upright phone while the type stayed at the
+    // 30px the width allows - bulk with nothing in it - and the six links
+    // plus the demo row stopped fitting. Tied to the type, the row is as big
+    // as it has reason to be.
+    //
+    // The height clamp's own floor is 35px rather than a rounder number
+    // because of one window: 1280x600, where 37px put the menu ten pixels
+    // over and made it scroll. Measured, not guessed, across nine sizes:
+    // the proportion now runs 0.54 to 0.59 where it used to run 0.42 to
+    // 0.96, and nothing that fitted before has stopped fitting.
+    "group/nav [--letra:min(clamp(30px,4.6vw,52px),clamp(35px,5.8vh,56px))] flex min-h-[max(56px,calc(var(--letra)*1.72))] items-center border-b border-border text-[length:var(--letra)] font-bold leading-none tracking-[-0.035em] text-foreground transition-colors duration-200 ease-out hover:text-link motion-reduce:transition-none";
   /* The words lean a little towards the pointer. It sits on the label
      and not on the row because the row carries the hairline, and a
      structural rule that slides sideways reads as the page coming

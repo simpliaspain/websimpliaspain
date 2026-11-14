@@ -284,3 +284,61 @@ test.describe("guard integrity", () => {
     expect(broken.rootInert && !broken.panelVisible, "PORTAL-2 must fire here").toBe(true);
   });
 });
+
+/* ───────────────── las filas del menú guardan su proporción ───────────────── */
+
+/**
+ * FILA-1: el texto de cada enlace grande conserva su aire dentro de la fila.
+ *
+ * Esto se ha desajustado dos veces, y las dos de la misma forma: la fila se
+ * ató a la altura de la ventana y la letra no. Como el tope de la letra por
+ * anchura (52 px) es casi siempre menor que su tope por altura, en una
+ * ventana ancha y baja la fila encogía alrededor de un texto que no se movía.
+ * A 1440x700 eran 52 px de texto en una fila de 59, y a 1280x600, 48 en 50:
+ * los filetes casi tocando las letras. El diseño pone esa proporción en
+ * 0,57, y ahora la fila se deriva de la letra para que no puedan separarse.
+ *
+ * No se mira a ojo porque a ojo no se ve: hay que abrir el menú en una
+ * ventana de la forma concreta que lo rompe.
+ */
+for (const [ancho, alto] of [
+  [1920, 1080],
+  [1440, 900],
+  [1512, 820],
+  [1440, 700],
+  [1280, 600],
+  [1024, 768],
+  [390, 844],
+  [844, 390],
+] as const) {
+  test(`FILA-1: la letra guarda su proporción en la fila a ${ancho}x${alto}`, async ({ page }) => {
+    await page.setViewportSize({ width: ancho, height: alto });
+    await isolate(page);
+    await open(page, "/");
+    await page.locator("#main-menu-trigger").click();
+    await expect(page.locator("#main-menu")).toBeVisible();
+
+    const filas = await page.evaluate(() => {
+      const panel = document.getElementById("main-menu")!;
+      return Array.from(panel.querySelectorAll("a"))
+        .filter((a) => a.className.includes("group/nav"))
+        .map((a) => ({
+          alto: a.getBoundingClientRect().height,
+          letra: parseFloat(getComputedStyle(a).fontSize),
+        }));
+    });
+
+    expect(filas.length, "FILA-1: no se han encontrado los enlaces grandes").toBeGreaterThanOrEqual(5);
+    for (const f of filas) {
+      const proporcion = f.letra / f.alto;
+      expect(
+        proporcion,
+        `FILA-1: a ${ancho}x${alto} la letra ocupa ${proporcion.toFixed(2)} de su fila ` +
+          `(${Math.round(f.letra)} px en ${Math.round(f.alto)} px); el diseño la pone en 0,57`,
+      ).toBeGreaterThan(0.48);
+      expect(proporcion, `FILA-1: a ${ancho}x${alto} la fila ahoga al texto`).toBeLessThan(0.64);
+      // Y sigue siendo un objetivo que se pueda tocar con el pulgar.
+      expect(f.alto, `FILA-1: a ${ancho}x${alto} la fila baja de 44 px`).toBeGreaterThanOrEqual(44);
+    }
+  });
+}
